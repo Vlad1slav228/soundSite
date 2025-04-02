@@ -1,0 +1,56 @@
+@use "../../../app/globals.scss" as *;
+@use "../../../styles/colors.scss" as *;
+@use "../../../styles/fonts.scss" as *;
+@use "../../../styles/padding_margin_gap.scss" as *;
+
+.header {
+  background-color: $limeMain;
+  padding: $padding_16 0;
+}
+
+.headerListMain {
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+  align-items: center;
+}
+
+.headerList {
+  display: flex;
+  gap: $gap_40;
+  list-style-type: none;
+}
+
+.headerList a,
+.accountBlock a {
+  font-family: $onest;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: $classicBlack;
+  font-size: 14px;
+  letter-spacing: -0.03em;
+  font-weight: 400;
+}
+
+.accountBlock {
+  display: flex;
+  gap: $gap_24;
+  align-items: center;
+}
+
+.callPhoneLink {
+  padding: $padding_12 0;
+  display: flex;
+  align-items: center;
+  gap: $gap_8;
+
+  &::before {
+    width: 24px;
+    height: 24px;
+    content: url(../../../../public/Header/IconPhone.png);
+  }
+}
+
+.accountLink {
+  padding: $padding_12;
+}

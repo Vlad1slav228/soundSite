@@ -1,5 +1,6 @@
+import "@/styles/reset.scss";
+import HeaderMain from "@/components/MainPage/Header/header";
+
 export default function Home() {
-  return (
-    <h1>Главная страница</h1>
-  );
+  return <HeaderMain />;
 }
