@@ -1,4 +1,4 @@
-import { LOGO, ACCOUNT_ICON } from "@/mocks/MainPage/Header/header";
+import { LOGO, ACCOUNT_ICON, ABOUT_TITLE, CONTACTS_TITLE, EXAMPLES_TITLE, PHOTO_TITLE, SERVICES_TITLE, CALLPHONE_LINK } from "@/mocks/MainPage/header";
 import s from "./header.module.scss";
 import Image from "next/image";
 export default function HeaderMain() {
@@ -15,26 +15,26 @@ export default function HeaderMain() {
             <nav>
               <ul className={s.headerList}>
                 <li>
-                  <a href="заглушка">О студии</a>
+                  <a href="заглушка">{ABOUT_TITLE}</a>
                 </li>
                 <li>
-                  <a href="заглушка">Услуги</a>
+                  <a href="заглушка">{SERVICES_TITLE}</a>
                 </li>
                 <li>
-                  <a href="заглушка">Примеры работ</a>
+                  <a href="заглушка">{EXAMPLES_TITLE}</a>
                 </li>
                 <li>
-                  <a href="заглушка">Фото</a>
+                  <a href="заглушка">{PHOTO_TITLE}</a>
                 </li>
                 <li>
-                  <a href="заглушка">Контакты</a>
+                  <a href="заглушка">{CONTACTS_TITLE}</a>
                 </li>
               </ul>
             </nav>
           </li>
           <li>
             <div className={s.accountBlock}>
-              <a href="tel:79162699881" className={s.callPhoneLink}>+7 (916) 269-98-81</a>
+              <a href="tel:79162699881" className={s.callPhoneLink}>{CALLPHONE_LINK}</a>
               <a href="заглушка" className={s.accountLink}>
                 <Image src={ACCOUNT_ICON} alt="Личный кабинет" />
               </a>

@@ -1,0 +1,52 @@
+@use "../../../styles/colors.scss" as *;
+@use "../../../styles/fonts.scss" as *;
+@use "../../../styles/padding_margin_gap.scss" as *;
+@use "../../../styles//container.scss" as *;
+
+.signUpBlock {
+  display: flex;
+  background-color: $graphiteBlack;
+}
+
+.signUpBlock .container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.signUpContent {
+  margin-top: 54px;
+  display: flex;
+  flex-direction: column;
+  gap: $gap_40;
+}
+
+.signUpText {
+  font-family: $onestLight;
+  font-size: 20px;
+  letter-spacing: 0.04em;
+  line-height: 130%;
+  color: $classicWhite;
+  text-transform: uppercase;
+  max-width: 490px;
+}
+
+.signUpButton {
+  width: fit-content;
+  padding: $padding_12 $padding_24;
+  display: flex;
+  align-items: center;
+  background-color: $limeMain;
+  gap: $gap_8;
+  font-family: $onestRegular;
+  font-size: 14px;
+  letter-spacing: -0.03em;
+  color: $graphiteBlack_2;
+  text-decoration: none;
+
+  &::after {
+    width: 24px;
+    height: 24px;
+    content: url(../../../../public/SignUpMain/chevronRight.png);
+  }
+}
