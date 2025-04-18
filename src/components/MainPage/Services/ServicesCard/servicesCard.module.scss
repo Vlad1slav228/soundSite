@@ -1,0 +1,81 @@
+@use "../../../../styles/colors.scss" as *;
+@use "../../../../styles/fonts.scss" as *;
+@use "../../../../styles/padding_margin_gap.scss" as *;
+@use "../../../../styles/container.scss" as *;
+
+.servicesCard {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid $darkGray;
+  padding-bottom: $padding_60;
+}
+
+.servicesCardTitle {
+  max-width: 160px;
+  font-family: $onestLight;
+  font-size: 24px;
+  line-height: 130%;
+  letter-spacing: 0.04em;
+  color: $classicWhite;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.servicesCardList {
+  width: 650px;
+  display: flex;
+  flex-direction: column;
+  gap: $gap_8;
+}
+
+.servicesCardListItem {
+  display: flex;
+  align-items: center;
+  gap: $gap_9;
+  font-family: $onestLight;
+  font-size: 16px;
+  color: $classicWhite;
+  line-height: 130%;
+  letter-spacing: 0.04em;
+
+  &::before {
+    content: url(../../../../../public/ServicesMain/ellipse.png);
+    width: 12px;
+    height: 19px;
+  }
+}
+
+.servicesCardFooter {
+  display: flex;
+  flex-direction: column;
+  gap: $gap_16;
+}
+
+.servicesCardPrice {
+  font-family: $onestLight;
+  color: $classicWhite;
+  line-height: 130%;
+  letter-spacing: 0.04em;
+  font-size: 53px;
+  text-transform: uppercase;
+}
+
+.servicesCardButton {
+  width: fit-content;
+  padding: $padding_12 $padding_24;
+  display: flex;
+  align-items: center;
+  background-color: $limeMain;
+  gap: $gap_8;
+  font-family: $onestRegular;
+  font-size: 14px;
+  letter-spacing: -0.03em;
+  color: $graphiteBlack_2;
+  text-decoration: none;
+
+  &::after {
+    width: 24px;
+    height: 24px;
+    content: url(../../../../../public/ServicesMain/chevronRight.png);
+  }
+}
