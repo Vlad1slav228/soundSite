@@ -1,0 +1,71 @@
+@use "../../../styles/colors.scss" as *;
+@use "../../../styles/fonts.scss" as *;
+@use "../../../styles/padding_margin_gap.scss" as *;
+@use "../../../styles/container.scss" as *;
+
+.aboutBlock {
+  padding: $padding_72 0;
+  background-color: $whiteSoft;
+}
+
+.aboutContent {
+  margin: 0 auto;
+  max-width: 1170px;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  flex-direction: column;
+  gap: $gap_11;
+}
+
+.aboutTitle {
+  font-family: $onestLight;
+  font-size: 72px;
+  color: $classicBlack;
+  letter-spacing: 0.04em;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.aboutButton {
+  font-family: $onestRegular;
+  font-size: 14px;
+  padding: $padding_15 $padding_24;
+  color: $graphiteBlack_2;
+  background-color: $limeMain;
+  text-decoration: none;
+  letter-spacing: -0.03em;
+}
+
+.stringLineFirst {
+  position: relative;
+  top: 120px;
+  left: 0;
+  background-color: $grayString;
+  height: 1px;
+}
+
+.stringLineSecond {
+  position: relative;
+  top: 350px;
+  left: 0;
+  background-color: $grayString;
+  height: 1px;
+}
+
+.stringLineThird {
+  position: relative;
+  top: 580px;
+  left: 0;
+  background-color: $grayString;
+  height: 1px;
+}
+
+.aboutImagesBlock {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 30px;
+}

@@ -1,7 +1,7 @@
 @use "../../../styles/colors.scss" as *;
 @use "../../../styles/fonts.scss" as *;
 @use "../../../styles/padding_margin_gap.scss" as *;
-@use "../../../styles//container.scss" as *;
+@use "../../../styles/container.scss" as *;
 
 .signUpBlock {
   display: flex;
@@ -33,7 +33,7 @@
 
 .signUpButton {
   width: fit-content;
-  padding: $padding_12 $padding_24;
+  padding: $padding_15 $padding_24;
   display: flex;
   align-items: center;
   background-color: $limeMain;
