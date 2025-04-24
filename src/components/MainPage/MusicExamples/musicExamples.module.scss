@@ -1,0 +1,44 @@
+@use "../../../styles/colors.scss" as *;
+@use "../../../styles/fonts.scss" as *;
+@use "../../../styles/padding_margin_gap.scss" as *;
+@use "../../../styles/container.scss" as *;
+
+.musicExamplesBlock {
+  display: flex;
+  background-color: $limeMain;
+
+  > img {
+    height: inherit;
+  }
+}
+
+.trackMainBlock {
+  display: flex;
+  flex-direction: column;
+  gap: $gap_40;
+  padding: $padding_40;
+  max-width: 730px;
+}
+
+.trackTitle {
+  font-family: $onestLight;
+  font-size: 48px;
+  letter-spacing: 0.04em;
+  font-weight: 400;
+  color: $classicBlack;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.trackBlock {
+  display: flex;
+  flex-direction: column;
+  gap: $gap_16;
+  padding: $padding_16 $padding_26;
+  background-color: $graphiteBlack;
+}
+
+.string {
+  height: 1px;
+  background: $rangeColor;
+}

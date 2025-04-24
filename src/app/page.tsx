@@ -4,6 +4,7 @@ import HeroMain from "@/components/MainPage/Hero/hero";
 import SignUpMain from "@/components/MainPage/SignUp/signUp";
 import AboutMain from "@/components/MainPage/About/about";
 import ServicesMain from "@/components/MainPage/Services/services";
+import MusicExamplesMain from "@/components/MainPage/MusicExamples/musicExamples";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
       <SignUpMain />
       <AboutMain />
       <ServicesMain />
+      <MusicExamplesMain />
     </>
   );
 }

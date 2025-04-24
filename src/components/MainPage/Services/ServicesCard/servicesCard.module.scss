@@ -47,6 +47,7 @@
 
 .servicesCardFooter {
   display: flex;
+  align-items: flex-end;
   flex-direction: column;
   gap: $gap_16;
 }
