@@ -1,0 +1,28 @@
+@use "../../../styles/colors.scss" as *;
+@use "../../../styles/fonts.scss" as *;
+@use "../../../styles/padding_margin_gap.scss" as *;
+@use "../../../styles/container.scss" as *;
+
+.galleryBlock {
+  background-color: $whiteSoft;
+  padding: $padding_94 0;
+}
+
+.sliderWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $gap_24;
+}
+
+.galleryButton {
+  font-family: $onestRegular;
+  font-size: 14px;
+  color: $classicWhite;
+  letter-spacing: -0.03em;
+  padding: $padding_15 $padding_24;
+  background-color: $classicBlack;
+  text-decoration: none;
+  width: fit-content;
+  margin: 0 auto;
+}
+

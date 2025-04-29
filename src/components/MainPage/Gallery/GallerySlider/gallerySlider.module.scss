@@ -1,0 +1,37 @@
+@use "../../../../styles/colors.scss" as *;
+@use "../../../../styles/fonts.scss" as *;
+@use "../../../../styles/padding_margin_gap.scss" as *;
+@use "../../../../styles/container.scss" as *;
+@use "../../../../styles/border.scss" as *;
+
+.galleryWrapper {
+  position: relative;
+}
+
+.swiperImage {
+  width: 100%;
+  height: auto;
+}
+
+.arrowsWrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 10;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.arrowLeft, .arrowRight {
+  width: 48px;
+  height: 48px;
+  padding: $padding_12;
+  background-color: $limeMain;
+  border: none;
+  cursor: pointer;
+  pointer-events: all;
+}
+
