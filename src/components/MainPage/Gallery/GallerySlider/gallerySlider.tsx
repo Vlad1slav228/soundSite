@@ -23,6 +23,7 @@ export default function GallerySlider() {
         loop={true}
         observer={true}
         observeParents={true}
+        speed={1300}
         navigation={{
           nextEl: `.${s.arrowRight}`,
           prevEl: `.${s.arrowLeft}`,

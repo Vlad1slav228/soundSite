@@ -4,17 +4,17 @@
 @use "../../../styles/container.scss" as *;
 
 .servicesBlock {
-    padding: $padding_80 0;
-    background-color: $graphiteBlack;
+  padding: $padding_80 0;
+  background-color: $graphiteBlack;
 }
 
 .servicesCardBlock {
-    display: flex;
-    flex-direction: column;
-    gap: $gap_60;
+  display: flex;
+  flex-direction: column;
+  gap: $gap_60;
 }
 
 .string {
-    height: 1px;
-    background: $darkGray;
-  } 
+  height: 1px;
+  background: $darkGrayString;
+}
