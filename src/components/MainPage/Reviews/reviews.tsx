@@ -15,6 +15,7 @@ export default function ReviewsMain() {
   const [isFading, setIsFading] = useState(false);
   const [micAnimated, setMicAnimated] = useState(false);
   const [height, setHeight] = useState<number | undefined>(undefined);
+  const [width, setWidth] = useState<number | undefined>(undefined);
 
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -41,10 +42,12 @@ export default function ReviewsMain() {
 
     const resizeObserver = new ResizeObserver(() => {
       setHeight(el.scrollHeight);
+      setWidth(el.scrollWidth);
     });
 
     resizeObserver.observe(el);
     setHeight(el.scrollHeight);
+    setWidth(el.scrollWidth);
 
     return () => resizeObserver.disconnect();
   }, [currentReviewIndex]);
@@ -57,7 +60,8 @@ export default function ReviewsMain() {
             className={s.reviewCardWrapper}
             style={{
               height: height ? `${height}px` : "auto",
-              transition: "height 0.8s ease",
+              width: width ? `${width}px` : "auto",
+              transition: "height 0.5s ease, width 0.5s ease",
             }}
           >
             <div className={s.reviewCardBackground1} aria-hidden="true"></div>

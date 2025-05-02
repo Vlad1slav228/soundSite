@@ -34,7 +34,7 @@ export default function HeaderMain() {
           </li>
           <li>
             <div className={s.accountBlock}>
-              <a href="tel:79162699881" className={s.callPhoneLink}>{CALLPHONE_LINK}</a>
+              <a href="tel:+79162699881" className={s.callPhoneLink}>{CALLPHONE_LINK}</a>
               <a href="заглушка" className={s.accountLink}>
                 <Image src={ACCOUNT_ICON} alt="Личный кабинет" />
               </a>

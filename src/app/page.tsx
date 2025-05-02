@@ -7,6 +7,7 @@ import ServicesMain from "@/components/MainPage/Services/services";
 import MusicExamplesMain from "@/components/MainPage/MusicExamples/musicExamples";
 import GalleryMain from "@/components/MainPage/Gallery/gallery";
 import ReviewsMain from "@/components/MainPage/Reviews/reviews";
+import FooterMain from "@/components/MainPage/Footer/footer";
 
 export default function Home() {
   return (
@@ -19,6 +20,7 @@ export default function Home() {
       <MusicExamplesMain />
       <GalleryMain />
       <ReviewsMain />
+      <FooterMain />
     </>
   );
 }
