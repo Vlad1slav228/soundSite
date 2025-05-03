@@ -7,10 +7,11 @@ import {
 } from "@/mocks/MainPage/about";
 import s from "./about.module.scss";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function AboutMain() {
   return (
-    <section className={s.aboutBlock}>
+    <section className={s.aboutBlock} id="about">
       <div className={s.stringLineFirst} aria-hidden="true"></div>
       <div className={s.stringLineSecond} aria-hidden="true"></div>
       <div className={s.stringLineThird} aria-hidden="true"></div>
@@ -34,9 +35,9 @@ export default function AboutMain() {
         </div>
         <article className={s.aboutContent}>
           <h2 className={s.aboutTitle}>{ABOUT_TITLE}</h2>
-          <a href="заглушка" className={s.aboutButton}>
+          <Link href="/about" className={s.aboutButton}>
             {ABOUT_BUTTON}
-          </a>
+          </Link>
         </article>
       </div>
     </section>

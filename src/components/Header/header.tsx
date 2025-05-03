@@ -1,33 +1,34 @@
-import { LOGO, ACCOUNT_ICON, ABOUT_TITLE, CONTACTS_TITLE, EXAMPLES_TITLE, PHOTO_TITLE, SERVICES_TITLE, CALLPHONE_LINK } from "@/mocks/MainPage/header";
+import { ABOUT_TITLE, ACCOUNT_ICON, CALLPHONE_LINK, CONTACTS_TITLE, EXAMPLES_TITLE, LOGO, PHOTO_TITLE, SERVICES_TITLE } from "@/mocks/header";
 import s from "./header.module.scss";
 import Image from "next/image";
-export default function HeaderMain() {
+import Link from "next/link";
+export default function Header() {
   return (
     <header className={s.header}>
       <div className={s.container}>
         <ul className={s.headerListMain}>
           <li>
-            <a href="заглушка">
+            <Link href="/">
               <Image src={LOGO} alt="Логотип Sound" />
-            </a>
+            </Link>
           </li>
           <li>
             <nav>
               <ul className={s.headerList}>
                 <li>
-                  <a href="заглушка">{ABOUT_TITLE}</a>
+                  <a href="#about">{ABOUT_TITLE}</a>
                 </li>
                 <li>
-                  <a href="заглушка">{SERVICES_TITLE}</a>
+                  <a href="#services">{SERVICES_TITLE}</a>
                 </li>
                 <li>
-                  <a href="заглушка">{EXAMPLES_TITLE}</a>
+                  <a href="#examples">{EXAMPLES_TITLE}</a>
                 </li>
                 <li>
-                  <a href="заглушка">{PHOTO_TITLE}</a>
+                  <a href="#photo">{PHOTO_TITLE}</a>
                 </li>
                 <li>
-                  <a href="заглушка">{CONTACTS_TITLE}</a>
+                  <a href="#contacts">{CONTACTS_TITLE}</a>
                 </li>
               </ul>
             </nav>

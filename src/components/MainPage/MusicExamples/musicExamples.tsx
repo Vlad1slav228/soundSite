@@ -13,7 +13,7 @@ import AudioPlayer from "./AudioPlayer/audioPlayer";
 
 export default function MusicExamplesMain() {
   return (
-    <section className={s.musicExamplesBlock}>
+    <section className={s.musicExamplesBlock} id="examples">
       <Image src={MICROPHONE_IMG} alt="Микрофон" className={s.microImg} />
       <div className={s.trackMainBlock}>
         <h2 className={s.trackTitle}>{TRACK_TITLE}</h2>

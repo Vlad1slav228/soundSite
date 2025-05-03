@@ -1,5 +1,5 @@
 import "@/styles/reset.scss";
-import HeaderMain from "@/components/MainPage/Header/header";
+import Header from "@/components/Header/header";
 import HeroMain from "@/components/MainPage/Hero/hero";
 import SignUpMain from "@/components/MainPage/SignUp/signUp";
 import AboutMain from "@/components/MainPage/About/about";
@@ -7,12 +7,12 @@ import ServicesMain from "@/components/MainPage/Services/services";
 import MusicExamplesMain from "@/components/MainPage/MusicExamples/musicExamples";
 import GalleryMain from "@/components/MainPage/Gallery/gallery";
 import ReviewsMain from "@/components/MainPage/Reviews/reviews";
-import FooterMain from "@/components/MainPage/Footer/footer";
+import Footer from "@/components/Footer/footer";
 
 export default function Home() {
   return (
     <>
-      <HeaderMain />
+      <Header />
       <HeroMain />
       <SignUpMain />
       <AboutMain />
@@ -20,7 +20,7 @@ export default function Home() {
       <MusicExamplesMain />
       <GalleryMain />
       <ReviewsMain />
-      <FooterMain />
+      <Footer />
     </>
   );
 }

@@ -1,0 +1,103 @@
+@use "../../../styles/colors.scss" as *;
+@use "../../../styles/fonts.scss" as *;
+@use "../../../styles/padding_margin_gap.scss" as *;
+@use "../../../styles/container.scss" as *;
+
+.IntroBlock {
+  padding: $padding_24 0;
+  background-color: $graphiteBlack;
+}
+
+.breadcrumbs {
+  ul {
+    font-family: $onestLight;
+    font-size: 14px;
+    letter-spacing: -0.03em;
+    display: flex;
+    gap: $gap_8;
+    color: $breadcrumbs;
+    list-style: none;
+
+    li {
+      &:not(.active) a {
+        color: $breadcrumbs;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      &.active {
+        color: $limeMain;
+      }
+    }
+  }
+}
+
+.imagesGrid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.leftImage {
+  grid-column: 1;
+  grid-row: 3;
+  justify-self: start;
+}
+
+.introTitle {
+  max-width: 1170px;
+  grid-column: 1 / -1;
+  grid-row: 2;
+  font-family: $onestLight;
+  font-size: 72px;
+  line-height: 100%;
+  letter-spacing: 0.04em;
+  font-weight: 400;
+  color: $classicWhite;
+  text-align: center;
+  text-transform: uppercase;
+  justify-self: center;
+}
+
+.rightImage {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: right;
+}
+
+.centerImage {
+  grid-column: 2;
+  grid-row: 3;
+  justify-self: center;
+  margin-top: $margin_80;
+  margin-bottom: $margin_100;
+}
+
+.stringLineFirst {
+  position: relative;
+  top: 206px;
+  left: 0;
+  background-color: $grayString_2;
+  height: 1px;
+}
+
+.stringLineSecond {
+  position: relative;
+  top: 450px;
+  left: 0;
+  background-color: $grayString_2;
+  height: 1px;
+}
+
+.stringLineThird {
+  position: relative;
+  top: 700px;
+  left: 0;
+  background-color: $grayString_2;
+  height: 1px;
+}
+

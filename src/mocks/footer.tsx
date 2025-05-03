@@ -1,9 +1,9 @@
-import vkIcon from "../../../public/Footer/vkIcon.png";
-import tgIcon from "../../../public/Footer/tgIcon.png";
-import youtubeIcon from "../../../public/Footer/youtubeIcon.png";
-import dzenIcon from "../../../public/Footer/dzenIcon.png";
-import okIcon from "../../../public/Footer/okIcon.png";
-import logoFooter from "../../../public/Footer/logo.png";
+import vkIcon from "../../public/Footer/vkIcon.png";
+import tgIcon from "../../public/Footer/tgIcon.png";
+import youtubeIcon from "../../public/Footer/youtubeIcon.png";
+import dzenIcon from "../../public/Footer/dzenIcon.png";
+import okIcon from "../../public/Footer/okIcon.png";
+import logoFooter from "../../public/Footer/logo.png";
 
 export const ABOUT_TITLE = "О студии";
 export const SERVICES_TITLE = "Услуги";
