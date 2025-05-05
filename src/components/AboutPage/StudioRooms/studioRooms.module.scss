@@ -1,0 +1,57 @@
+@use "../../../styles/colors.scss" as *;
+@use "../../../styles/fonts.scss" as *;
+@use "../../../styles/padding_margin_gap.scss" as *;
+@use "../../../styles/container.scss" as *;
+
+.studioRoomsBlock {
+  display: flex;
+
+  img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+}
+
+.roomCard {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.roomContent {
+  text-align: left;
+  background-color: $graphiteBlack;
+  padding: $padding_50 $padding_40;
+
+  &.active {
+    background-color: $limeMain;
+
+    .roomTitle {
+      color: $classicBlack;
+    }
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: $gap_12;
+    max-width: 660px;
+  }
+}
+
+.roomTitle {
+  font-family: $onestLight;
+  font-size: 48px;
+  line-height: 103%;
+  color: $classicWhite;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.roomText {
+  font-family: $onestLight;
+  font-size: 16px;
+  line-height: 103%;
+  color: $classicBlack;
+}
