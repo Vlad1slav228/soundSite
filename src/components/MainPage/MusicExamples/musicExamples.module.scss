@@ -8,7 +8,8 @@
   background-color: $limeMain;
 
   > img {
-    height: inherit;
+    height: auto;
+    object-fit: cover;
   }
 }
 
