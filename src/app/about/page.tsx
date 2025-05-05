@@ -4,6 +4,7 @@ import IntroAbout from "@/components/AboutPage/Intro/intro";
 import Footer from "@/components/Footer/footer";
 import StudioRoomsAbout from "@/components/AboutPage/StudioRooms/studioRooms";
 import GalleryAbout from "@/components/AboutPage/Gallery/gallery";
+import Reviews from "@/components/Reviews/reviews";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
       <IntroAbout />
       <StudioRoomsAbout />
       <GalleryAbout />
+      <Reviews />
       <Footer />
     </>
   );

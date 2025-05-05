@@ -6,11 +6,11 @@ import {
   CROSS_ICON,
   REVIEWS_DATA,
   REVIEWS_BUTTON,
-} from "@/mocks/MainPage/reviews";
+} from "@/mocks/reviews";
 import s from "./reviews.module.scss";
 import Image from "next/image";
 
-export default function ReviewsMain() {
+export default function Reviews() {
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
   const [isFading, setIsFading] = useState(false);
   const [micAnimated, setMicAnimated] = useState(false);
