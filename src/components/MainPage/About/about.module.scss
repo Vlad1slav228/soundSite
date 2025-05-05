@@ -39,7 +39,7 @@
 
 .stringLineFirst {
   position: relative;
-  top: 120px;
+  top: 148px;
   left: 0;
   background-color: $grayString;
   height: 1px;
@@ -55,17 +55,36 @@
 
 .stringLineThird {
   position: relative;
-  top: 580px;
+  top: 600px;
   left: 0;
   background-color: $grayString;
   height: 1px;
 }
 
 .aboutImagesBlock {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   position: relative;
   z-index: 1;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 30px;
+  margin-bottom: $margin_16;
+}
+
+.leftImage {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+  align-self: end;
+}
+
+.rightImage {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: right;
+}
+
+.centerImage {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: center;
+  margin-top: $margin_21;
 }

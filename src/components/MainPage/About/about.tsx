@@ -20,17 +20,17 @@ export default function AboutMain() {
           <Image
             src={MICROPHONE_LEFT_IMG}
             alt="Левый микрофон"
-            className={s.leftMicroImage}
+            className={s.leftImage}
           />
           <Image
             src={SYNTHESIZER_IMG}
             alt="Синтезатор"
-            className={s.synthesizerImage}
+            className={s.centerImage}
           />
           <Image
             src={MICROPHONE_RIGHT_IMG}
             alt="Правый микрофон"
-            className={s.rightMicroImage}
+            className={s.rightImage}
           />
         </div>
         <article className={s.aboutContent}>
