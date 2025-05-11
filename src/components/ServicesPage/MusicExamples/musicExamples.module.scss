@@ -1,0 +1,75 @@
+@use "../../../styles/colors.scss" as *;
+@use "../../../styles/fonts.scss" as *;
+@use "../../../styles/padding_margin_gap.scss" as *;
+@use "../../../styles/container.scss" as *;
+
+.musicExamplesBlock {
+  background-color: $whiteSoft;
+}
+
+.trackGroup {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.beforeTrackBlock {
+  display: flex;
+  flex-direction: column;
+  gap: $gap_40;
+  padding: $padding_100 $padding_12 $padding_120 $padding_24;
+}
+
+.afterTrackBlock {
+  display: flex;
+  flex-direction: column;
+  gap: $gap_40;
+  padding: $padding_100 $padding_24 $padding_120 $padding_12;
+}
+
+.trackTitle {
+  font-family: $onestLight;
+  font-size: 48px;
+  letter-spacing: 0.04em;
+  font-weight: 400;
+  color: $classicBlack;
+  text-transform: uppercase;
+}
+
+.trackBlock {
+  display: flex;
+  flex-direction: column;
+  gap: $gap_16;
+  padding: $padding_16 $padding_26;
+  background-color: $classicBlack;
+}
+
+.string {
+  height: 1px;
+  background: $rangeColor;
+}
+
+.stringLineFirst {
+  position: relative;
+  top: 75px;
+  left: 0;
+  background-color: $grayString;
+  height: 1px;
+}
+
+.stringLineSecond {
+  position: relative;
+  top: 305px;
+  left: 0;
+  background-color: $grayString;
+  height: 1px;
+}
+
+.stringLineThird {
+  position: relative;
+  top: 555px;
+  left: 0;
+  background-color: $grayString;
+  height: 1px;
+}
