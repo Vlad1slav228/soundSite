@@ -1,7 +1,7 @@
-@use "../../../styles/colors.scss" as *;
-@use "../../../styles/fonts.scss" as *;
-@use "../../../styles/padding_margin_gap.scss" as *;
-@use "../../../styles/container.scss" as *;
+@use "../../styles/colors.scss" as *;
+@use "../../styles/fonts.scss" as *;
+@use "../../styles/padding_margin_gap.scss" as *;
+@use "../../styles/container.scss" as *;
 
 .reviewsBlock {
   background-color: $limeMain;
@@ -27,7 +27,7 @@
 .reviewCardBackground1 {
   position: absolute;
   inset: 0;
-  transform: translate(30px, -30px);
+  transform: translate(35px, -30px);
   border: 4px solid $limeMain;
   background-color: $graphiteBlack;
   z-index: 1;
@@ -36,7 +36,7 @@
 .reviewCardBackground2 {
   position: absolute;
   inset: 0;
-  transform: translate(15px, -15px);
+  transform: translate(19px, -15px);
   border: 4px solid $limeMain;
   background-color: $graphiteBlack;
   z-index: 2;
@@ -105,7 +105,7 @@
   &::after {
     width: 24px;
     height: 24px;
-    content: url(../../../../public/ReviewsMain/rightArrow.png);
+    content: url(../../../public/Reviews/rightArrow.png);
   }
 }
 

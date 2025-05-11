@@ -1,5 +1,5 @@
-import microphone_img from "../../../public/ReviewsMain/micMain.png";
-import crossIcon from "../../../public/ReviewsMain/cross.png";
+import microphone_img from "../../public/Reviews/micMain.png";
+import crossIcon from "../../public/Reviews/cross.png";
 
 export const MICROPHONE_IMG = microphone_img;
 export const CROSS_ICON = crossIcon;

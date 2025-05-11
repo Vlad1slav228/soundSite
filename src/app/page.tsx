@@ -6,7 +6,7 @@ import AboutMain from "@/components/MainPage/About/about";
 import ServicesMain from "@/components/MainPage/Services/services";
 import MusicExamplesMain from "@/components/MainPage/MusicExamples/musicExamples";
 import GalleryMain from "@/components/MainPage/Gallery/gallery";
-import ReviewsMain from "@/components/MainPage/Reviews/reviews";
+import Reviews from "@/components/Reviews/reviews";
 import Footer from "@/components/Footer/footer";
 
 export default function Home() {
@@ -19,7 +19,7 @@ export default function Home() {
       <ServicesMain />
       <MusicExamplesMain />
       <GalleryMain />
-      <ReviewsMain />
+      <Reviews />
       <Footer />
     </>
   );

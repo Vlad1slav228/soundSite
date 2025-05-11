@@ -36,6 +36,7 @@
 }
 
 .imagesGrid {
+  margin-top: $margin_12;
   position: relative;
   z-index: 1;
   display: grid;
@@ -49,6 +50,7 @@
 }
 
 .introTitle {
+  margin-top: $margin_12;
   max-width: 1170px;
   grid-column: 1 / -1;
   grid-row: 2;
@@ -79,7 +81,7 @@
 
 .stringLineFirst {
   position: relative;
-  top: 206px;
+  top: 218px;
   left: 0;
   background-color: $grayString_2;
   height: 1px;
@@ -87,7 +89,7 @@
 
 .stringLineSecond {
   position: relative;
-  top: 450px;
+  top: 445px;
   left: 0;
   background-color: $grayString_2;
   height: 1px;
