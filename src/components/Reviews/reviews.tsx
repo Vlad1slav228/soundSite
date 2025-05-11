@@ -9,6 +9,7 @@ import {
 } from "@/mocks/reviews";
 import s from "./reviews.module.scss";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Reviews() {
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
@@ -78,9 +79,9 @@ export default function Reviews() {
               </p>
             </article>
           </div>
-          <a href="заглушка" className={s.reviewsButton}>
+          <Link href="/reviews" className={s.reviewsButton}>
             {REVIEWS_BUTTON}
-          </a>
+          </Link>
         </div>
         <div className={s.reviewImageBlock}>
           <Image

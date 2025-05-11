@@ -1,0 +1,76 @@
+@use "../../styles/colors.scss" as *;
+@use "../../styles/fonts.scss" as *;
+@use "../../styles/padding_margin_gap.scss" as *;
+@use "../../styles/container.scss" as *;
+
+.reviewsBlock {
+  background-color: $graphiteBlack;
+  padding-top: $padding_100;
+  padding-bottom: $padding_120;
+}
+
+.reviewsWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.reviewsContent {
+  display: flex;
+  flex-direction: column;
+  gap: $gap_62;
+  max-width: 692px;
+}
+
+.reviewsTitle {
+  font-family: $onestLight;
+  font-size: 72px;
+  line-height: 110%;
+  color: $classicWhite;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.reviewsListWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $gap_40;
+}
+
+.reviewCard {
+  display: flex;
+  flex-direction: column;
+  gap: $gap_24;
+  padding: $padding_40 0;
+}
+
+.reviewerName {
+  font-family: $onestLight;
+  font-size: 48px;
+  line-height: 110%;
+  color: $classicWhite;
+  font-weight: 400;
+}
+
+.reviewText {
+  font-family: $onestLight;
+  font-size: 20px;
+  letter-spacing: -0.03em;
+  color: $classicWhite;
+}
+
+.string {
+  height: 1px;
+  background-color: $rangeColor;
+}
+
+.loadMoreButton {
+  font-family: $onestRegular;
+  font-size: 14px;
+  letter-spacing: -0.03em;
+  color: $graphiteBlack_2;
+  cursor: pointer;
+  background-color: $limeMain;
+  padding: $padding_12 $padding_24;
+}
+
+
