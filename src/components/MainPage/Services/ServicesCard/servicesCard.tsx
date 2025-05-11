@@ -1,7 +1,9 @@
 import s from "./servicesCard.module.scss";
+import Link from "next/link";
 
 export type ServiceProps = Readonly<{
   service: {
+    slug: string;
     title: string;
     list: readonly string[];
     price: string;
@@ -22,9 +24,12 @@ export default function ServiceCard({ service }: ServiceProps) {
       </ul>
       <div className={s.servicesCardFooter}>
         <span className={s.servicesCardPrice}>{service.price}</span>
-        <a href="заглушка" className={s.servicesCardButton}>
+        <Link
+          href={`/services/${service.slug}`}
+          className={s.servicesCardButton}
+        >
           {service.button}
-        </a>
+        </Link>
       </div>
     </article>
   );

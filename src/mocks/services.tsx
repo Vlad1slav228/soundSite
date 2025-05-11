@@ -1,5 +1,8 @@
+import recordingStudio from "../../public/IntroServices/recordingStudio.png";
+
 export const SERVICES_DATA = [
   {
+    slug: "vocal-recording",
     title: "Запись вокала",
     list: [
       "1 час записи",
@@ -9,6 +12,7 @@ export const SERVICES_DATA = [
     button: "Подробнее",
   },
   {
+    slug: "basic-processing",
     title: "Базовая обработка",
     list: [
       "Компрессия — не будет слишком громких или тихих звуков",
@@ -20,6 +24,7 @@ export const SERVICES_DATA = [
     button: "Подробнее",
   },
   {
+    slug: "complex-processing",
     title: "Сложная обработка",
     list: [
       "Тюнинг вокала — убираем фальшь",
@@ -34,3 +39,7 @@ export const SERVICES_DATA = [
     button: "Подробнее",
   },
 ];
+
+export const APPLY_BUTTON = "Оставить заявку";
+
+export const STUDIO_IMG = recordingStudio;

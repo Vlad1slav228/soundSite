@@ -1,4 +1,4 @@
-import { SERVICES_DATA } from "@/mocks/MainPage/services";
+import { SERVICES_DATA } from "@/mocks/services";
 import s from "./services.module.scss";
 import ServiceCard from "./ServicesCard/servicesCard";
 import { Fragment } from "react";

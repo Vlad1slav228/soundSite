@@ -6,7 +6,7 @@ import StudioRoomsAbout from "@/components/AboutPage/StudioRooms/studioRooms";
 import GalleryAbout from "@/components/AboutPage/Gallery/gallery";
 import Reviews from "@/components/Reviews/reviews";
 
-export default function Home() {
+export default function About() {
   return (
     <>
       <Header />
