@@ -4,7 +4,7 @@ import GallerySlider from "./GallerySlider/gallerySlider";
 
 export default function GalleryAbout() {
   return (
-    <section className={s.galleryBlock}>
+    <section className={s.galleryBlock} id="photo">
       <div className={s.sliderWrapper}>
         <GallerySlider />
         <a href="заглушка" className={s.galleryButton}>

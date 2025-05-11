@@ -16,19 +16,19 @@ export default function Header() {
             <nav>
               <ul className={s.headerList}>
                 <li>
-                  <a href="#about">{ABOUT_TITLE}</a>
+                  <a href="/#about">{ABOUT_TITLE}</a>
                 </li>
                 <li>
-                  <a href="#services">{SERVICES_TITLE}</a>
+                  <a href="/#services">{SERVICES_TITLE}</a>
                 </li>
                 <li>
-                  <a href="#examples">{EXAMPLES_TITLE}</a>
+                  <a href="/#examples">{EXAMPLES_TITLE}</a>
                 </li>
                 <li>
-                  <a href="#photo">{PHOTO_TITLE}</a>
+                  <a href="/#photo">{PHOTO_TITLE}</a>
                 </li>
                 <li>
-                  <a href="#contacts">{CONTACTS_TITLE}</a>
+                  <a href="/#contacts">{CONTACTS_TITLE}</a>
                 </li>
               </ul>
             </nav>
