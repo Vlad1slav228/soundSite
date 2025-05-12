@@ -8,7 +8,7 @@
   background-color: $graphiteBlack;
 }
 
-.signUpBlock .container {
+.signUpGroup {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -19,6 +19,7 @@
   display: flex;
   flex-direction: column;
   gap: $gap_40;
+  max-width: 490px;
 }
 
 .signUpText {
@@ -28,7 +29,6 @@
   line-height: 130%;
   color: $classicWhite;
   text-transform: uppercase;
-  max-width: 490px;
 }
 
 .signUpButton {

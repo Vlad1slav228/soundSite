@@ -6,7 +6,7 @@ import {
   REVIEWS_PAGE_MICROPHONE_IMG,
   REVIEWS_PAGE_TITLE,
 } from "@/mocks/reviews";
-import s from "./reviews.module.scss";
+import s from "./reviewsList.module.scss";
 import Image from "next/image";
 import { useState } from "react";
 

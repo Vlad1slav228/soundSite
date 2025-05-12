@@ -13,6 +13,7 @@ export default function Home() {
   return (
     <>
       <Header />
+      <main>
       <HeroMain />
       <SignUpMain />
       <AboutMain />
@@ -20,6 +21,7 @@ export default function Home() {
       <MusicExamplesMain />
       <GalleryMain />
       <Reviews />
+      </main>
       <Footer />
     </>
   );

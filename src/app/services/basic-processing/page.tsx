@@ -9,9 +9,11 @@ export default function BasicProcessing() {
   return (
     <>
       <Header />
-      <IntroBasicProcessing />
-      <MusicExamplesServices />
-      <Reviews />
+      <main>
+        <IntroBasicProcessing />
+        <MusicExamplesServices />
+        <Reviews />
+      </main>
       <Footer />
     </>
   );

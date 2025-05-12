@@ -1,4 +1,13 @@
-import { ABOUT_TITLE, ACCOUNT_ICON, CALLPHONE_LINK, CONTACTS_TITLE, EXAMPLES_TITLE, LOGO, PHOTO_TITLE, SERVICES_TITLE } from "@/mocks/header";
+import {
+  ABOUT_TITLE,
+  ACCOUNT_ICON,
+  CALLPHONE_LINK,
+  CONTACTS_TITLE,
+  EXAMPLES_TITLE,
+  LOGO,
+  PHOTO_TITLE,
+  SERVICES_TITLE,
+} from "@/mocks/header";
 import s from "./header.module.scss";
 import Image from "next/image";
 import Link from "next/link";
@@ -35,10 +44,12 @@ export default function Header() {
           </li>
           <li>
             <div className={s.accountBlock}>
-              <a href="tel:+79162699881" className={s.callPhoneLink}>{CALLPHONE_LINK}</a>
-              <a href="заглушка" className={s.accountLink}>
-                <Image src={ACCOUNT_ICON} alt="Личный кабинет" />
+              <a href="tel:+79162699881" className={s.callPhoneLink}>
+                {CALLPHONE_LINK}
               </a>
+              <button className={s.personalAccount} aria-label="Открыть личный кабинет">
+                <Image src={ACCOUNT_ICON} alt="Личный кабинет" />
+              </button>
             </div>
           </li>
         </ul>

@@ -9,9 +9,11 @@ export default function VocalRecording() {
   return (
     <>
       <Header />
-      <IntroVocalRecording />
-      <MusicExamplesServices />
-      <Reviews />
+      <main>
+        <IntroVocalRecording />
+        <MusicExamplesServices />
+        <Reviews />
+      </main>
       <Footer />
     </>
   );

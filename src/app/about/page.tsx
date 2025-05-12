@@ -10,10 +10,12 @@ export default function About() {
   return (
     <>
       <Header />
-      <IntroAbout />
-      <StudioRoomsAbout />
-      <GalleryAbout />
-      <Reviews />
+      <main>
+        <IntroAbout />
+        <StudioRoomsAbout />
+        <GalleryAbout />
+        <Reviews />
+      </main>
       <Footer />
     </>
   );

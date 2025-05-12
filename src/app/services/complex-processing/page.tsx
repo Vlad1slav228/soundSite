@@ -9,9 +9,11 @@ export default function ComplexProcessing() {
   return (
     <>
       <Header />
-      <IntroComplexProcessing />
-      <MusicExamplesServices />
-      <Reviews />
+      <main>
+        <IntroComplexProcessing />
+        <MusicExamplesServices />
+        <Reviews />
+      </main>
       <Footer />
     </>
   );
