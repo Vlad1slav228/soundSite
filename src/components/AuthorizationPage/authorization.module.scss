@@ -1,0 +1,198 @@
+@use "../../styles/colors.scss" as *;
+@use "../../styles/fonts.scss" as *;
+@use "../../styles/padding_margin_gap.scss" as *;
+@use "../../styles/container.scss" as *;
+@use "../../styles/border.scss" as *;
+
+.authorizationBlock {
+  background-color: $classicWhite;
+}
+
+.authorizationGroup {  padding: $padding_60 0;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.callbackForm {
+  width: 100%;
+  max-width: 680px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: $gap_40;
+
+  h1 {
+    font-family: $onestLight;
+    font-weight: 400;
+    font-size: 44px;
+    line-height: 44px;
+    text-transform: uppercase;
+    color: $classicBlack;
+  }
+}
+
+.formFieldsGroup {
+  display: flex;
+  flex-direction: column;
+  gap: $gap_24;
+}
+
+.formFields {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-row-gap: $gap_24;
+  grid-column-gap: $gap_16;
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: $gap_8;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: $gap_16;
+
+  &:has(input:hover) .inputUnderline,
+  &:has(input:focus) .inputUnderline {
+    background-color: $graphiteBlack;
+  }
+
+  .requiredMark {
+    color: $limeMain;
+  }
+
+  input {
+    background: transparent;
+    border: none;
+    color: $graphiteBlack;
+    font-size: 16px;
+    line-height: 16px;
+    font-family: $onestRegular;
+
+    &:hover,
+    &:focus {
+      &::placeholder {
+        color: $graphiteBlack;
+      }
+    }
+
+    &::placeholder {
+      text-transform: uppercase;
+      transition: all 0.1s ease;
+      color: $rangeColor;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &:-webkit-autofill {
+      border: none;
+      -webkit-text-fill-color: $graphiteBlack !important;
+      font-size: 16px !important;
+      line-height: 16px !important;
+      font-family: $onestRegular !important;
+      box-shadow: 0 0 0 1000px $classicWhite inset;
+      transition: background-color 9999s ease-in-out 0s;
+    }
+  }
+}
+
+.inputUnderline {
+  width: 100%;
+  height: 1px;
+  background-color: $rangeColor;
+}
+
+.checkboxWrapper {
+  display: flex;
+  align-items: center;
+  gap: $gap_16;
+
+  input[type="checkbox"] {
+    appearance: none;
+    border: 1px solid $lightGray;
+    border-radius: $border_4;
+    width: 24px;
+    height: 24px;
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+
+    &:checked {
+      background-color: $limeMain;
+      border-color: $limeMain;
+
+      &:hover {
+        background-color: $limeDark;
+      }
+    }
+
+    &:checked::after {
+      content: "";
+      position: absolute;
+      left: 7px;
+      top: 3px;
+      width: 8px;
+      height: 13px;
+      border: solid $classicBlack;
+      border-width: 0 3px 3px 0;
+      transform: rotate(45deg);
+    }
+
+    &:hover {
+      border-color: $limeMain;
+    }
+  }
+
+  label {
+    font-family: $onestLight;
+    font-size: 16px;
+    line-height: 20px;
+    color: $lightGray;
+    user-select: none;
+
+    a {
+      color: $classicBlack;
+      text-decoration: underline;
+    }
+  }
+}
+
+.nextButton {
+  font-family: $onestRegular;
+  padding: $padding_12 $padding_24;
+  background-color: $limeMain;
+  color: $graphiteBlack_2;
+  font-size: 14px;
+  letter-spacing: -0.03em;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: $gap_8;
+  text-decoration: none;
+  cursor: pointer;
+
+  &::after {
+    width: 24px;
+    height: 24px;
+    content: url(../../../public/AuthorizationForm/chevronRight.png);
+  }
+
+  &.isLoading::after {
+    content: none;  
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loadingIcon {
+  animation: spin 1s linear infinite;
+}

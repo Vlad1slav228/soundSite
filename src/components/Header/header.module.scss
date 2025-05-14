@@ -33,13 +33,13 @@
 }
 
 .accountBlock {
+  padding: $padding_12;
   display: flex;
   gap: $gap_24;
   align-items: center;
 }
 
 .callPhoneLink {
-  padding: $padding_12 0;
   display: flex;
   align-items: center;
   gap: $gap_8;
@@ -49,11 +49,4 @@
     height: 24px;
     content: url(../../../public/Header/IconPhone.png);
   }
-}
-
-.personalAccount {
-  border: none;
-  background-color: transparent;
-  padding: $padding_12;
-  cursor: pointer;
 }
