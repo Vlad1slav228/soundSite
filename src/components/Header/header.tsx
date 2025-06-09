@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ABOUT_TITLE,
   ACCOUNT_ICON,
@@ -5,26 +7,40 @@ import {
   CONTACTS_TITLE,
   EXAMPLES_TITLE,
   LOGO,
+  MENU_TITLE,
   PHOTO_TITLE,
   SERVICES_TITLE,
 } from "@/mocks/header";
 import s from "./header.module.scss";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
     <header className={s.header}>
       <div className={s.container}>
         <ul className={s.headerListMain}>
           <li>
-            <Link href="/">
-              <Image src={LOGO} alt="Логотип Sound" />
-            </Link>
+            <div className={s.logoAndMenu}>
+              <Link href="/">
+                <Image src={LOGO} alt="Логотип Sound" />
+              </Link>
+
+              <button
+                className={s.burger}
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                aria-label="Меню"
+              >
+                {MENU_TITLE}
+              </button>
+            </div>
           </li>
+
           <li>
             <nav>
-              <ul className={s.headerList}>
+              <ul className={`${s.headerList} ${isMenuOpen ? s.navOpen : ""}`}>
                 <li>
                   <a href="/#about">{ABOUT_TITLE}</a>
                 </li>
@@ -43,6 +59,7 @@ export default function Header() {
               </ul>
             </nav>
           </li>
+
           <li>
             <div className={s.accountBlock}>
               <a href="tel:+79162699881" className={s.callPhoneLink}>

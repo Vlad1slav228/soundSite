@@ -1,7 +1,7 @@
 @use "../../styles/colors.scss" as *;
 @use "../../styles/fonts.scss" as *;
 @use "../../styles/padding_margin_gap.scss" as *;
-@use "../../styles/container.scss" as *;
+@use "../../styles/breakpoints.scss" as *;
 
 .reviewsBlock {
   background-color: $limeMain;
@@ -10,6 +10,11 @@
 .reviewWrapper {
   display: flex;
   justify-content: space-between;
+  position: relative;
+
+  @media (width < $desktop) {
+    display: block;
+  }
 }
 
 .reviewContent {
@@ -22,6 +27,10 @@
 .reviewCardWrapper {
   margin-top: $margin_25;
   position: relative;
+
+  @media (width < $desktop) {
+    width: 100%;
+  }
 }
 
 .reviewCardBackground1 {
@@ -54,6 +63,11 @@
   border-top: 4px solid $limeMain;
   border-right: 4px solid $limeMain;
   z-index: 3;
+
+  @media (width < $desktop) {
+    width: 100%;        
+    max-width: none; 
+  }
 }
 
 .crossButton {
@@ -121,11 +135,16 @@
   transform: translateY(10px);
 }
 
-.reviewImageBlock {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+.microImg {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+
+  @media (width < $desktop) {
+    display: none;
+  }
 }
+
 
 @keyframes bounceMicrophone {
   0% {

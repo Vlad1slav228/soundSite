@@ -1,11 +1,23 @@
 @use "../../../styles/colors.scss" as *;
 @use "../../../styles/fonts.scss" as *;
 @use "../../../styles/padding_margin_gap.scss" as *;
-@use "../../../styles/container.scss" as *;
+@use "../../../styles/breakpoints.scss" as *;
 
 .aboutBlock {
-  padding: $padding_72 0;
+  padding: $padding_62 0 $padding_72;
   background-color: $whiteSoft;
+
+  @media (width < $desktop) {
+    padding: $padding_45 0 $padding_62;
+  }
+
+  @media (width < $laptop) {
+    padding: $padding_50 0 $padding_45;
+  }
+
+  @media (width < $tablet) {
+    padding: $padding_30 0;
+  }
 }
 
 .aboutContent {
@@ -16,15 +28,42 @@
   align-items: center;
   flex-direction: column;
   gap: $gap_11;
+
+  @media (width < $desktop) {
+    max-width: 815px;
+    gap: $gap_18;
+  }
+
+  @media (width < $laptop) {
+    max-width: 580px;
+    gap: $gap_16;
+  }
+
+  @media (width < $tablet) {
+    gap: $gap_24;
+  }
 }
 
 .aboutTitle {
   font-family: $onestLight;
   font-size: 72px;
   color: $classicBlack;
+  line-height: 100%;
   letter-spacing: 0.04em;
   font-weight: 400;
   text-transform: uppercase;
+
+  @media (width < $desktop) {
+    font-size: 48px;
+  }
+
+  @media (width < $laptop) {
+    font-size: 32px;
+  }
+
+  @media (width < $tablet) {
+    font-size: 20px;
+  }
 }
 
 .aboutButton {
@@ -67,6 +106,19 @@
   position: relative;
   z-index: 1;
   margin-bottom: $margin_16;
+
+  @media (width < $desktop) {
+    margin-bottom: $margin_40;
+  }
+
+  @media (width < $laptop) {
+    margin-bottom: $margin_20;
+  }
+
+  @media (width < $tablet) {
+    grid-template-columns: 1fr;
+    margin-bottom: $margin_32;
+  }
 }
 
 .leftImage {
@@ -74,12 +126,42 @@
   grid-row: 1;
   justify-self: start;
   align-self: end;
+
+  @media (width < $desktop) {
+    width: 155px;
+    height: auto;
+  }
+
+  @media (width < $laptop) {
+    width: 115px;
+  }
+
+  @media (width < $tablet) {
+    width: 170px;
+    grid-column: 1;
+    grid-row: 3;
+  }
 }
 
 .rightImage {
   grid-column: 3;
   grid-row: 1;
   justify-self: right;
+
+  @media (width < $desktop) {
+    width: 155px;
+    height: auto;
+  }
+
+  @media (width < $laptop) {
+    width: 115px;
+  }
+
+  @media (width < $tablet) {
+    width: 170px;
+    grid-column: 1;
+    grid-row: 1;
+  }
 }
 
 .centerImage {
@@ -87,4 +169,23 @@
   grid-row: 1;
   justify-self: center;
   margin-top: $margin_21;
+
+  @media (width < $desktop) {
+    width: 540px;
+    height: auto;
+    margin-top: $margin_60;
+  }
+
+  @media (width < $laptop) {
+    width: 440px;
+    margin-top: 0;
+  }
+
+  @media (width < $tablet) {
+    width: 345px;
+    grid-column: 1;
+    grid-row: 2;
+    margin-top: $margin_35;
+    margin-bottom: $margin_25;
+  }
 }

@@ -1,8 +1,8 @@
 @use "../../../../styles/colors.scss" as *;
 @use "../../../../styles/fonts.scss" as *;
 @use "../../../../styles/padding_margin_gap.scss" as *;
-@use "../../../../styles/container.scss" as *;
 @use "../../../../styles/border.scss" as *;
+@use "../../../../styles/breakpoints.scss" as *;
 
 .galleryWrapper {
   position: relative;
@@ -11,6 +11,11 @@
 .swiperImage {
   width: 100%;
   height: auto;
+  // object-fit: cover;
+
+  @media (width < $tablet) {
+    width: 315px;
+  }
 }
 
 .arrowsWrapper {

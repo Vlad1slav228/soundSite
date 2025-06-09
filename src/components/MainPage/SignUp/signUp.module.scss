@@ -1,11 +1,16 @@
 @use "../../../styles/colors.scss" as *;
 @use "../../../styles/fonts.scss" as *;
 @use "../../../styles/padding_margin_gap.scss" as *;
-@use "../../../styles/container.scss" as *;
 
 .signUpBlock {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   background-color: $graphiteBlack;
+
+  > img {
+    width: 100%;
+    object-fit: cover;
+  }
 }
 
 .signUpGroup {

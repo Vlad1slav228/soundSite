@@ -16,6 +16,9 @@ import {
   LOADING_ICON,
   NEXT_BUTTON,
   REQUIRED_MARK,
+  OTP_SENT_MESSAGE,
+  ENTER_BUTTON,
+  SUCCESS_MESSAGE,
 } from "@/mocks/AuthorizationPage/authorizaton";
 
 export default function AuthorizationForm() {
@@ -181,7 +184,7 @@ export default function AuthorizationForm() {
 
         {step === "otp" && (
           <form onSubmit={handleVerifyOTP} className={s.callbackForm}>
-            <h1>На ваш E-mail был отправлен одноразовый код</h1>
+            <h1>{OTP_SENT_MESSAGE}</h1>
             <div className={s.formField}>
               <div className={s.inputGroup}>
                 <div>
@@ -209,7 +212,7 @@ export default function AuthorizationForm() {
                   className={s.loadingIcon}
                 />
               ) : (
-                "Войти"
+                ENTER_BUTTON
               )}
             </button>
             {error && <p className={s.errorText}>{error}</p>}
@@ -218,7 +221,7 @@ export default function AuthorizationForm() {
 
         {step === "success" && (
           <div className={s.callbackForm}>
-            <h1>Вы успешно авторизованы!</h1>
+            <h1>{SUCCESS_MESSAGE}</h1>
           </div>
         )}
 

@@ -4,11 +4,11 @@
 @use "../../styles/container.scss" as *;
 @use "../../styles/border.scss" as *;
 
-.authorizationBlock {
+.bookingBlock {
   background-color: $classicWhite;
 }
 
-.authorizationGroup {
+.bookingGroup {
   padding: $padding_60 0;
   display: flex;
   justify-content: space-between;
@@ -99,6 +99,34 @@
       box-shadow: 0 0 0 1000px $classicWhite inset;
       transition: background-color 9999s ease-in-out 0s;
     }
+  }
+}
+
+.inputWrapper {
+  padding: 0 $padding_12;
+}
+
+.dataInput {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &::after {
+    width: 24px;
+    height: 24px;
+    content: url(../../../public/BookingForm/iconCalendar.png);
+  }
+}
+
+.timeInput {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &::after {
+    width: 24px;
+    height: 24px;
+    content: url(../../../public/BookingForm/chevronDown.png);
   }
 }
 

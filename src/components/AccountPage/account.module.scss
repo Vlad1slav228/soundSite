@@ -1,0 +1,320 @@
+@use "../../styles/colors.scss" as *;
+@use "../../styles/fonts.scss" as *;
+@use "../../styles/padding_margin_gap.scss" as *;
+@use "../../styles/container.scss" as *;
+@use "../../styles/breakpoints.scss" as *;
+
+.accountBlock {
+  margin-bottom: $margin_100;
+  background-color: $classicWhite;
+}
+
+.accountLayout {
+  display: flex;
+}
+
+.accountSidebar {
+  display: flex;
+  flex-direction: column;
+  gap: $gap_40;
+  padding: $padding_40 $padding_24;
+  border: 1px solid $cloudGray;
+  max-width: 365px;
+
+  @media (width < $desktop) {
+    max-width: 265px;
+  }
+
+  @media (width < $laptop) {
+    display: none;
+  }
+}
+
+.accountSidebarInner {
+  display: flex;
+  flex-direction: column;
+  gap: $gap_32;
+}
+
+.accountHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.accountProfile {
+  display: flex;
+  gap: $gap_8;
+}
+
+.accountProfileInfo {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: $gap_4;
+}
+
+.accountFirstName {
+  font-family: $onestRegular;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: -0.03em;
+  color: $graphiteBlack_2;
+}
+
+.accountEmail {
+  font-family: $onestRegular;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: -0.03em;
+  color: $graphiteBlack_2;
+  opacity: 0.5;
+}
+
+.accountTimestamp {
+  display: flex;
+  flex-direction: column;
+  gap: $gap_4;
+  align-items: flex-end;
+  font-family: $onestRegular;
+  line-height: 100%;
+  letter-spacing: -0.03em;
+  color: $timestamp;
+
+  .time {
+    font-size: 20px;
+  }
+
+  .date {
+    font-size: 12px;
+  }
+}
+
+.calendar {
+  display: flex;
+  gap: $gap_8;
+}
+
+.calendarItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $gap_4;
+  background: none;
+  cursor: pointer;
+
+  &--active {
+    .calendarItemDate {
+      background: $limeMain;
+    }
+  }
+}
+
+.calendarItemDate {
+  background-color: $cloudWhite;
+  font-family: $onestRegular;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: -0.03em;
+  color: $classicBlack;
+  padding: $padding_12;
+  width: 40px;
+  height: 40px;
+}
+
+.calendarItemDay {
+  font-family: $onestLight;
+  font-size: 22px;
+  line-height: 100%;
+  letter-spacing: -0.03em;
+  color: $grayNum;
+}
+
+.bookings {
+  display: flex;
+  flex-direction: column;
+  gap: $gap_12;
+  list-style: none;
+}
+
+.bookingsItem {
+  display: flex;
+  flex-direction: column;
+  gap: $gap_6;
+  padding: $padding_12;
+  background-color: $cloudWhite;
+}
+
+.bookingsTime {
+  font-family: $onestLight;
+  font-size: 12px;
+  color: $classicBlack;
+  letter-spacing: -0.05em;
+}
+
+.bookingsTitle {
+  font-family: $onestRegular;
+  font-size: 16px;
+  color: $classicBlack;
+  letter-spacing: -0.05em;
+}
+
+.logoutButton {
+  background-color: $limeMain;
+  font-family: $onestRegular;
+  font-size: 14px;
+  letter-spacing: -0.03em;
+  color: $classicBlack;
+  padding: $padding_12 $padding_24;
+}
+
+.applicationMain {
+  width: 100%;
+}
+
+.applicationHeader {
+  padding: $padding_40 $padding_24;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $classicBlack;
+
+  @media (width < $laptop) {
+    padding: $padding_16 $padding_24;
+  }
+
+  @media (width < $tablet) {
+    flex-direction: column;
+    gap: $gap_16;
+    align-items: start;
+  }
+}
+
+.applicationTitle {
+  font-family: $onestLight;
+  font-size: 32px;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: $classicWhite;
+  font-weight: 400;
+}
+
+.applicationFilters {
+  display: flex;
+  gap: $gap_12;
+
+  button {
+    background-color: $classicWhite;
+    border: none;
+    text-transform: uppercase;
+    color: $classicBlack;
+    font-family: $onestLight;
+    font-size: 14px;
+    letter-spacing: -0.02em;
+    padding: $padding_8 $padding_16;
+  }
+}
+
+.serviceCard {
+  display: flex;
+  justify-content: space-between;
+  padding: $padding_40 $padding_22;
+
+  @media (width < $desktop) {
+    gap: $gap_40;
+    padding: $padding_24;
+  }
+
+  @media (width < $tablet) {
+    flex-direction: column;
+    gap: $gap_20;
+  }
+}
+
+.serviceCardContent {
+  display: flex;
+  flex-direction: column;
+  gap: $gap_24;
+}
+
+.serviceCardTitle {
+  font-family: $onestLight;
+  font-size: 24px;
+  line-height: 130%;
+  letter-spacing: 0.04em;
+  color: $classicBlack;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.serviceCardList {
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  gap: $gap_8;
+}
+
+.servicesCardListItem {
+  display: flex;
+  align-items: center;
+  gap: $gap_9;
+  font-family: $onestLight;
+  font-size: 16px;
+  color: $classicBlack;
+  line-height: 130%;
+  letter-spacing: 0.04em;
+
+  &::before {
+    content: url(../../../public/PersonalAccount/ellipse.png);
+    width: 12px;
+    height: 19px;
+  }
+}
+
+.serviceCardFooter {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: $gap_16;
+
+  @media (width < $tablet) {
+    align-items: start;
+  }
+}
+
+.serviceCardPrice {
+  font-family: $onestLight;
+  color: $classicBlack;
+  line-height: 130%;
+  letter-spacing: 0.04em;
+  font-size: 53px;
+  text-transform: uppercase;
+
+  @media (width < $desktop) {
+    font-size: 24px;
+  }
+}
+
+.reviewButton {
+  width: fit-content;
+  padding: $padding_12 $padding_24;
+  display: flex;
+  align-items: center;
+  background-color: $classicBlack;
+  gap: $gap_8;
+  font-family: $onestRegular;
+  font-size: 14px;
+  letter-spacing: -0.03em;
+  color: $classicWhite;
+
+  &::after {
+    width: 24px;
+    height: 24px;
+    content: url(../../../public/PersonalAccount/chevronRight.png);
+  }
+}
+
+.string {
+   height: 1px;
+  background: $rangeColor;
+}

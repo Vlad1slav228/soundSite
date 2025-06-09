@@ -2,10 +2,19 @@
 @use "../../styles/fonts.scss" as *;
 @use "../../styles/padding_margin_gap.scss" as *;
 @use "../../styles/container.scss" as *;
+@use "../../styles/breakpoints.scss" as *;
 
 .header {
   background-color: $limeMain;
-  padding: $padding_16 0;
+  padding: $padding_16 $padding_22;
+
+  @media (width < $laptop) {
+    padding: $padding_7 $padding_22;
+  }
+
+  @media (width < $tablet) {
+    padding: $padding_16;
+  }
 }
 
 .headerListMain {
@@ -13,12 +22,57 @@
   justify-content: space-between;
   list-style-type: none;
   align-items: center;
+
+  @media (width < $tablet) {
+    display: block;
+  }
+}
+
+.logoAndMenu {
+  display: flex;
+  align-items: center;
+  gap: $gap_24;
+
+  @media (width < $tablet) {   
+    justify-content: space-between;  
+  }
 }
 
 .headerList {
   display: flex;
   gap: $gap_40;
   list-style-type: none;
+
+  @media (width < $desktop) {
+    gap: 32px;
+  }
+
+  @media (width < $laptop) {
+    display: none;
+  }
+}
+
+.navOpen {
+  display: block;
+}
+
+.burger {
+  display: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+
+  @media (width < $laptop) {
+    display: flex;
+    align-items: center;
+    gap: $gap_8;
+
+    &::before {
+      width: 24px;
+      height: 24px;
+      content: url(../../../public/Header/IconBurger.png);
+    }
+  }
 }
 
 .headerList a,
@@ -37,6 +91,10 @@
   display: flex;
   gap: $gap_24;
   align-items: center;
+
+  @media (width < $tablet) {
+    display: none;
+  }
 }
 
 .callPhoneLink {

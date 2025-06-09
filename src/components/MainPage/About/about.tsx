@@ -15,7 +15,7 @@ export default function AboutMain() {
       <div className={s.stringLineFirst} aria-hidden="true"></div>
       <div className={s.stringLineSecond} aria-hidden="true"></div>
       <div className={s.stringLineThird} aria-hidden="true"></div>
-      <div className={s.container}>
+      <div className={'container'}>
         <div className={s.aboutImagesBlock}>
           <Image
             src={MICROPHONE_LEFT_IMG}

@@ -31,7 +31,7 @@ export default function GallerySlider() {
       >
         {galleryImages.map((image, index) => (
           <SwiperSlide key={index}>
-           <Image
+            <Image
               src={image}
               alt={`Фото ${index + 1}`}
               width={900}
@@ -41,7 +41,7 @@ export default function GallerySlider() {
           </SwiperSlide>
         ))}
       </Swiper>
-      <div className={`${s.arrowsWrapper} ${s.container}`}>
+      <div className={`${s.arrowsWrapper} container`}>
         <button className={s.arrowLeft}>
           <Image src={ARROW_LEFT} alt="Левая стрелка" />
         </button>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   MICROPHONE_IMG,
   CROSS_ICON,
@@ -11,6 +11,20 @@ import s from "./reviews.module.scss";
 import Image from "next/image";
 import Link from "next/link";
 
+const DESKTOP_BP = 1440;
+
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(true);
+  useEffect(() => {
+    const mq = window.matchMedia(`(min-width:${DESKTOP_BP}px)`);
+    const handler = () => setIsDesktop(mq.matches);
+    handler(); // установить сразу
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+  return isDesktop;
+}
+
 export default function Reviews() {
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
   const [isFading, setIsFading] = useState(false);
@@ -19,6 +33,7 @@ export default function Reviews() {
   const [width, setWidth] = useState<number | undefined>(undefined);
 
   const cardRef = useRef<HTMLDivElement>(null);
+  const isDesktop = useIsDesktop();
 
   const handleNextReview = () => {
     setIsFading(true);
@@ -55,14 +70,21 @@ export default function Reviews() {
 
   return (
     <section className={s.reviewsBlock}>
-      <div className={`${s.container} ${s.reviewWrapper}`}>
+      <div className={`container ${s.reviewWrapper}`}>
         <div className={s.reviewContent}>
           <div
             className={s.reviewCardWrapper}
             style={{
               height: height ? `${height}px` : "auto",
-              width: width ? `${width}px` : "auto",
-              transition: "height 0.5s ease, width 0.5s ease",
+              ...(isDesktop
+                ? {
+                    width: width ? `${width}px` : "auto",
+                    transition: "height 0.5s ease, width 0.5s ease",
+                  }
+                : {
+                    width: "100%",
+                    transition: "height 0.5s ease",
+                  }),
             }}
           >
             <div className={s.reviewCardBackground1} aria-hidden="true"></div>
@@ -83,13 +105,11 @@ export default function Reviews() {
             {REVIEWS_BUTTON}
           </Link>
         </div>
-        <div className={s.reviewImageBlock}>
-          <Image
-            src={MICROPHONE_IMG}
-            alt="Микрофон"
-            className={micAnimated ? s.microphoneAnimated : ""}
-          />
-        </div>
+        <Image
+          src={MICROPHONE_IMG}
+          alt="Микрофон"
+          className={`${s.microImg} ${micAnimated ? s.microphoneAnimated : ""}`}
+        />
       </div>
     </section>
   );

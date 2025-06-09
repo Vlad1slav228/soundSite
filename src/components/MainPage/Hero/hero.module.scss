@@ -1,23 +1,55 @@
 @use "../../../styles/colors.scss" as *;
 @use "../../../styles/fonts.scss" as *;
 @use "../../../styles/padding_margin_gap.scss" as *;
-@use "../../../styles/container.scss" as *;
+@use "../../../styles/breakpoints.scss" as *;
 
 .heroBlock {
   background-color: $limeMain;
 }
 
 .heroContent {
-  padding-top: $padding_40;
-  display: flex;
-  align-items: flex-end;
+  padding: $padding_200 0 $padding_25;
+  position: relative;
 }
 
 .titleMainPage {
+  position: relative;
+  z-index: 1;
   font-family: $onestLight;
   color: $classicBlack;
   font-size: 120px;
+  line-height: 100%;
   font-weight: 400;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+
+  @media (width < $desktop) {
+    font-size: 72px;
+    max-width: 560px;
+  }
+
+  @media (width < $laptop) {
+    font-size: 64px;
+    max-width: 500px;
+  }
+
+  @media (width < $tablet) {
+    font-size: 40px;
+    max-width: 315px;
+  }
+}
+
+.microImg {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  @media (width < $desktop) {
+    width: 245px;
+    height: auto;
+  }
+
+  @media (width < $laptop) {
+    width: 195px;
+  }
 }

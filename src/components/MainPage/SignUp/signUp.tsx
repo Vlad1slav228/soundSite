@@ -10,7 +10,7 @@ import Image from "next/image";
 export default function SignUpMain() {
   return (
     <section className={s.signUpBlock}>
-        <div className={`${s.container} ${s.signUpGroup}`}>
+        <div className={`container ${s.signUpGroup}`}>
           <Image src={WAVES_IMG} alt="Звуковая волна" />
           <article className={s.signUpContent}>
           <p className={s.signUpText}>{SIGNUP_TEXT}</p>
