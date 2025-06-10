@@ -76,18 +76,16 @@ const Calendar: React.FC<CalendarProps> = ({ onDateSelect, selectedDate }) => {
     <div className={styles.calendar}>
       <div className={styles.header}>
         <button
-          className={styles.navButton}
+          type="button"
+          className={styles.navButtonLeft}
           onClick={() => navigateMonth("prev")}
-        >
-          &lt;
-        </button>
+        ></button>
         <p className={styles.monthTitle}>{formatMonthTitle(currentDate)}</p>
         <button
-          className={styles.navButton}
+          type="button"
+          className={styles.navButtonRight}
           onClick={() => navigateMonth("next")}
-        >
-          &gt;
-        </button>
+        ></button>
       </div>
 
       <div className={styles.calendarGrid}>

@@ -19,16 +19,31 @@
   gap: $gap_32;
 }
 
-.navButton {
+.navButtonLeft, .navButtonRight {
   background: $limeMain;
   border: none;
-  font-size: 20px;
   cursor: pointer;
-  padding: $padding_12 $padding_16;
+  padding: $padding_12;
   transition: background-color 0.2s;
 
   &:hover {
     background-color: $limeDark;
+  }
+}
+
+.navButtonLeft{
+ &::after {
+    height: 16px;
+    width: 16px;
+    content: url(../../../../public/BookingForm/calendarChevronLeft.png);
+  }
+}
+
+.navButtonRight{
+ &::after {
+    height: 16px;
+    width: 16px;
+    content: url(../../../../public/BookingForm/calendarChevronRight.png);
   }
 }
 
@@ -67,6 +82,7 @@
   font-size: 12px;
   font-weight: 400;
   line-height: 16px;
+  cursor: pointer;
 
    &.selectedDay {
     background-color: $limeMain;
