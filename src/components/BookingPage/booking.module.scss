@@ -226,3 +226,9 @@
 .loadingIcon {
   animation: spin 1s linear infinite;
 }
+
+.calendarPopup {
+  position: absolute;
+  z-index: 1000;
+  margin-top: $margin_60;
+}

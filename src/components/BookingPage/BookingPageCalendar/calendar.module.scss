@@ -1,0 +1,80 @@
+@use "../../../styles/colors.scss" as *;
+@use "../../../styles/padding_margin_gap.scss" as *;
+@use "../../../styles/fonts.scss" as *;
+
+.calendar {
+  width: 280px;
+  margin: 0 auto;
+  font-family: $onestRegular;
+  background-color: $classicWhite;
+  padding: $padding_12;
+  box-shadow: 2px 2px 20px 0px #49609029;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $margin_20;
+  gap: $gap_32;
+}
+
+.navButton {
+  background: $limeMain;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: $padding_12 $padding_16;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: $limeDark;
+  }
+}
+
+.monthTitle {
+  text-align: center;
+  font-size: 16px;
+  color: $graphiteBlack;
+  text-transform: capitalize;
+}
+
+.calendarGrid {
+  display: flex;
+  flex-direction: column;
+  gap: $gap_4;
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  color: $calendarGray;
+  margin-bottom: $margin_8;
+  gap: $gap_8;
+}
+
+.week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: $gap_8;
+}
+
+.day {
+  text-align: center;
+  padding: $padding_8 0;
+  color: #333;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+
+   &.selectedDay {
+    background-color: $limeMain;
+    font-weight: bold;
+    position: relative;
+  }
+}
+
+.day.empty {
+  visibility: hidden;
+}

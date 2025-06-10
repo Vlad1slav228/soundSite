@@ -1,3 +1,5 @@
+"use client";
+
 import {
   BOOKING_BUTTON,
   DATA_PLACEHOLDER,
@@ -14,8 +16,53 @@ import {
 } from "@/mocks/BookingPage/booking";
 import s from "./booking.module.scss";
 import Image from "next/image";
+import React, { useState, useRef, useEffect } from "react";
+import Calendar from "./BookingPageCalendar/calendar";
 
 export default function BookingForm() {
+  const [selectedDate, setSelectedDate] = useState<string>("");
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [calendarDate, setCalendarDate] = useState<Date | null>(null);
+  const calendarRef = useRef<HTMLDivElement>(null);
+  const dateInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        calendarRef.current &&
+        !calendarRef.current.contains(event.target as Node)
+      ) {
+        setShowCalendar(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleDateSelect = (date: Date) => {
+    const formattedDate = date.toLocaleDateString("ru-RU", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+    setSelectedDate(formattedDate);
+    setCalendarDate(date);
+    setShowCalendar(false);
+
+    if (dateInputRef.current) {
+      const isoDate = date.toISOString().split("T")[0];
+      dateInputRef.current.value = isoDate;
+    }
+  };
+
+  const toggleCalendar = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setShowCalendar(!showCalendar);
+  };
+
   return (
     <section className={s.bookingBlock}>
       <div className={`container ${s.bookingGroup}`}>
@@ -81,17 +128,34 @@ export default function BookingForm() {
 
               <div className={s.formField}>
                 <div className={s.inputGroup}>
-                  <div className={`${s.inputWrapper} ${s.dataInput}`}>
+                  <div
+                    className={`${s.inputWrapper} ${s.dataInput}`}
+                    onClick={toggleCalendar}
+                  >
                     <div>
                       <span className={s.requiredMark}>{REQUIRED_MARK}</span>
                       <input
-                        type="date"
+                        ref={dateInputRef}
+                        type="text"
+                        onClick={toggleCalendar}
                         placeholder={DATA_PLACEHOLDER}
                         required
+                        readOnly
+                        value={selectedDate}
+                        onChange={(e) => setSelectedDate(e.target.value)}
                       />
                     </div>
                   </div>
                   <div className={s.inputUnderline}></div>
+
+                  {showCalendar && (
+                    <div ref={calendarRef} className={s.calendarPopup}>
+                      <Calendar
+                        onDateSelect={handleDateSelect}
+                        selectedDate={calendarDate}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
 
