@@ -3,9 +3,24 @@ html {
   scrollbar-color: #111111 #cee86b;
 }
 
+input {
+  width: 100%;
+}
+
 .container {
   max-width: 1400px;
   margin: 0 auto;
 }
 
-
+.greenButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Onest Regular", sans-serif;
+  padding: 12px 24px;
+  background-color: #CEE86B;
+  color: #1E1D1C;
+  font-size: 14px;
+  letter-spacing: -0.03em;
+  width: fit-content;
+}

@@ -14,7 +14,7 @@ export default function SignUpMain() {
           <Image src={WAVES_IMG} alt="Звуковая волна" />
           <article className={s.signUpContent}>
           <p className={s.signUpText}>{SIGNUP_TEXT}</p>
-          <a href="#services" className={s.signUpButton}>
+          <a href="#services" className={`greenButton ${s.signUpButton}`}>
             {SIGNUP_BUTTON}
           </a>
           </article>

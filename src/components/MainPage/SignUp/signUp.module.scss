@@ -37,16 +37,6 @@
 }
 
 .signUpButton {
-  width: fit-content;
-  padding: $padding_12 $padding_24;
-  display: flex;
-  align-items: center;
-  background-color: $limeMain;
-  gap: $gap_8;
-  font-family: $onestRegular;
-  font-size: 14px;
-  letter-spacing: -0.03em;
-  color: $graphiteBlack_2;
   text-decoration: none;
 
   &::after {

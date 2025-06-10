@@ -12,4 +12,4 @@ export const DATA_PLACEHOLDER = "Дата";
 export const TIME_PLACEHOLDER = "Время";
 export const PRIVACY_POLICY_TITLE = "Я соглашаюсь с ";
 export const PRIVACY_POLICY_LINK = "политикой обработки персональных данных";
-export const SEND_BUTTON = "Отправить";
+export const BOOKING_BUTTON = "Записаться";

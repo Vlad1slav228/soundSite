@@ -1,4 +1,5 @@
 import {
+  BOOKING_BUTTON,
   DATA_PLACEHOLDER,
   EMAIL_PLACEHOLDER,
   FORM_TITLE,
@@ -17,7 +18,7 @@ import Image from "next/image";
 export default function BookingForm() {
   return (
     <section className={s.bookingBlock}>
-      <div className={`${s.container} ${s.bookingGroup}`}>
+      <div className={`container ${s.bookingGroup}`}>
         <form className={s.callbackForm}>
           <h1>{FORM_TITLE}</h1>
           <div className={s.formFieldsGroup}>
@@ -123,6 +124,7 @@ export default function BookingForm() {
               </label>
             </div>
           </div>
+          <button type="submit">{BOOKING_BUTTON}</button>
         </form>
         <Image src={MICROPHONE_IMG} alt="Микрофон" />
       </div>
