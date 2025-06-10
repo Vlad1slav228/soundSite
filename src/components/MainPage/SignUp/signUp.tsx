@@ -11,7 +11,7 @@ export default function SignUpMain() {
   return (
     <section className={s.signUpBlock}>
         <div className={`container ${s.signUpGroup}`}>
-          <Image src={WAVES_IMG} alt="Звуковая волна" />
+          <Image src={WAVES_IMG} alt="Звуковая волна" className={s.signUpWavesImg} />
           <article className={s.signUpContent}>
           <p className={s.signUpText}>{SIGNUP_TEXT}</p>
           <a href="#services" className={s.signUpButton}>

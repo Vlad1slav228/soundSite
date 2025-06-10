@@ -26,6 +26,7 @@
   @media (width < $desktop) {
     font-size: 72px;
     max-width: 560px;
+    padding: 0 24px;
   }
 
   @media (width < $laptop) {
@@ -45,11 +46,11 @@
   right: 0;
 
   @media (width < $desktop) {
-    width: 245px;
+    max-width: 245px;
     height: auto;
   }
 
   @media (width < $laptop) {
-    width: 195px;
+    max-width: 195px;
   }
 }

@@ -1,6 +1,7 @@
 @use "../../../styles/colors.scss" as *;
 @use "../../../styles/fonts.scss" as *;
 @use "../../../styles/padding_margin_gap.scss" as *;
+@use "../../../styles/breakpoints.scss" as *;
 
 .signUpBlock {
   display: grid;
@@ -17,6 +18,14 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 0 24px;
+}
+
+.signUpWavesImg {
+   @media (width < $laptop) {
+    height: 84px;
+    width: 84px;
+  }
 }
 
 .signUpContent {
@@ -34,6 +43,10 @@
   line-height: 130%;
   color: $classicWhite;
   text-transform: uppercase;
+
+   @media (width < $laptop) {
+    font-size: 16px;
+  }
 }
 
 .signUpButton {

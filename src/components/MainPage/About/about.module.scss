@@ -78,7 +78,7 @@
 
 .stringLineFirst {
   position: relative;
-  top: 148px;
+  top: 115px;
   left: 0;
   background-color: $grayString;
   height: 1px;
@@ -86,18 +86,34 @@
 
 .stringLineSecond {
   position: relative;
-  top: 350px;
+  top: 315px;
   left: 0;
   background-color: $grayString;
   height: 1px;
+
+  @media (width < $desktop) {
+    top: 300px;
+  }
+
+  @media (width < $laptop) {
+    top: 200px;
+  }
 }
 
 .stringLineThird {
   position: relative;
-  top: 600px;
+  top: 580px;
   left: 0;
   background-color: $grayString;
   height: 1px;
+
+  @media (width < $desktop) {
+    top: 505px;
+  }
+
+  @media (width < $laptop) {
+    top: 335px;
+  }
 }
 
 .aboutImagesBlock {
