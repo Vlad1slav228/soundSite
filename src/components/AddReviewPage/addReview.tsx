@@ -21,7 +21,7 @@ export default function AddReviewForm() {
               </div>
               <div className={s.inputUnderline}></div>
             </div>
-            <button type="submit" className={s.sendButton}>{SEND_BUTTON}</button>
+            <button type="submit" className="greenButton">{SEND_BUTTON}</button>
         </form>
         <Image src={MICROPHONE_IMG} alt="Микрофон" />
       </div>

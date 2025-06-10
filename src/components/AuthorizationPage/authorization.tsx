@@ -95,7 +95,7 @@ export default function AuthorizationForm() {
 
   return (
     <section className={s.authorizationBlock}>
-      <div className={`${s.container} ${s.authorizationGroup}`}>
+      <div className={`container ${s.authorizationGroup}`}>
         {step === "input" && (
           <form onSubmit={handleSendOTP} className={s.callbackForm}>
             <h1>{FORM_TITLE}</h1>
@@ -165,7 +165,7 @@ export default function AuthorizationForm() {
 
             <button
               type="submit"
-              className={`${s.nextButton} ${loading ? s.isLoading : ""}`}
+              className={`greenButton ${loading ? s.isLoading : ""}`}
               disabled={loading}
             >
               {loading ? (
@@ -202,7 +202,7 @@ export default function AuthorizationForm() {
             </div>
             <button
               type="submit"
-              className={`${s.nextButton} ${loading ? s.isLoading : ""}`}
+              className={`greenButton ${loading ? s.isLoading : ""}`}
               disabled={loading}
             >
               {loading ? (

@@ -32,7 +32,7 @@ import {
     return (
       <footer className={s.footer}>
         <section className={s.footerMainSection}>
-            <div className={`${s.container} ${s.footerContentWrapper} ${s.footerBlock}`}>
+            <div className={`container ${s.footerContentWrapper} ${s.footerBlock}`}>
                 <aside className={s.footerContentInfo}>
                   <nav>
                     <ul className={s.footerList}>
@@ -183,7 +183,7 @@ import {
                       </label>
                     </div>
                   </div>
-                  <button type="submit" className={s.submitButton}>
+                  <button type="submit" className="greenButton">
                     {SUBMIT_BUTTON}
                   </button>
                 </form>

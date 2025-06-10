@@ -1,7 +1,6 @@
 @use "../../../../styles/colors.scss" as *;
 @use "../../../../styles/fonts.scss" as *;
 @use "../../../../styles/padding_margin_gap.scss" as *;
-@use "../../../../styles/container.scss" as *;
 
 .introBlock {
   display: grid;
@@ -95,14 +94,4 @@
   letter-spacing: 0.04em;
   font-size: 53px;
   text-transform: uppercase;
-}
-
-.introApplyButton {
-  font-family: $onestRegular;
-  font-size: 14px;
-  letter-spacing: -0.03em;
-  color: $graphiteBlack_2;
-  text-decoration: none;
-  background-color: $limeMain;
-  padding: $padding_12 $padding_24;
 }

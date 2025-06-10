@@ -6,7 +6,7 @@ import { Fragment } from "react";
 export default function ServicesMain() {
   return (
     <section className={s.servicesBlock} id="services">
-      <div className={`container`}>
+      <div className="container">
         <div className={s.servicesCardBlock}>
           {SERVICES_DATA.map((service, index) => (
             <Fragment key={index}>

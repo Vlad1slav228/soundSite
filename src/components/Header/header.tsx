@@ -20,7 +20,7 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
     <header className={s.header}>
-      <div className={s.container}>
+      <div className="container">
         <ul className={s.headerListMain}>
           <li>
             <div className={s.logoAndMenu}>

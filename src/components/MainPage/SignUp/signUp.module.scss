@@ -34,6 +34,14 @@
   flex-direction: column;
   gap: $gap_40;
   max-width: 490px;
+
+  a {
+    &::after {
+    width: 24px;
+    height: 24px;
+    content: url(../../../../public/SignUpMain/chevronRight.png);
+  }
+  }
 }
 
 .signUpText {
@@ -49,12 +57,4 @@
   }
 }
 
-.signUpButton {
-  text-decoration: none;
 
-  &::after {
-    width: 24px;
-    height: 24px;
-    content: url(../../../../public/SignUpMain/chevronRight.png);
-  }
-}

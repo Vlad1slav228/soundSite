@@ -1,4 +1,3 @@
-export const GALLERY_BUTTON = "Все фото";
 export const galleryImages = [
     "/GalleryAbout/recordingStudio_1.png",
     "/GalleryAbout/recordingStudio_2.png",

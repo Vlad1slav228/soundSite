@@ -52,7 +52,7 @@ export default function AccountPage() {
 
   return (
     <section className={s.accountBlock}>
-      <div className={`${s.container} ${s.accountLayout}`}>
+      <div className={`container ${s.accountLayout}`}>
         <aside className={s.accountSidebar}>
           <div className={s.accountSidebarInner}>
             <header className={s.accountHeader}>

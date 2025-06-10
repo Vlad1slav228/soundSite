@@ -4,8 +4,8 @@ import "@/styles/reset.scss";
 // import { useEffect, useState } from "react";
 // import { fetchWithAuth } from "@/lib/fetchWithAuth";
 import Header from "@/components/Header/header";
-import Footer from "@/components/Footer/footer";
 import AccountPage from "@/components/AccountPage/account";
+import Footer from "@/components/Footer/footer";
 
 export default function PersonalAccount() {
   // const [profile, setProfile] = useState<any>(null);

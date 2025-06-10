@@ -14,7 +14,7 @@ export default function IntroAbout() {
       <div className={s.stringLineFirst} aria-hidden="true"></div>
       <div className={s.stringLineSecond} aria-hidden="true"></div>
       <div className={s.stringLineThird} aria-hidden="true"></div>
-      <div className={s.container}>
+      <div className="container">
         <nav className={s.breadcrumbs} aria-label="breadcrumb">
           <ul>
             <li>

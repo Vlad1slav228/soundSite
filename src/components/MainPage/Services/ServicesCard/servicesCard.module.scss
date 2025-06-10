@@ -1,7 +1,6 @@
 @use "../../../../styles/colors.scss" as *;
 @use "../../../../styles/fonts.scss" as *;
 @use "../../../../styles/padding_margin_gap.scss" as *;
-@use "../../../../styles/container.scss" as *;
 
 .servicesCard {
   display: flex;
@@ -48,6 +47,14 @@
   align-items: flex-end;
   flex-direction: column;
   gap: $gap_16;
+
+  a {
+    &::after {
+      width: 24px;
+      height: 24px;
+      content: url(../../../../../public/ServicesMain/chevronRight.png);
+    }
+  }
 }
 
 .servicesCardPrice {
@@ -57,24 +64,4 @@
   letter-spacing: 0.04em;
   font-size: 53px;
   text-transform: uppercase;
-}
-
-.servicesCardButton {
-  width: fit-content;
-  padding: $padding_12 $padding_24;
-  display: flex;
-  align-items: center;
-  background-color: $limeMain;
-  gap: $gap_8;
-  font-family: $onestRegular;
-  font-size: 14px;
-  letter-spacing: -0.03em;
-  color: $graphiteBlack_2;
-  text-decoration: none;
-
-  &::after {
-    width: 24px;
-    height: 24px;
-    content: url(../../../../../public/ServicesMain/chevronRight.png);
-  }
 }

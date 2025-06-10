@@ -24,10 +24,7 @@ export default function ServiceCard({ service }: ServiceProps) {
       </ul>
       <div className={s.servicesCardFooter}>
         <span className={s.servicesCardPrice}>{service.price}</span>
-        <Link
-          href={`/services/${service.slug}`}
-          className={s.servicesCardButton}
-        >
+        <Link href={`/services/${service.slug}`} className="greenButton">
           {service.button}
         </Link>
       </div>

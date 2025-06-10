@@ -1,7 +1,6 @@
 @use "../../styles/colors.scss" as *;
 @use "../../styles/fonts.scss" as *;
 @use "../../styles/padding_margin_gap.scss" as *;
-@use "../../styles/container.scss" as *;
 @use "../../styles/border.scss" as *;
 
 .authorizationBlock {
@@ -29,6 +28,18 @@
     line-height: 44px;
     text-transform: uppercase;
     color: $classicBlack;
+  }
+
+  button[type="submit"] {
+    &::after {
+      width: 24px;
+      height: 24px;
+      content: url(../../../public/AuthorizationForm/chevronRight.png);
+    }
+
+    &.isLoading::after {
+      content: none;
+    }
   }
 }
 
@@ -161,31 +172,6 @@
       color: $classicBlack;
       text-decoration: underline;
     }
-  }
-}
-
-.nextButton {
-  font-family: $onestRegular;
-  padding: $padding_12 $padding_24;
-  background-color: $limeMain;
-  color: $graphiteBlack_2;
-  font-size: 14px;
-  letter-spacing: -0.03em;
-  width: fit-content;
-  display: flex;
-  align-items: center;
-  gap: $gap_8;
-  text-decoration: none;
-  cursor: pointer;
-
-  &::after {
-    width: 24px;
-    height: 24px;
-    content: url(../../../public/AuthorizationForm/chevronRight.png);
-  }
-
-  &.isLoading::after {
-    content: none;
   }
 }
 

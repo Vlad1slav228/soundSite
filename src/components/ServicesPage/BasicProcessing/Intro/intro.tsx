@@ -11,7 +11,7 @@ export default function IntroBasicProcessing() {
   if (!service) return null;
   return (
     <section className={s.introBlock}>
-      <div className={`${s.container} ${s.introContent}`}>
+      <div className={`container ${s.introContent}`}>
         <nav className={s.breadcrumbs} aria-label="breadcrumb">
           <ul>
             <li>
@@ -35,7 +35,7 @@ export default function IntroBasicProcessing() {
         </ul>
         <div className={s.introServiceFooter}>
           <span className={s.introServicePrice}>{service.price}</span>
-          <button className={s.introApplyButton}>{APPLY_BUTTON}</button>
+          <button className="greenButton">{APPLY_BUTTON}</button>
         </div>
       </div>
       <Image src={STUDIO_IMG} alt="Студия звукозаписи" />

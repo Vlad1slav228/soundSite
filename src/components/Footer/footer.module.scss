@@ -1,7 +1,6 @@
 @use "../../styles/colors.scss" as *;
 @use "../../styles/fonts.scss" as *;
 @use "../../styles/padding_margin_gap.scss" as *;
-@use "../../styles/container.scss" as *;
 @use "../../styles/border.scss" as *;
 
 .footer {
@@ -247,14 +246,4 @@
       text-decoration: underline;
     }
   }
-}
-
-.submitButton {
-  font-family: $onestRegular;
-  padding: $padding_12 $padding_24;
-  background-color: $limeMain;
-  color: $graphiteBlack_2;
-  font-size: 14px;
-  letter-spacing: -0.03em;
-  width: fit-content;
 }

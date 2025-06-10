@@ -19,7 +19,7 @@ export default function ReviewsList() {
 
   return (
     <section className={s.reviewsBlock}>
-      <div className={`${s.container} ${s.reviewsWrapper}`}>
+      <div className={`container ${s.reviewsWrapper}`}>
         <div className={s.reviewsContent}>
           <h1 className={s.reviewsTitle}>{REVIEWS_PAGE_TITLE}</h1>
           <div className={s.reviewsListWrapper}>

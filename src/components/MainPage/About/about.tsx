@@ -15,7 +15,7 @@ export default function AboutMain() {
       <div className={s.stringLineFirst} aria-hidden="true"></div>
       <div className={s.stringLineSecond} aria-hidden="true"></div>
       <div className={s.stringLineThird} aria-hidden="true"></div>
-      <div className={'container'}>
+      <div className="container">
         <div className={s.aboutImagesBlock}>
           <Image
             src={MICROPHONE_LEFT_IMG}
@@ -35,7 +35,7 @@ export default function AboutMain() {
         </div>
         <article className={s.aboutContent}>
           <h2 className={s.aboutTitle}>{ABOUT_TITLE}</h2>
-          <Link href="/about" className={s.aboutButton}>
+          <Link href="/about" className="greenButton">
             {ABOUT_BUTTON}
           </Link>
         </article>
