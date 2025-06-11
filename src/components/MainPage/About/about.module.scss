@@ -4,19 +4,19 @@
 @use "../../../styles/breakpoints.scss" as *;
 
 .aboutBlock {
-  padding: $padding_62 0 $padding_72;
+  padding: $padding_62 $padding_24 $padding_72;
   background-color: $whiteSoft;
 
   @media (width < $desktop) {
-    padding: $padding_45 0 $padding_62;
+    padding: $padding_45 $padding_24 $padding_62;
   }
 
   @media (width < $laptop) {
-    padding: $padding_50 0 $padding_45;
+    padding: $padding_50 $padding_24 $padding_45;
   }
 
   @media (width < $tablet) {
-    padding: $padding_30 0;
+    padding: $padding_30 $padding_16;
   }
 }
 
@@ -28,6 +28,8 @@
   align-items: center;
   flex-direction: column;
   gap: $gap_11;
+  position: relative;
+  z-index: 1;
 
   @media (width < $desktop) {
     max-width: 815px;
@@ -41,6 +43,13 @@
 
   @media (width < $tablet) {
     gap: $gap_24;
+  }
+
+  a {
+    @media (width < $tablet) {
+      width: 100%;
+      justify-content: center;
+    }
   }
 }
 

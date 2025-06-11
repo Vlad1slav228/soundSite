@@ -18,7 +18,21 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 24px;
+  gap: $gap_54;
+  padding: $padding_40 $padding_24;
+  margin: 0 auto;
+
+  @media (width < $desktop) {
+    margin: 0;
+  }
+
+  @media (width < $laptop) {
+    padding: $padding_24;
+  }
+
+  @media (width < $tablet) {
+    padding: $padding_24 $padding_16;
+  }
 }
 
 .signUpWavesImg {
@@ -29,7 +43,6 @@
 }
 
 .signUpContent {
-  margin-top: 54px;
   display: flex;
   flex-direction: column;
   gap: $gap_40;

@@ -1,16 +1,29 @@
 @use "../../../styles/colors.scss" as *;
 @use "../../../styles/fonts.scss" as *;
 @use "../../../styles/padding_margin_gap.scss" as *;
+@use "../../../styles/breakpoints.scss" as *;
 
 .servicesBlock {
-  padding: $padding_80 0;
+  padding: $padding_80 $padding_24;
   background-color: $graphiteBlack;
+
+  @media (width < $laptop) {
+    padding: $padding_32 $padding_24;
+  }
 }
 
 .servicesCardBlock {
   display: flex;
   flex-direction: column;
   gap: $gap_60;
+
+  @media (width < $desktop) {
+    gap: $gap_24;
+  }
+
+  @media (width < $tablet) {
+    gap: $gap_44;
+  }
 }
 
 .string {

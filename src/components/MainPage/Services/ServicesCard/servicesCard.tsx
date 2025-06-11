@@ -14,7 +14,8 @@ export type ServiceProps = Readonly<{
 export default function ServiceCard({ service }: ServiceProps) {
   return (
     <article className={s.servicesCard}>
-      <h3 className={s.servicesCardTitle}>{service.title}</h3>
+      <div className={s.wrapper}>
+        <h3 className={s.servicesCardTitle}>{service.title}</h3>
       <ul className={s.servicesCardList}>
         {service.list.map((item, index) => (
           <li key={index} className={s.servicesCardListItem}>
@@ -22,6 +23,8 @@ export default function ServiceCard({ service }: ServiceProps) {
           </li>
         ))}
       </ul>
+      </div>
+      
       <div className={s.servicesCardFooter}>
         <span className={s.servicesCardPrice}>{service.price}</span>
         <Link href={`/services/${service.slug}`} className="greenButton">

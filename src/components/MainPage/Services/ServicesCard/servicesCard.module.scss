@@ -1,9 +1,16 @@
 @use "../../../../styles/colors.scss" as *;
 @use "../../../../styles/fonts.scss" as *;
 @use "../../../../styles/padding_margin_gap.scss" as *;
+@use "../../../../styles/breakpoints.scss" as *;
 
 .servicesCard {
   display: flex;
+  justify-content: space-between;
+}
+
+.wrapper {
+  display: flex;
+  gap: $gap_8;
   justify-content: space-between;
 }
 
@@ -23,6 +30,10 @@
   display: flex;
   flex-direction: column;
   gap: $gap_8;
+
+  @media (width < $desktop) {
+    max-width: 485px;
+  }
 }
 
 .servicesCardListItem {
@@ -34,6 +45,11 @@
   color: $classicWhite;
   line-height: 130%;
   letter-spacing: 0.04em;
+
+  @media (width < $laptop) {
+    font-size: 14px;
+    line-height: 110%;
+  }
 
   &::before {
     content: url(../../../../../public/ServicesMain/ellipse.png);
@@ -64,4 +80,8 @@
   letter-spacing: 0.04em;
   font-size: 53px;
   text-transform: uppercase;
+
+  @media (width < $desktop) {
+    font-size: 32px;
+  }
 }
