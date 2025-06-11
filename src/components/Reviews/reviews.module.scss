@@ -4,7 +4,12 @@
 @use "../../styles/breakpoints.scss" as *;
 
 .reviewsBlock {
+  padding: 0 $padding_24;
   background-color: $limeMain;
+
+  @media (width < $tablet) {
+    padding: 0 $padding_16;
+  }
 }
 
 .reviewWrapper {
@@ -22,6 +27,20 @@
   display: flex;
   flex-direction: column;
   gap: $gap_11;
+
+  @media (width < $desktop) {
+    gap: $gap_24;
+    padding: $padding_50 0;
+  }
+
+  @media (width < $laptop) {
+    padding: $padding_60 0;
+  }
+
+  @media (width < $tablet) {
+    padding: $padding_45 0;
+    gap: $gap_16;
+  }
 }
 
 .reviewCardWrapper {
@@ -43,6 +62,10 @@
   background-color: $graphiteBlack;
   z-index: 1;
   transition: transform 0.5s ease;
+
+  @media (width < $desktop) {
+    transform: translate(0, -30px);
+  }
 }
 
 .reviewCardBackground2 {
@@ -53,11 +76,15 @@
   background-color: $graphiteBlack;
   z-index: 2;
   transition: transform 0.5s ease;
+
+  @media (width < $desktop) {
+    transform: translate(0, -15px);
+  }
 }
 
 .reviewCard {
   width: max-content;
-  max-width: 860px;
+  max-width: 830px;
   position: relative;
   padding: $padding_40;
   background-color: $graphiteBlack;
@@ -70,8 +97,14 @@
   transition: opacity 0.3s ease, transform 0.3s ease;
 
   @media (width < $desktop) {
-    width: 100%;        
+    width: 100%;
+    gap: $gap_60;        
     max-width: none; 
+  }
+
+  @media (width < $tablet) {
+    gap: $gap_40;
+    padding: $padding_24 $padding_16;
   }
 }
 
@@ -99,6 +132,18 @@
   background: transparent;
   border: none;
   cursor: pointer;
+
+  @media (width < $tablet) {
+    width: 52px;
+    height: 52px;
+  }
+
+  img {
+    @media (width < $tablet) {
+    width: 21px;
+    height: 21px;  
+    }
+  }
 }
 
 .reviewAuthor {
@@ -107,6 +152,15 @@
   color: $classicWhite;
   line-height: 120%;
   font-weight: 400;
+
+  @media (width < $laptop) {
+    font-size: 48px;
+  }
+
+  @media (width < $tablet) {
+    font-size: 32px;
+    max-width: 150px;
+  }
 }
 
 .reviewText {
@@ -120,6 +174,10 @@
   line-clamp: 6;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  @media (width < $tablet) {
+    font-size: 14px;
+  }
 }
 
 .reviewsButton {
@@ -139,6 +197,11 @@
     width: 24px;
     height: 24px;
     content: url(../../../public/Reviews/rightArrow.png);
+  }
+
+  @media (width < $tablet) {
+    width: 100%;
+    justify-content: center;
   }
 }
 
