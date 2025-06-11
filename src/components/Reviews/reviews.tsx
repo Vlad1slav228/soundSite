@@ -70,7 +70,7 @@ export default function Reviews() {
   }, [currentReviewIndex]);
 
   return (
-    <section className={s.reviewsBlock}>
+    <section className={s.reviewsBlock} id="reviews">
       <div className={`container ${s.reviewWrapper}`}>
         <div className={s.reviewContent}>
           <div

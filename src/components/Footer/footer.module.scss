@@ -13,10 +13,10 @@
 }
 
 .footerMainSection {
-    display: flex;
-    flex-direction: column;
-    gap: $gap_120;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: $gap_120;
+  align-items: center;
 }
 
 .footerBlock {
@@ -140,6 +140,10 @@
   flex-direction: column;
   gap: $gap_16;
 
+  &:last-child {
+    gap: $gap_8;
+  }
+
   &:has(input:hover) .inputUnderline,
   &:has(input:focus) .inputUnderline {
     background-color: $lightGray;
@@ -172,7 +176,7 @@
 
     &:focus {
       outline: none;
-    }    
+    }
 
     &:-webkit-autofill {
       border: none;
@@ -190,6 +194,10 @@
   width: 100%;
   height: 1px;
   background-color: $grayStringDark;
+}
+
+.errorUnderline {
+  background-color: red !important;
 }
 
 .checkboxWrapper {
@@ -246,4 +254,12 @@
       text-decoration: underline;
     }
   }
+}
+
+.errorText {
+  color: #ca0201;
+  font-family: $onestLight;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
 }
