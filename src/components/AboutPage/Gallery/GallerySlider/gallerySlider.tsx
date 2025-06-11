@@ -7,6 +7,10 @@ import "swiper/css/navigation";
 import Image from "next/image";
 import s from "./gallerySlider.module.scss";
 import { galleryImages } from "@/mocks/AboutPage/gallery";
+import {
+  ARROW_LEFT,
+  ARROW_RIGHT,
+} from "@/mocks/MainPage/gallery";
 
 export default function GallerySlider() {
   return (
@@ -20,10 +24,14 @@ export default function GallerySlider() {
         observer={true}
         observeParents={true}
         speed={1300}
+        navigation={{
+          nextEl: `.${s.arrowRight}`,
+          prevEl: `.${s.arrowLeft}`,
+        }}
       >
         {galleryImages.map((image, index) => (
           <SwiperSlide key={index}>
-           <Image
+            <Image
               src={image}
               alt={`Фото ${index + 1}`}
               width={900}
@@ -33,6 +41,14 @@ export default function GallerySlider() {
           </SwiperSlide>
         ))}
       </Swiper>
+      <div className={`${s.arrowsWrapper} container`}>
+        <button className={s.arrowLeft}>
+          <Image src={ARROW_LEFT} alt="Левая стрелка" />
+        </button>
+        <button className={s.arrowRight}>
+          <Image src={ARROW_RIGHT} alt="Правая стрелка" />
+        </button>
+      </div>
     </div>
   );
 }
