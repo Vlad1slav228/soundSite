@@ -6,12 +6,12 @@
 .servicesCard {
   display: flex;
   justify-content: space-between;
-}
 
-.wrapper {
-  display: flex;
-  gap: $gap_8;
-  justify-content: space-between;
+  @media (width < $laptop) {
+    flex-direction: column;
+    gap: $gap_12;
+    align-items: flex-start;
+  }
 }
 
 .servicesCardTitle {
@@ -33,6 +33,10 @@
 
   @media (width < $desktop) {
     max-width: 485px;
+  }
+
+  @media (width < $tablet) {
+    max-width: 325px;
   }
 }
 
@@ -70,6 +74,15 @@
       height: 24px;
       content: url(../../../../../public/ServicesMain/chevronRight.png);
     }
+  }
+
+  @media (width < $laptop) {
+    align-items: flex-start;
+    margin-top: $margin_25;
+  }
+
+  @media (width < $tablet) {
+    margin-top: $margin_25;
   }
 }
 
