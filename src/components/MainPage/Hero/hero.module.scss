@@ -4,12 +4,29 @@
 @use "../../../styles/breakpoints.scss" as *;
 
 .heroBlock {
+  padding: 0 $padding_22;
   background-color: $limeMain;
+
+  @media (width < $tablet) {
+    padding: 0 $padding_16;
+  }
 }
 
 .heroContent {
-  padding: $padding_200 0 $padding_25;
+  padding: $padding_190 0 $padding_25;
   position: relative;
+
+  @media (width < $desktop) {
+    padding: $padding_180 0 $padding_16;
+  }
+
+  @media (width < $laptop) {
+    padding: $padding_160 0 $padding_16;
+  }
+
+  @media (width < $tablet) {
+    padding: $padding_210 0 $padding_16;
+  }
 }
 
 .titleMainPage {
@@ -26,7 +43,6 @@
   @media (width < $desktop) {
     font-size: 72px;
     max-width: 560px;
-    padding: 0 24px;
   }
 
   @media (width < $laptop) {
