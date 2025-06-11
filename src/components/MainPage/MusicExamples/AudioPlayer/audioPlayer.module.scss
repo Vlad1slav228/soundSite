@@ -1,7 +1,7 @@
 @use "../../../../styles/colors.scss" as *;
 @use "../../../../styles/fonts.scss" as *;
 @use "../../../../styles/padding_margin_gap.scss" as *;
-@use "../../../../styles/container.scss" as *;
+@use "../../../../styles/breakpoints.scss" as *;
 @use "../../../../styles/border.scss" as *;
 
 .audioTrackBlock {
@@ -9,6 +9,10 @@
   align-items: center;
   gap: $gap_16;
   padding: $padding_14 0;
+
+  @media (width < $desktop) {
+    padding: $padding_8 0;
+  }
 }
 
 .playButton {
