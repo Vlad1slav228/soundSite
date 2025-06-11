@@ -12,13 +12,15 @@ import Image from "next/image";
 import Link from "next/link";
 
 const DESKTOP_BP = 1440;
+const TRANSITION_DURATION = 400; 
+const TEXT_FADE_DURATION = 200; 
 
 function useIsDesktop() {
   const [isDesktop, setIsDesktop] = useState(true);
   useEffect(() => {
     const mq = window.matchMedia(`(min-width:${DESKTOP_BP}px)`);
     const handler = () => setIsDesktop(mq.matches);
-    handler(); // установить сразу
+    handler();
     mq.addEventListener("change", handler);
     return () => mq.removeEventListener("change", handler);
   }, []);
@@ -27,26 +29,26 @@ function useIsDesktop() {
 
 export default function Reviews() {
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
-  const [isFading, setIsFading] = useState(false);
-  const [micAnimated, setMicAnimated] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
   const [height, setHeight] = useState<number | undefined>(undefined);
   const [width, setWidth] = useState<number | undefined>(undefined);
 
   const cardRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const isDesktop = useIsDesktop();
 
   const handleNextReview = () => {
-    setIsFading(true);
-    setMicAnimated(true);
+    if (isAnimating) return;
+    
+    setIsAnimating(true);
 
     setTimeout(() => {
       setCurrentReviewIndex((prev) => (prev + 1) % REVIEWS_DATA.length);
-      setIsFading(false);
-    }, 400);
+    }, TEXT_FADE_DURATION);
 
     setTimeout(() => {
-      setMicAnimated(false);
-    }, 400);
+      setIsAnimating(false);
+    }, TRANSITION_DURATION);
   };
 
   const { fullName, reviewText } = REVIEWS_DATA[currentReviewIndex];
@@ -55,7 +57,6 @@ export default function Reviews() {
     if (!cardRef.current) return;
 
     const el = cardRef.current;
-
     const resizeObserver = new ResizeObserver(() => {
       setHeight(el.scrollHeight);
       setWidth(el.scrollWidth);
@@ -73,32 +74,36 @@ export default function Reviews() {
       <div className={`container ${s.reviewWrapper}`}>
         <div className={s.reviewContent}>
           <div
+            ref={wrapperRef}
             className={s.reviewCardWrapper}
             style={{
               height: height ? `${height}px` : "auto",
               ...(isDesktop
                 ? {
                     width: width ? `${width}px` : "auto",
-                    transition: "height 0.5s ease, width 0.5s ease",
                   }
                 : {
                     width: "100%",
-                    transition: "height 0.5s ease",
                   }),
             }}
           >
-            <div className={s.reviewCardBackground1} aria-hidden="true"></div>
-            <div className={s.reviewCardBackground2} aria-hidden="true"></div>
-            <article className={s.reviewCard} ref={cardRef}>
+            <div 
+              className={`${s.reviewCardBackground1} ${isAnimating ? s.backgroundAnimating : ''}`} 
+              aria-hidden="true"
+            ></div>
+            <div 
+              className={`${s.reviewCardBackground2} ${isAnimating ? s.backgroundAnimating : ''}`} 
+              aria-hidden="true"
+            ></div>
+            <article 
+              className={`${s.reviewCard} ${isAnimating ? s.cardAnimating : ''}`} 
+              ref={cardRef}
+            >
               <button onClick={handleNextReview} className={s.crossButton}>
                 <Image src={CROSS_ICON} alt="Следующий отзыв" />
               </button>
-              <h4 className={`${s.reviewAuthor} ${isFading ? s.fadeOut : ""}`}>
-                {fullName}
-              </h4>
-              <p className={`${s.reviewText} ${isFading ? s.fadeOut : ""}`}>
-                {reviewText}
-              </p>
+              <h4 className={s.reviewAuthor}>{fullName}</h4>
+              <p className={s.reviewText}>{reviewText}</p>
             </article>
           </div>
           <Link href="/reviews" className={s.reviewsButton}>
@@ -108,7 +113,7 @@ export default function Reviews() {
         <Image
           src={MICROPHONE_IMG}
           alt="Микрофон"
-          className={`${s.microImg} ${micAnimated ? s.microphoneAnimated : ""}`}
+          className={`${s.microImg} ${isAnimating ? s.microphoneAnimated : ""}`}
         />
       </div>
     </section>
