@@ -27,9 +27,11 @@
 .reviewCardWrapper {
   margin-top: $margin_25;
   position: relative;
+  transition: height 0.5s ease, width 0.5s ease;
 
   @media (width < $desktop) {
     width: 100%;
+    transition: height 0.5s ease;
   }
 }
 
@@ -40,6 +42,7 @@
   border: 4px solid $limeMain;
   background-color: $graphiteBlack;
   z-index: 1;
+  transition: transform 0.5s ease;
 }
 
 .reviewCardBackground2 {
@@ -49,6 +52,7 @@
   border: 4px solid $limeMain;
   background-color: $graphiteBlack;
   z-index: 2;
+  transition: transform 0.5s ease;
 }
 
 .reviewCard {
@@ -63,11 +67,26 @@
   border-top: 4px solid $limeMain;
   border-right: 4px solid $limeMain;
   z-index: 3;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 
   @media (width < $desktop) {
     width: 100%;        
     max-width: none; 
   }
+}
+
+.cardAnimating {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.backgroundAnimating {
+  transform: translate(0, 0) !important;
+  transition: transform 0.5s ease;
+}
+
+.reviewCard:not(.cardAnimating) {
+  transition: opacity 0.2s ease, transform 0.2s ease; 
 }
 
 .crossButton {
@@ -123,28 +142,16 @@
   }
 }
 
-.reviewAuthor,
-.reviewText {
-  transition: opacity 0.4s ease, transform 0.4s ease;
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.fadeOut {
-  opacity: 0;
-  transform: translateY(10px);
-}
-
 .microImg {
   position: absolute;
   right: 0;
   bottom: 0;
+  transition: transform 0.5s ease;
 
   @media (width < $desktop) {
     display: none;
   }
 }
-
 
 @keyframes bounceMicrophone {
   0% {
