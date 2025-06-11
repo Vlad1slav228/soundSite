@@ -2,6 +2,7 @@
 @use "../../../../styles/fonts.scss" as *;
 @use "../../../../styles/padding_margin_gap.scss" as *;
 @use "../../../../styles/border.scss" as *;
+@use "../../../../styles/breakpoints.scss" as *;
 
 .galleryWrapper {
   position: relative;
@@ -9,5 +10,34 @@
 
 .swiperImage {
   width: 100%;
-  height: auto;
+  max-width: 900px;
+  max-height: 600px;
+  // object-fit: cover;
+
+  @media (width < $tablet) {
+    width: 315px;
+  }
 }
+
+.arrowsWrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 10;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.arrowLeft, .arrowRight {
+  width: 48px;
+  height: 48px;
+  padding: $padding_12;
+  background-color: $limeMain;
+  border: none;
+  cursor: pointer;
+  pointer-events: all;
+}
+
