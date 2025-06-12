@@ -1,10 +1,19 @@
 @use "../../../styles/colors.scss" as *;
 @use "../../../styles/fonts.scss" as *;
 @use "../../../styles/padding_margin_gap.scss" as *;
+@use "../../../styles/breakpoints.scss" as *;
 
 .IntroBlock {
   padding: $padding_24 0;
   background-color: $graphiteBlack;
+
+  @media (width < $desktop) {
+    padding: $padding_24 $padding_24 0 $padding_24;
+  }
+
+  @media (width < $tablet) {
+    padding: $padding_12 $padding_12 0 $padding_12;
+  }
 }
 
 .breadcrumbs {
@@ -32,6 +41,10 @@
       }
     }
   }
+
+  @media (width < $laptop) {
+    display: none;
+  }
 }
 
 .imagesGrid {
@@ -40,12 +53,6 @@
   z-index: 1;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-}
-
-.leftImage {
-  grid-column: 1;
-  grid-row: 3;
-  justify-self: start;
 }
 
 .introTitle {
@@ -62,12 +69,62 @@
   text-align: center;
   text-transform: uppercase;
   justify-self: center;
+
+  @media (width < $desktop) {
+    font-size: 64px;
+    padding: $padding_24 0;
+  }
+
+  @media (width < $laptop) {
+    font-size: 48px;
+    padding: $padding_45 0;
+  }
+
+  @media (width < $tablet) {
+    font-size: 32px;
+  }
+}
+
+.leftImage {
+  grid-column: 1;
+  grid-row: 3;
+  justify-self: start;
+
+  @media (width < $desktop) {
+    max-width: 80%;
+    height: auto;
+  }
+
+  @media (width < $laptop) {
+    max-width: 115%;
+    height: auto;
+  }
+
+  @media (width < $tablet) {
+    max-width: 150%;
+    height: auto;
+  }
 }
 
 .rightImage {
   grid-column: 3;
   grid-row: 1;
   justify-self: right;
+
+  @media (width < $desktop) {
+    width: 100%;
+    height: auto;
+  }
+
+  @media (width < $laptop) {
+    width: 135%;
+    height: auto;
+  }
+
+  @media (width < $tablet) {
+    width: 168px;
+    height: auto;
+  }
 }
 
 .centerImage {
@@ -76,6 +133,26 @@
   justify-self: center;
   margin-top: $margin_80;
   margin-bottom: $margin_100;
+
+  @media (width < $desktop) {
+    width: 150%;
+    height: auto;
+  }
+
+  @media (width < $laptop) {
+    width: 170%;
+    height: auto;
+    grid-column: 3;
+    justify-self: right;
+  }
+
+  @media (width < $tablet) {
+    max-width: 272px;
+    height: auto;
+    grid-row: 4;
+    margin-top: $margin_30;
+    margin-bottom: $margin_70;
+  }
 }
 
 .stringLineFirst {
