@@ -11,6 +11,14 @@
   > img {
     width: 100%;
     object-fit: cover;
+
+    @media (width < $laptop) {
+      height: 100%;
+    }
+
+    @media (width < $tablet) {
+      height: 235px;
+    }
   }
 
   @media (width < $tablet) {
@@ -21,21 +29,27 @@
 .signUpGroup {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: $gap_54;
-  padding: $padding_40 $padding_24;
+  justify-content: space-between;
+  padding: $padding_40;
   margin: 0 auto;
 
   @media (width < ($desktop + 1px)) {
     margin: 0;
   }
 
+  @media (width < $desktop) {
+    padding: $padding_40 $padding_24;
+  }
+
   @media (width < $laptop) {
     padding: $padding_24;
+    justify-content: center;
+    gap: $gap_35;
   }
 
   @media (width < $tablet) {
     padding: $padding_24 $padding_16;
+    gap: $gap_73;
   }
 }
 
@@ -78,7 +92,7 @@
   }
 }
 
-.greenButton {
+.signUpButton {
   @media (width < $tablet) {
     width: 100%;
     justify-content: center;
