@@ -4,15 +4,11 @@
 @use "../../../styles/breakpoints.scss" as *;
 
 .IntroBlock {
-  padding: $padding_24 0;
+  padding: $padding_24;
   background-color: $graphiteBlack;
 
-  @media (width < $desktop) {
-    padding: $padding_24 $padding_24 0 $padding_24;
-  }
-
   @media (width < $tablet) {
-    padding: $padding_12 $padding_12 0 $padding_12;
+    padding: $padding_16;
   }
 }
 
@@ -53,11 +49,20 @@
   z-index: 1;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+
+  @media (width < $laptop) {
+    margin-top: $margin_32;
+  }
+
+  @media (width < $tablet) {
+    grid-template-columns: repeat(1, 1fr);
+    margin-top: $margin_10;
+  }
 }
 
 .introTitle {
-  margin-top: $margin_12;
-  max-width: 1170px;
+  padding: $padding_12 0 $padding_5;
+  max-width: 1160px;
   grid-column: 1 / -1;
   grid-row: 2;
   font-family: $onestLight;
@@ -72,16 +77,19 @@
 
   @media (width < $desktop) {
     font-size: 64px;
-    padding: $padding_24 0;
+    padding: $padding_30 0 $padding_24;
   }
 
   @media (width < $laptop) {
     font-size: 48px;
-    padding: $padding_45 0;
+    padding: $padding_40 0 $padding_50;
   }
 
   @media (width < $tablet) {
+    grid-column: 1;
+    grid-row: 2;
     font-size: 32px;
+    padding: $padding_40 0 $padding_60;
   }
 }
 
@@ -90,19 +98,15 @@
   grid-row: 3;
   justify-self: start;
 
-  @media (width < $desktop) {
-    max-width: 80%;
-    height: auto;
-  }
-
   @media (width < $laptop) {
-    max-width: 115%;
+    width: 205px;
     height: auto;
   }
 
   @media (width < $tablet) {
-    max-width: 150%;
-    height: auto;
+    width: 168px;
+    grid-row: 3;
+    grid-column: 1;
   }
 }
 
@@ -112,18 +116,15 @@
   justify-self: right;
 
   @media (width < $desktop) {
-    width: 100%;
-    height: auto;
-  }
-
-  @media (width < $laptop) {
-    width: 135%;
+    width: 320px;
     height: auto;
   }
 
   @media (width < $tablet) {
     width: 168px;
     height: auto;
+    grid-column: 1;
+    grid-row: 1;
   }
 }
 
@@ -134,24 +135,28 @@
   margin-top: $margin_80;
   margin-bottom: $margin_100;
 
+  @media (width < $ultraWidth) {
+    margin-bottom: $margin_70;
+  }
+
   @media (width < $desktop) {
-    width: 150%;
+    width: 485px;
+    grid-column: 2 / span 2;
     height: auto;
   }
 
   @media (width < $laptop) {
-    width: 170%;
-    height: auto;
-    grid-column: 3;
-    justify-self: right;
+    width: 415px;
   }
 
   @media (width < $tablet) {
+    justify-self: right;
     max-width: 272px;
     height: auto;
     grid-row: 4;
+    grid-column: 1;
     margin-top: $margin_30;
-    margin-bottom: $margin_70;
+    margin-bottom: $margin_54;
   }
 }
 
