@@ -18,7 +18,7 @@ export default function SignUpMain() {
         />
         <article className={s.signUpContent}>
           <p className={s.signUpText}>{SIGNUP_TEXT}</p>
-          <a href="#services" className="greenButton">
+          <a href="#services" className={`greenButton ${s.greenButton}`}>
             {SIGNUP_BUTTON}
           </a>
         </article>

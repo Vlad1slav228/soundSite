@@ -12,6 +12,10 @@
     width: 100%;
     object-fit: cover;
   }
+
+  @media (width < $tablet) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .signUpGroup {
@@ -22,7 +26,7 @@
   padding: $padding_40 $padding_24;
   margin: 0 auto;
 
-  @media (width < $desktop) {
+  @media (width < ($desktop + 1px)) {
     margin: 0;
   }
 
@@ -36,7 +40,7 @@
 }
 
 .signUpWavesImg {
-   @media (width < $laptop) {
+  @media (width < $laptop) {
     height: 84px;
     width: 84px;
   }
@@ -50,10 +54,14 @@
 
   a {
     &::after {
-    width: 24px;
-    height: 24px;
-    content: url(../../../../public/SignUpMain/chevronRight.png);
+      width: 24px;
+      height: 24px;
+      content: url(../../../../public/SignUpMain/chevronRight.png);
+    }
   }
+  
+  @media (width < $tablet) {
+    max-width: 100%; 
   }
 }
 
@@ -65,9 +73,14 @@
   color: $classicWhite;
   text-transform: uppercase;
 
-   @media (width < $laptop) {
+  @media (width < $laptop) {
     font-size: 16px;
   }
 }
 
-
+.greenButton {
+  @media (width < $tablet) {
+    width: 100%;
+    justify-content: center;
+  }
+}

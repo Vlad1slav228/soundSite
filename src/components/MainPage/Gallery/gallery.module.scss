@@ -1,10 +1,15 @@
 @use "../../../styles/colors.scss" as *;
 @use "../../../styles/fonts.scss" as *;
 @use "../../../styles/padding_margin_gap.scss" as *;
+@use "../../../styles/breakpoints.scss" as *;
 
 .galleryBlock {
   background-color: $whiteSoft;
   padding: $padding_94 0;
+
+  @media (width < $tablet) {
+    padding: $padding_40 0;
+  }
 }
 
 .sliderWrapper {
@@ -14,6 +19,8 @@
 }
 
 .galleryButton {
+  display: flex;
+  align-items: center;
   font-family: $onestRegular;
   font-size: 14px;
   color: $classicWhite;
@@ -23,5 +30,10 @@
   text-decoration: none;
   width: fit-content;
   margin: 0 auto;
+
+  @media (width < $tablet) {
+     width: 90%;
+     justify-content: center;
+  }
 }
 

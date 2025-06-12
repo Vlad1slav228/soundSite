@@ -13,12 +13,17 @@
   height: auto;
   // object-fit: cover;
 
-  @media (width < $tablet) {
-    width: 315px;
-  }
+  // @media (width < $laptop) {
+  //   width: 330px;
+  // }
+
+  // @media (width < $tablet) {
+  //   width: 315px;
+  // }
 }
 
 .arrowsWrapper {
+  display: flex;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -28,9 +33,14 @@
   display: flex;
   justify-content: space-between;
   pointer-events: none;
+
+  @media (width < $tablet) {
+    display: none;
+  }
 }
 
-.arrowLeft, .arrowRight {
+.arrowLeft,
+.arrowRight {
   width: 48px;
   height: 48px;
   padding: $padding_12;
@@ -39,4 +49,3 @@
   cursor: pointer;
   pointer-events: all;
 }
-
