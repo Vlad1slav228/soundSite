@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import {
   ABOUT_TITLE,
@@ -157,7 +158,7 @@ export default function Footer() {
       <section className={s.footerMainSection}>
         <div className={`container ${s.footerContentWrapper} ${s.footerBlock}`}>
           <aside className={s.footerContentInfo}>
-            <nav>
+            <nav className={s.footerNav}>
               <ul className={s.footerList}>
                 <li>
                   <Link href="/#about">{ABOUT_TITLE}</Link>
@@ -242,10 +243,10 @@ export default function Footer() {
                         touched.name && errors.name ? s.errorUnderline : ""
                       }`}
                     ></div>
-                    {touched.name && errors.name && (
-                      <p className={s.errorText}>Введите корректное имя</p>
-                    )}
                   </div>
+                  {touched.name && errors.name && (
+                    <p className={s.errorText}>Введите корректное имя</p>
+                  )}
                 </div>
 
                 <div className={s.formField}>
@@ -270,10 +271,10 @@ export default function Footer() {
                           : ""
                       }`}
                     ></div>
-                    {touched.surname && errors.surname && (
-                      <p className={s.errorText}>Введите корректную фамилию</p>
-                    )}
                   </div>
+                  {touched.surname && errors.surname && (
+                    <p className={s.errorText}>Введите корректную фамилию</p>
+                  )}
                 </div>
 
                 <div className={s.formField}>
@@ -296,12 +297,12 @@ export default function Footer() {
                         touched.phone && errors.phone ? s.errorUnderline : ""
                       }`}
                     ></div>
-                    {touched.phone && errors.phone && (
-                      <p className={s.errorText}>
-                        Введите корректный номер телефона
-                      </p>
-                    )}
                   </div>
+                  {touched.phone && errors.phone && (
+                    <p className={s.errorText}>
+                      Введите корректный номер телефона
+                    </p>
+                  )}
                 </div>
 
                 <div className={s.formField}>
@@ -322,10 +323,10 @@ export default function Footer() {
                         touched.email && errors.email ? s.errorUnderline : ""
                       }`}
                     ></div>
-                    {touched.email && errors.email && (
-                      <p className={s.errorText}>Введите корректный email</p>
-                    )}
                   </div>
+                  {touched.email && errors.email && (
+                    <p className={s.errorText}>Введите корректный email</p>
+                  )}
                 </div>
               </div>
 
@@ -353,7 +354,7 @@ export default function Footer() {
             </button>
           </form>
         </div>
-        <Image src={FOOTER_LOGO} alt="Логотип SOUND" />
+        <Image src={FOOTER_LOGO} alt="Логотип SOUND" className={s.footerImg} />
       </section>
     </footer>
   );
