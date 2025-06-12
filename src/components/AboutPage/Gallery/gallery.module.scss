@@ -1,8 +1,17 @@
 @use "../../../styles/colors.scss" as *;
 @use "../../../styles/fonts.scss" as *;
 @use "../../../styles/padding_margin_gap.scss" as *;
+@use "../../../styles/breakpoints.scss" as *;
 
 .galleryBlock {
   background-color: $graphiteBlack;
   padding: $padding_120 0;
+
+   @media (width < $desktop) {
+    padding: $padding_98 0;
+  }
+
+   @media (width < $laptop) {
+    padding: $padding_62 0;
+  }
 }

@@ -17,7 +17,7 @@ export default function GallerySlider() {
     <div className={s.galleryWrapper}>
       <Swiper
         modules={[Navigation]}
-        spaceBetween={124}
+        spaceBetween={15}
         slidesPerView={2}
         centeredSlides={true}
         loop={true}
@@ -27,6 +27,20 @@ export default function GallerySlider() {
         navigation={{
           nextEl: `.${s.arrowRight}`,
           prevEl: `.${s.arrowLeft}`,
+        }}
+        breakpoints={{
+          1919: {
+            spaceBetween: 124,
+          },
+          1023: {
+            spaceBetween: 90,
+          },
+          767: {
+            spaceBetween: 70,
+          },
+          374: {
+            spaceBetween: 15,
+          },
         }}
       >
         {galleryImages.map((image, index) => (
