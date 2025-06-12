@@ -11,14 +11,8 @@
 .swiperImage {
   width: 100%;
   height: auto;
-  // max-width: 900px;
-  // max-height: 600px;
-  // object-fit: cover;
-
-  // @media (width < $tablet) {
-  //   width: 315px;
-  // }
 }
+
 .arrowsWrapper {
   display: flex;
   position: absolute;
@@ -27,11 +21,14 @@
   z-index: 10;
   transform: translate(-50%, -50%);
   width: 100%;
-  display: flex;
   justify-content: space-between;
   pointer-events: none;
 
-  @media (width < $tablet) {
+  @media (width < $desktop) {
+    padding: 0 $padding_24;
+  }
+
+  @media (width < $laptop) {
     display: none;
   }
 }

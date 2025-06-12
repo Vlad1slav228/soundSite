@@ -7,6 +7,14 @@
   background-color: $whiteSoft;
   padding: $padding_94 0;
 
+  @media (width < $desktop) {
+    padding: $padding_60 0;
+  }
+
+  @media (width < $laptop) {
+    padding: $padding_70 0;
+  }
+
   @media (width < $tablet) {
     padding: $padding_40 0;
   }
@@ -32,8 +40,7 @@
   margin: 0 auto;
 
   @media (width < $tablet) {
-     width: 90%;
-     justify-content: center;
+    width: 90%;
+    justify-content: center;
   }
 }
-

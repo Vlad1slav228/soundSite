@@ -1,15 +1,33 @@
 @use "../../../styles/colors.scss" as *;
 @use "../../../styles/fonts.scss" as *;
 @use "../../../styles/padding_margin_gap.scss" as *;
-@use "../../../styles/container.scss" as *;
+@use "../../../styles/breakpoints.scss" as *;
 
 .studioRoomsBlock {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  @media (width < $laptop) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 
   img {
     width: 100%;
-    height: auto;
+    max-height: 692px;
+    height: 100%;
     object-fit: cover;
+
+    @media (width < $desktop) {
+      max-height: 100%;
+    }
+
+    @media (width < $laptop) {
+      height: 375px;
+    }
+
+    @media (width < $tablet) {
+      height: 100%;
+    }
   }
 }
 
@@ -24,6 +42,10 @@
   text-align: left;
   background-color: $graphiteBlack;
   padding: $padding_50 $padding_40;
+
+  @media (width < $tablet) {
+    padding: $padding_32 $padding_16;
+  }
 
   &.active {
     background-color: $limeMain;
@@ -48,6 +70,14 @@
   color: $classicWhite;
   font-weight: 400;
   text-transform: uppercase;
+
+  @media (width < $desktop) {
+    font-size: 40px;
+  }
+
+  @media (width < $tablet) {
+    font-size: 32px;
+  }
 }
 
 .roomText {

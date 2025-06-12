@@ -29,17 +29,14 @@ export default function GallerySlider() {
           prevEl: `.${s.arrowLeft}`,
         }}
         breakpoints={{
-          1919: {
+          1440: {
             spaceBetween: 124,
           },
-          1023: {
+          1024: {
             spaceBetween: 90,
           },
-          767: {
+          768: {
             spaceBetween: 70,
-          },
-          374: {
-            spaceBetween: 15,
           },
         }}
       >
