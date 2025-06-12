@@ -35,7 +35,7 @@ export default function IntroVocalRecording() {
         </ul>
         <div className={s.introServiceFooter}>
           <span className={s.introServicePrice}>{service.price}</span>
-          <button className="greenButton">{APPLY_BUTTON}</button>
+          <button className={`greenButton ${s.greenButton}`}>{APPLY_BUTTON}</button>
         </div>
       </div>
       <Image src={STUDIO_IMG} alt="Студия звукозаписи" />

@@ -143,16 +143,16 @@
   align-self: end;
 
   @media (width < $desktop) {
-    width: 155px;
+    max-width: 155px;
     height: auto;
   }
 
   @media (width < $laptop) {
-    width: 115px;
+    max-width: 115px;
   }
 
   @media (width < $tablet) {
-    width: 170px;
+    max-width: 170px;
     grid-column: 1;
     grid-row: 3;
   }

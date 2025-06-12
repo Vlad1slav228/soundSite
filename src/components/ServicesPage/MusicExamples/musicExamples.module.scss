@@ -2,6 +2,7 @@
 @use "../../../styles/fonts.scss" as *;
 @use "../../../styles/padding_margin_gap.scss" as *;
 @use "../../../styles/container.scss" as *;
+@use "../../../styles/breakpoints.scss" as *;
 
 .musicExamplesBlock {
   background-color: $whiteSoft;
@@ -12,6 +13,10 @@
   z-index: 1;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+
+  @media (width < $tablet) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .beforeTrackBlock {
@@ -19,6 +24,18 @@
   flex-direction: column;
   gap: $gap_40;
   padding: $padding_100 $padding_12 $padding_120 $padding_24;
+
+  @media (width < $desktop) {
+    padding: $padding_62 $padding_12 $padding_62 $padding_24;
+  }
+
+  @media (width < $laptop) {
+    padding: $padding_40 $padding_4 $padding_62 $padding_24;
+  }
+
+  @media (width < $tablet) {
+    padding: $padding_32 $padding_12 0 $padding_16;
+  }
 }
 
 .afterTrackBlock {
@@ -26,6 +43,18 @@
   flex-direction: column;
   gap: $gap_40;
   padding: $padding_100 $padding_24 $padding_120 $padding_12;
+
+  @media (width < $desktop) {
+    padding: $padding_62 $padding_12 $padding_62 $padding_24;
+  }
+
+  @media (width < $laptop) {
+    padding: $padding_40 $padding_24 $padding_62 $padding_4;
+  }
+
+  @media (width < $tablet) {
+    padding: $padding_32 $padding_12 $padding_40 $padding_16;
+  }
 }
 
 .trackTitle {
@@ -35,6 +64,10 @@
   font-weight: 400;
   color: $classicBlack;
   text-transform: uppercase;
+
+  @media (width < $laptop) {
+    font-size: 32px;
+  }
 }
 
 .trackBlock {
@@ -43,6 +76,10 @@
   gap: $gap_16;
   padding: $padding_16 $padding_26;
   background-color: $classicBlack;
+
+  @media (width < $tablet) {
+    padding: $padding_16;
+  }
 }
 
 .string {
@@ -56,6 +93,10 @@
   left: 0;
   background-color: $grayString;
   height: 1px;
+
+  @media (width < $desktop) {
+    display: none;
+  }
 }
 
 .stringLineSecond {
@@ -64,6 +105,10 @@
   left: 0;
   background-color: $grayString;
   height: 1px;
+
+  @media (width < $desktop) {
+    display: none;
+  }
 }
 
 .stringLineThird {
@@ -72,4 +117,8 @@
   left: 0;
   background-color: $grayString;
   height: 1px;
+
+  @media (width < $desktop) {
+    display: none;
+  }
 }
