@@ -2,10 +2,15 @@
 @use "../../styles/fonts.scss" as *;
 @use "../../styles/padding_margin_gap.scss" as *;
 @use "../../styles/border.scss" as *;
+@use "../../styles/breakpoints.scss" as *;
 
 .footer {
-  padding-top: 70px;
+  padding-top: $padding_70;
   background-color: $graphiteBlack;
+
+  @media (width < $laptop) {
+    padding-top: $padding_40;
+  }
 }
 
 .footerContentWrapper {
@@ -17,17 +22,45 @@
   flex-direction: column;
   gap: $gap_120;
   align-items: center;
+
+  @media (width < $laptop) {
+    gap: $gap_40;
+  }
+
+  @media (width < $tablet) {
+    gap: $gap_56;
+  }
 }
 
 .footerBlock {
   display: flex;
   justify-content: space-between;
+
+  @media (width < $desktop) {
+    padding: 0 $padding_24;
+  }
+
+  @media (width < $laptop) {
+    gap: $gap_24;
+  }
+
+  @media (width < $tablet) {
+    gap: $gap_48;
+    flex-direction: column;
+    padding: 0 $padding_16;
+  }
 }
 
 .footerContentInfo {
   display: flex;
   flex-direction: column;
   gap: $gap_76;
+}
+
+.footerNav {
+  @media (width < $tablet) {
+    display: none;
+  }
 }
 
 .footerList {
@@ -81,6 +114,11 @@
       line-height: 32px;
       text-decoration: none;
       color: $classicWhite;
+
+      @media (width < $laptop) {
+        font-size: 20px;
+        line-height: 100%;
+      }
     }
   }
 }
@@ -112,6 +150,17 @@
     line-height: 44px;
     text-transform: uppercase;
     color: $classicWhite;
+
+    @media (width < $laptop) {
+      font-size: 32px;
+    }
+  }
+
+  button[type="submit"] {
+    @media (width < $tablet) {
+      width: 100%;
+      justify-content: center;
+    }
   }
 }
 
@@ -126,10 +175,17 @@
   grid-template-columns: repeat(2, 1fr);
   grid-row-gap: $gap_24;
   grid-column-gap: $gap_16;
+
+  @media (width < $desktop) {
+    grid-column-gap: $gap_8;
+  }
+
+  @media (width < $tablet) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 
 .formField {
-  // border: 1px solid #ffffff;
   display: flex;
   flex-direction: column;
   gap: $gap_8;
@@ -139,10 +195,6 @@
   display: flex;
   flex-direction: column;
   gap: $gap_16;
-
-  &:last-child {
-    gap: $gap_8;
-  }
 
   &:has(input:hover) .inputUnderline,
   &:has(input:focus) .inputUnderline {
@@ -262,4 +314,11 @@
   margin: 0;
   padding: 0;
   font-size: 14px;
+}
+
+.footerImg {
+  @media (width < $desktop) {
+    width: 100%;
+    height: auto;
+  }
 }
