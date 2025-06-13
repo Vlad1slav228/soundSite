@@ -7,34 +7,69 @@ import Header from "@/components/Header/header";
 import AccountPage from "@/components/AccountPage/account";
 import Footer from "@/components/Footer/footer";
 import Loading from "@/components/LoadingPage/loading";
+import type { Profile } from "@/components/AccountPage/account";
 
 export default function PersonalAccount() {
-  const [profile, setProfile] = useState<any>(null);
+  // const [profile, setProfile] = useState<any>(null);
+  const [profile, setProfile] = useState<Profile | null>(() => {
+    if (typeof window === "undefined") return null;
+    try {
+      const cached = localStorage.getItem("profile");
+      return cached ? (JSON.parse(cached) as Profile) : null;
+    } catch {
+      return null;
+    }
+  });
+
   const [error, setError] = useState("");
 
+  // useEffect(() => {
+  //   const fetchProfile = async () => {
+  //     try {
+  //       const res = await fetchWithAuth("/api/v1/auth/me/", {
+  //         method: "GET",
+  //       });
+
+  //       if (!res.ok) {
+  //         throw new Error("Вы не авторизованы");
+  //       }
+
+  //       const data = await res.json();
+
+  //       setProfile(data);
+  //     } catch (err: any) {
+  //       setError(err.message);
+  //     }
+  //   };
+
+  //   fetchProfile();
+  // }, []);
+
   useEffect(() => {
-    const fetchProfile = async () => {
+    if (profile) return;
+
+    (async () => {
       try {
-        const res = await fetchWithAuth("/api/v1/auth/me/", {
-          method: "GET",
-        });
+        const res = await fetchWithAuth("/api/v1/auth/me/", { method: "GET" });
+        if (!res.ok) throw new Error("Вы не авторизованы");
 
-        if (!res.ok) {
-          throw new Error("Вы не авторизованы");
-        }
-
-        const data = await res.json();
-
-        await new Promise((resolve) => setTimeout(resolve, 30_000));
-
+        const data: Profile = await res.json();
+        localStorage.setItem("profile", JSON.stringify(data));
         setProfile(data);
       } catch (err: any) {
         setError(err.message);
       }
-    };
+    })();
+  }, [profile]);
 
-    fetchProfile();
-  }, []);
+  const handleLogout = async () => {
+    localStorage.removeItem("profile");
+    localStorage.removeItem("access_token");
+    try {
+      await fetchWithAuth("/api/v1/auth/logout/", { method: "POST" });
+    } catch {}
+    location.href = "/";
+  };
 
   if (error) return <p style={{ color: "red" }}>{error}</p>;
   if (!profile) return <Loading />;
@@ -43,7 +78,7 @@ export default function PersonalAccount() {
     <>
       <Header />
       <main>
-        <AccountPage profile={profile} />
+        <AccountPage profile={profile} onLogout={handleLogout} />
       </main>
       <Footer />
     </>

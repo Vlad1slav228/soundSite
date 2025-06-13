@@ -21,7 +21,7 @@ export type Profile = {
   email: string;
 };
 
-export default function AccountPage({ profile }: {readonly profile: Profile }) {
+export default function AccountPage({ profile, onLogout }: Readonly<{ profile: Profile; onLogout: () => void }>) {
   const [now, setNow] = useState(() => new Date());
 
   useEffect(() => {
@@ -104,7 +104,7 @@ export default function AccountPage({ profile }: {readonly profile: Profile }) {
               ))}
             </ul>
           </div>
-          <button className={s.logoutButton}>{LOGOUT_BUTTON}</button>
+          <button className={`greenButton ${s.logoutButton}`} onClick={onLogout}>{LOGOUT_BUTTON}</button>
         </aside>
         <section className={s.applicationMain}>
           <header className={s.applicationHeader}>
