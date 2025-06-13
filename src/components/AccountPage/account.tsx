@@ -2,8 +2,6 @@
 
 import { Fragment, useEffect, useMemo, useState } from "react";
 import {
-  ACCOUNT_EMAIL,
-  ACCOUNT_FIRST_NAME,
   ACCOUNT_ICON,
   ACTIVE_APPLICATION_BUTTON,
   ALL_APPLICATION_BUTTON,
@@ -17,7 +15,13 @@ import {
 import s from "./account.module.scss";
 import Image from "next/image";
 
-export default function AccountPage() {
+export type Profile = {
+  first_name: string;
+  last_name: string;
+  email: string;
+};
+
+export default function AccountPage({ profile }: {readonly profile: Profile }) {
   const [now, setNow] = useState(() => new Date());
 
   useEffect(() => {
@@ -59,8 +63,8 @@ export default function AccountPage() {
               <div className={s.accountProfile}>
                 <Image src={ACCOUNT_ICON} alt="Иконка профиля" />
                 <div className={s.accountProfileInfo}>
-                  <p className={s.accountFirstName}>{ACCOUNT_FIRST_NAME}</p>
-                  <p className={s.accountEmail}>{ACCOUNT_EMAIL}</p>
+                  <p className={s.accountFirstName}>{profile.first_name}</p>
+                  <p className={s.accountEmail}>{profile.email}</p>
                 </div>
               </div>
               <div className={s.accountTimestamp}>
