@@ -43,7 +43,7 @@ export default function ReviewsList() {
             )}
           </div>
         </div>
-        <Image src={REVIEWS_PAGE_MICROPHONE_IMG} alt="Микрофон" />
+        <Image src={REVIEWS_PAGE_MICROPHONE_IMG} alt="Микрофон" className={s.reviwsMicroImg}/>
       </div>
     </section>
   );

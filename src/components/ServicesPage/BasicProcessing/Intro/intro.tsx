@@ -38,7 +38,7 @@ export default function IntroBasicProcessing() {
           <button className={`greenButton ${s.greenButton}`}>{APPLY_BUTTON}</button>
         </div>
       </div>
-      <Image src={STUDIO_IMG} alt="Студия звукозаписи" />
+      <Image src={STUDIO_IMG} alt="Студия звукозаписи"/>
     </section>
   );
 }

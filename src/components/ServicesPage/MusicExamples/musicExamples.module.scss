@@ -31,10 +31,11 @@
 
   @media (width < $laptop) {
     padding: $padding_40 $padding_4 $padding_62 $padding_24;
+    gap: $gap_20;
   }
 
   @media (width < $tablet) {
-    padding: $padding_32 $padding_12 0 $padding_16;
+    padding: $padding_32 $padding_16 $padding_20 $padding_16;
   }
 }
 
@@ -50,6 +51,7 @@
 
   @media (width < $laptop) {
     padding: $padding_40 $padding_24 $padding_62 $padding_4;
+    gap: $gap_20;
   }
 
   @media (width < $tablet) {
