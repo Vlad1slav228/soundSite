@@ -4,9 +4,10 @@ import styles from "./calendar.module.scss";
 interface CalendarProps {
   onDateSelect: (date: Date) => void;
   selectedDate?: Date | null;
+  disabledDates?: Date[];
 }
 
-const Calendar: React.FC<CalendarProps> = ({ onDateSelect, selectedDate }) => {
+const Calendar: React.FC<CalendarProps> = ({ onDateSelect, selectedDate, disabledDates = [] }) => {
   const [currentDate, setCurrentDate] = useState(selectedDate || new Date());
 
   const generateMonthData = (date: Date) => {
@@ -68,8 +69,48 @@ const Calendar: React.FC<CalendarProps> = ({ onDateSelect, selectedDate }) => {
     if (day) {
       const selected = new Date(currentDate);
       selected.setDate(day);
-      onDateSelect(selected);
+      
+      const isDisabled = disabledDates.some(
+        (disabledDate) =>
+          disabledDate.getDate() === selected.getDate() &&
+          disabledDate.getMonth() === selected.getMonth() &&
+          disabledDate.getFullYear() === selected.getFullYear()
+      );
+      
+      if (!isDisabled) {
+        onDateSelect(selected);
+      }
     }
+  };
+
+  const isCurrentDay = (day: number | null) => {
+    if (!day) return false;
+    return (
+      day === new Date().getDate() &&
+      currentDate.getMonth() === new Date().getMonth() &&
+      currentDate.getFullYear() === new Date().getFullYear()
+    );
+  };
+
+  const isSelectedDay = (day: number | null) => {
+    if (!day || !selectedDate) return false;
+    return (
+      day === selectedDate.getDate() &&
+      currentDate.getMonth() === selectedDate.getMonth() &&
+      currentDate.getFullYear() === selectedDate.getFullYear()
+    );
+  };
+
+  const isDisabledDay = (day: number | null) => {
+    if (!day) return false;
+    const date = new Date(currentDate);
+    date.setDate(day);
+    return disabledDates.some(
+      (disabledDate) =>
+        disabledDate.getDate() === date.getDate() &&
+        disabledDate.getMonth() === date.getMonth() &&
+        disabledDate.getFullYear() === date.getFullYear()
+    );
   };
 
   return (
@@ -104,20 +145,9 @@ const Calendar: React.FC<CalendarProps> = ({ onDateSelect, selectedDate }) => {
                 key={dayIndex}
                 className={`${styles.day} ${day === null ? styles.empty : ""} ${
                   dayIndex >= 5 ? styles.weekend : ""
-                } ${
-                  day === new Date().getDate() &&
-                  currentDate.getMonth() === new Date().getMonth() &&
-                  currentDate.getFullYear() === new Date().getFullYear()
-                    ? styles.currentDay
-                    : ""
-                } ${
-                  selectedDate &&
-                  day === selectedDate.getDate() &&
-                  currentDate.getMonth() === selectedDate.getMonth() &&
-                  currentDate.getFullYear() === selectedDate.getFullYear()
-                    ? styles.selectedDay
-                    : ""
-                }`}
+                } ${isCurrentDay(day) ? styles.currentDay : ""} ${
+                  isSelectedDay(day) ? styles.selectedDay : ""
+                } ${isDisabledDay(day) ? styles.disabledDay : ""}`}
                 onClick={() => handleDayClick(day)}
               >
                 {day}

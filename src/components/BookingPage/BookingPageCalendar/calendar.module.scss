@@ -1,6 +1,7 @@
 @use "../../../styles/colors.scss" as *;
 @use "../../../styles/padding_margin_gap.scss" as *;
 @use "../../../styles/fonts.scss" as *;
+@use "../../../styles/breakpoints.scss" as *;
 
 .calendar {
   width: 280px;
@@ -9,6 +10,11 @@
   background-color: $classicWhite;
   padding: $padding_12;
   box-shadow: 2px 2px 20px 0px #49609029;
+
+  @media (width < $laptop) {
+    width: 260px;
+    padding: $padding_8;
+  }
 }
 
 .header {
@@ -17,30 +23,41 @@
   align-items: center;
   margin-bottom: $margin_20;
   gap: $gap_32;
+
+  @media (width < $laptop) {
+    gap: $gap_16;
+    margin-bottom: $margin_16;
+  }
 }
 
-.navButtonLeft, .navButtonRight {
+.navButtonLeft,
+.navButtonRight {
   background: $limeMain;
   border: none;
   cursor: pointer;
   padding: $padding_12;
   transition: background-color 0.2s;
+  border-radius: 4px;
 
   &:hover {
     background-color: $limeDark;
   }
+
+  @media (width < $laptop) {
+    padding: $padding_8;
+  }
 }
 
-.navButtonLeft{
- &::after {
+.navButtonLeft {
+  &::after {
     height: 16px;
     width: 16px;
     content: url(../../../../public/BookingForm/calendarChevronLeft.png);
   }
 }
 
-.navButtonRight{
- &::after {
+.navButtonRight {
+  &::after {
     height: 16px;
     width: 16px;
     content: url(../../../../public/BookingForm/calendarChevronRight.png);
@@ -52,6 +69,10 @@
   font-size: 16px;
   color: $graphiteBlack;
   text-transform: capitalize;
+
+  @media (width < $laptop) {
+    font-size: 14px;
+  }
 }
 
 .calendarGrid {
@@ -67,12 +88,20 @@
   color: $calendarGray;
   margin-bottom: $margin_8;
   gap: $gap_8;
+
+  @media (width < $laptop) {
+    gap: $gap_4;
+  }
 }
 
 .week {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: $gap_8;
+
+  @media (width < $laptop) {
+    gap: $gap_4;
+  }
 }
 
 .day {
@@ -83,14 +112,33 @@
   font-weight: 400;
   line-height: 16px;
   cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s;
 
-   &.selectedDay {
-    background-color: $limeMain;
-    font-weight: bold;
-    position: relative;
+  &:hover:not(.empty):not(.disabledDay) {
+    background-color: #f0f8d3;
   }
-}
 
-.day.empty {
-  visibility: hidden;
+  &.currentDay {
+    background-color: #f7f7f7;
+  }
+
+  &.selectedDay {
+    background-color: #cee86b;
+    font-weight: bold;
+  }
+
+  &.disabledDay {
+    color: #d6d6d6;
+    cursor: not-allowed;
+  }
+
+  &.empty {
+    visibility: hidden;
+  }
+
+  @media (width < $laptop) {
+    padding: $padding_4 0;
+    font-size: 12px;
+  }
 }
