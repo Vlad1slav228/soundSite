@@ -40,7 +40,7 @@
   display: flex;
   flex-direction: column;
   gap: $gap_40;
-  max-width: 692px;
+  max-width: 690px;
 
   @media (width < $desktop) {
     gap: $gap_40;
@@ -118,17 +118,13 @@
 }
 
 .loadMoreButton {
-  font-family: $onestRegular;
-  font-size: 14px;
-  letter-spacing: -0.03em;
-  color: $graphiteBlack_2;
-  cursor: pointer;
-  background-color: $limeMain;
-  padding: $padding_12 $padding_24;
+ width: 100%;
+ justify-content: center;
 }
 
 .reviwsMicroImg {
   margin-top: $margin_185;
+  
   @media (width < $desktop) {
     margin-left: $margin_20;
   }

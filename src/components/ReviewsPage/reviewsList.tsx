@@ -37,7 +37,7 @@ export default function ReviewsList() {
               ))}
             </div>
             {visibleCount < REVIEWS_DATA.length && (
-              <button className={s.loadMoreButton} onClick={handleShowMore}>
+              <button className={`greenButton ${s.loadMoreButton}`} onClick={handleShowMore}>
                 {REVIEWS_PAGE_BUTTON}
               </button>
             )}

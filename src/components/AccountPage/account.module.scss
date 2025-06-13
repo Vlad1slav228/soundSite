@@ -159,12 +159,8 @@
 }
 
 .logoutButton {
-  background-color: $limeMain;
-  font-family: $onestRegular;
-  font-size: 14px;
-  letter-spacing: -0.03em;
-  color: $classicBlack;
-  padding: $padding_12 $padding_24;
+  width: 100%;
+  justify-content: center;
 }
 
 .applicationMain {

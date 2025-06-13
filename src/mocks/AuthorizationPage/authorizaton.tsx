@@ -10,7 +10,6 @@ export const PHONE_PLACEHOLDER = "Номер телефона";
 export const EMAIL_PLACEHOLDER = "E-mail";
 export const PRIVACY_POLICY_TITLE = "Я соглашаюсь с ";
 export const PRIVACY_POLICY_LINK = "политикой обработки персональных данных";
-export const NEXT_BUTTON = "Далее";
 export const ENTER_BUTTON = "Войти";
 export const REQUIRED_MARK = "*";
 export const OTP_SENT_MESSAGE = "На ваш E-mail был отправлен одноразовый код";

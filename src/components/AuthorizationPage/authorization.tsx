@@ -14,7 +14,6 @@ import {
   PRIVACY_POLICY_LINK,
   PRIVACY_POLICY_TITLE,
   LOADING_ICON,
-  NEXT_BUTTON,
   REQUIRED_MARK,
   OTP_SENT_MESSAGE,
   ENTER_BUTTON,
@@ -103,7 +102,7 @@ export default function AuthorizationForm() {
               <div className={s.formFields}>
                 <div className={s.formField}>
                   <div className={s.inputGroup}>
-                    <div>
+                    <div className={s.inputWrapper}>
                       <span className={s.requiredMark}>{REQUIRED_MARK}</span>
                       <input
                         type="text"
@@ -119,7 +118,7 @@ export default function AuthorizationForm() {
 
                 <div className={s.formField}>
                   <div className={s.inputGroup}>
-                    <div>
+                    <div className={s.inputWrapper}>
                       <span className={s.requiredMark}>{REQUIRED_MARK}</span>
                       <input
                         type="text"
@@ -135,7 +134,7 @@ export default function AuthorizationForm() {
 
                 <div className={s.formField}>
                   <div className={s.inputGroup}>
-                    <div>
+                    <div className={s.inputWrapper}>
                       <span className={s.requiredMark}>{REQUIRED_MARK}</span>
                       <input
                         type="email"
@@ -175,7 +174,7 @@ export default function AuthorizationForm() {
                   className={s.loadingIcon}
                 />
               ) : (
-                NEXT_BUTTON
+                ENTER_BUTTON
               )}
             </button>
             {error && <p className={s.errorText}>{error}</p>}
@@ -187,7 +186,7 @@ export default function AuthorizationForm() {
             <h1>{OTP_SENT_MESSAGE}</h1>
             <div className={s.formField}>
               <div className={s.inputGroup}>
-                <div>
+                <div className={s.inputWrapper}>
                   <span className={s.requiredMark}>{REQUIRED_MARK}</span>
                   <input
                     type="text"

@@ -2,9 +2,11 @@
 @use "../../styles/fonts.scss" as *;
 @use "../../styles/padding_margin_gap.scss" as *;
 @use "../../styles/border.scss" as *;
+@use "../../styles/breakpoints.scss" as *;
 
 .authorizationBlock {
   background-color: $classicWhite;
+  padding: 0 $padding_24;
 }
 
 .authorizationGroup {
@@ -111,6 +113,11 @@
       transition: background-color 9999s ease-in-out 0s;
     }
   }
+}
+
+.inputWrapper {
+  display: flex;
+  padding: 0 $padding_16;
 }
 
 .inputUnderline {
