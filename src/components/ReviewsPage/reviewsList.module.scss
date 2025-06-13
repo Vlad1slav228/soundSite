@@ -1,23 +1,54 @@
 @use "../../styles/colors.scss" as *;
 @use "../../styles/fonts.scss" as *;
 @use "../../styles/padding_margin_gap.scss" as *;
+@use "../../styles/breakpoints.scss" as *;
 
 .reviewsBlock {
   background-color: $graphiteBlack;
   padding-top: $padding_100;
   padding-bottom: $padding_120;
+
+  @media (width < $desktop) {
+    padding-top: $padding_62;
+  }
+
+  @media (width < $tablet) {
+    padding-top: $padding_40;
+    padding-bottom: $padding_80;
+  }
 }
 
 .reviewsWrapper {
   display: flex;
   justify-content: space-between;
+
+  @media (width < $desktop) {
+    padding: 0 0 0 $padding_24;
+  }
+
+  @media (width < $laptop) {
+    gap: $gap_40;
+  }
+
+  @media (width < $tablet) {
+    padding: 0 $padding_20 0 $padding_20;
+  }
 }
 
 .reviewsContent {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: $gap_62;
+  gap: $gap_40;
   max-width: 692px;
+
+  @media (width < $desktop) {
+    gap: $gap_40;
+  }
+
+  @media (width < $laptop) {
+    gap: 0;
+  }
 }
 
 .reviewsTitle {
@@ -27,12 +58,20 @@
   color: $classicWhite;
   font-weight: 400;
   text-transform: uppercase;
+
+  @media (width < $tablet) {
+    font-size: 40px;
+  }
 }
 
 .reviewsListWrapper {
   display: flex;
   flex-direction: column;
   gap: $gap_40;
+
+  @media (width < $tablet) {
+    gap: 0;
+  }
 }
 
 .reviewCard {
@@ -40,6 +79,10 @@
   flex-direction: column;
   gap: $gap_24;
   padding: $padding_40 0;
+
+  @media (width < $tablet) {
+    gap: $gap_12;
+  }
 }
 
 .reviewerName {
@@ -48,6 +91,10 @@
   line-height: 110%;
   color: $classicWhite;
   font-weight: 400;
+
+  @media (width < $tablet) {
+    font-size: 32px;
+  }
 }
 
 .reviewText {
@@ -55,6 +102,14 @@
   font-size: 20px;
   letter-spacing: -0.03em;
   color: $classicWhite;
+
+  @media (width < $laptop) {
+    font-size: 16px;
+  }
+
+  @media (width < $tablet) {
+    font-size: 12px;
+  }
 }
 
 .string {
@@ -72,4 +127,18 @@
   padding: $padding_12 $padding_24;
 }
 
+.reviwsMicroImg {
+  margin-top: $margin_185;
+  @media (width < $desktop) {
+    margin-left: $margin_20;
+  }
 
+  @media (width < $laptop) {
+    width: 215px;
+    height: 315px;
+  }
+
+  @media (width < $tablet) {
+    display: none;
+  }
+}
