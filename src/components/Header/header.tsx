@@ -18,7 +18,6 @@ import { useState, useEffect } from "react";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -30,6 +29,23 @@ export default function Header() {
   window.addEventListener("storage", handler);
   return () => window.removeEventListener("storage", handler);
 }, []);
+
+useEffect(() => {
+    document.body.style.overflow = isMenuOpen ? "hidden" : "";
+  }, [isMenuOpen]);
+
+  const handleLinkClick = () => setIsMenuOpen(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <header className={s.header}>
@@ -45,6 +61,7 @@ export default function Header() {
                 className={s.burger}
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 aria-label="Меню"
+                aria-expanded={isMenuOpen}
               >
                 {MENU_TITLE}
               </button>
@@ -55,19 +72,19 @@ export default function Header() {
             <nav>
               <ul className={`${s.headerList} ${isMenuOpen ? s.navOpen : ""}`}>
                 <li>
-                  <a href="/#about">{ABOUT_TITLE}</a>
+                  <a href="/#about" onClick={handleLinkClick}>{ABOUT_TITLE}</a>
                 </li>
                 <li>
-                  <a href="/#services">{SERVICES_TITLE}</a>
+                  <a href="/#services" onClick={handleLinkClick}>{SERVICES_TITLE}</a>
                 </li>
                 <li>
-                  <a href="/#examples">{EXAMPLES_TITLE}</a>
+                  <a href="/#examples" onClick={handleLinkClick}>{EXAMPLES_TITLE}</a>
                 </li>
                 <li>
-                  <a href="/#photo">{PHOTO_TITLE}</a>
+                  <a href="/#photo" onClick={handleLinkClick}>{PHOTO_TITLE}</a>
                 </li>
                 <li>
-                  <a href="/#contacts">{CONTACTS_TITLE}</a>
+                  <a href="/#contacts" onClick={handleLinkClick}>{CONTACTS_TITLE}</a>
                 </li>
               </ul>
             </nav>

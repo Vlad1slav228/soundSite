@@ -47,13 +47,37 @@
   }
 
   @media (width < $laptop) {
+    padding: $padding_12;
+    background-color: $limeMain;
     display: none;
+    position: fixed;
+    top: 65px;
+    left: 0;
+    width: 100%;            
+    transition: transform 0.3s ease-in-out;
+    z-index: 2;
+  }
+
+  @media (width < $tablet) {
+    top: 60px;
   }
 }
 
 .navOpen {
   display: block;
+
+  @media (width < $laptop) {
+    display: flex;
+    flex-direction: column;
+    gap: $gap_8;
+    animation: slideDown 0.3s ease-in-out forwards;
+  }
+
+  @media (width < $tablet) {
+    align-items: center;
+  }
 }
+
 
 .burger {
   text-transform: uppercase;
@@ -107,5 +131,14 @@
     width: 24px;
     height: 24px;
     content: url(../../../public/Header/IconPhone.png);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
   }
 }
