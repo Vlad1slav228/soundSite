@@ -226,6 +226,7 @@
     border-radius: $border_4;
     width: 24px;
     height: 24px;
+    flex-shrink: 0;
     background-color: transparent;
     cursor: pointer;
     transition: all 0.2s ease;

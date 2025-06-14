@@ -98,7 +98,7 @@ export default function AuthorizationForm() {
 
   const handleSendOTP = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     setTouched({
       firstName: true,
       lastName: true,
@@ -150,7 +150,7 @@ export default function AuthorizationForm() {
 
   const handleVerifyOTP = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Mark OTP field as touched
     setTouched((prev) => ({ ...prev, otp: true }));
     validateField("otp", otp);
@@ -208,7 +208,9 @@ export default function AuthorizationForm() {
                     </div>
                     <div
                       className={`${s.inputUnderline} ${
-                        touched.firstName && errors.firstName ? s.errorUnderline : ""
+                        touched.firstName && errors.firstName
+                          ? s.errorUnderline
+                          : ""
                       }`}
                     ></div>
                   </div>
@@ -237,7 +239,9 @@ export default function AuthorizationForm() {
                     </div>
                     <div
                       className={`${s.inputUnderline} ${
-                        touched.lastName && errors.lastName ? s.errorUnderline : ""
+                        touched.lastName && errors.lastName
+                          ? s.errorUnderline
+                          : ""
                       }`}
                     ></div>
                   </div>
@@ -277,7 +281,11 @@ export default function AuthorizationForm() {
               </div>
 
               <div className={s.checkboxWrapper}>
-                <input type="checkbox" required />
+                <input
+                  type="checkbox"
+                  name="agreed"
+                  required
+                />
                 <label>
                   <span>
                     {PRIVACY_POLICY_TITLE}
@@ -286,6 +294,9 @@ export default function AuthorizationForm() {
                     </a>
                   </span>
                 </label>
+                {errors.agreed && (
+                  <p className={s.errorText}>Необходимо ваше согласие</p>
+                )}
               </div>
             </div>
 

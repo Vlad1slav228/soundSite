@@ -5,10 +5,10 @@
 
 .header {
   background-color: $limeMain;
-  padding: $padding_16 $padding_22;
+  padding: $padding_16 $padding_24;
 
   @media (width < $laptop) {
-    padding: $padding_7 $padding_22;
+    padding: $padding_7 $padding_24;
   }
 
   @media (width < $tablet) {
