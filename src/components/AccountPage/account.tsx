@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useEffect, useMemo, useState } from "react";
+import { fetchWithAuth } from "@/lib/fetchWithAuth";
 import {
   ACCOUNT_ICON,
   ACTIVE_APPLICATION_BUTTON,
@@ -21,6 +22,15 @@ export type Profile = {
   email: string;
 };
 
+type Service = {
+id: number;
+title: string;
+description: string;
+price: string;
+duration: string;
+is_active?: boolean; // если что удалить
+};
+
 export default function AccountPage({ profile, onLogout }: Readonly<{ profile: Profile; onLogout: () => void }>) {
   const [now, setNow] = useState(() => new Date());
 
@@ -37,6 +47,26 @@ export default function AccountPage({ profile, onLogout }: Readonly<{ profile: P
     day: "numeric",
     month: "long",
   });
+
+  const [services, setServices] = useState<Service[]>([]);
+  const [servicesErr, setServicesErr] = useState("");
+
+   useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetchWithAuth("/api/v1/services/", {
+          method: "GET",
+          credentials: "include",         
+        });
+        if (!res.ok) throw new Error(`Ошибка: ${res.status}`);
+
+        const data = await res.json();     
+        setServices(data.results ?? []);
+      } catch (e: any) {
+        setServicesErr(e.message ?? "Не удалось получить услуги");
+      }
+    })();
+  }, []);
 
   const [selectedDay, setSelectedDay] = useState<Date>(now);
 
@@ -95,14 +125,22 @@ export default function AccountPage({ profile, onLogout }: Readonly<{ profile: P
                 );
               })}
             </div>
-            <ul className={s.bookings}>
-              {BOOKING_DATA.map((item, index) => (
-                <li key={index} className={s.bookingsItem}>
-                  <span className={s.bookingsTime}>{item.bookingsTime}</span>
-                  <span className={s.bookingsTitle}>{item.bookingsTitle}</span>
-                </li>
-              ))}
-            </ul>
+           <ul className={s.bookings}>
+        {servicesErr && (
+          <li className={s.errorText}>{servicesErr}</li>
+        )}
+
+        {services.map((srv) => (
+          <li key={srv.id} className={s.bookingsItem}>
+            <span className={s.bookingsTime}>{srv.duration}</span>
+            <span className={s.bookingsTitle}>{srv.title}</span>
+          </li>
+        ))}
+
+        {!servicesErr && services.length === 0 && (
+          <li className={s.bookingsItem}>Загрузка…</li>
+        )}
+      </ul>
           </div>
           <button className={`greenButton ${s.logoutButton}`} onClick={onLogout}>{LOGOUT_BUTTON}</button>
         </aside>
