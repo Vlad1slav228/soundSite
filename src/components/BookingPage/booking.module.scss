@@ -313,12 +313,6 @@
   margin-top: $margin_60;
 }
 
-.bookingMicroImg {
-  @media (width < $tablet) {
-    display: none;
-  }
-}
-
 .errorUnderline {
   background-color: red !important;
 }

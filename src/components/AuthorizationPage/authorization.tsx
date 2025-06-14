@@ -375,7 +375,7 @@ export default function AuthorizationForm() {
           </div>
         )}
 
-        <Image src={MICROPHONE_IMG} alt="Микрофон" className={s.authMicroImg} />
+        <Image src={MICROPHONE_IMG} alt="Микрофон" className="microImg" />
       </div>
     </section>
   );

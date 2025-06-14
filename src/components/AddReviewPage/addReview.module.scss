@@ -62,6 +62,13 @@
       content: url(../../../public/AddReviewForm/chevronRight.png);
     }
   }
+
+  @media (width < $tablet) {
+    h1 {
+      font-size: 36px;
+      margin: 0 auto;
+    }
+  }
 }
 
 .inputGroup {
@@ -130,12 +137,6 @@
   @media (width < $tablet) {
     width: 100%;
     justify-content: center;
-  }
-}
-
-.addReviewMicroImg {
-  @media (width < $tablet) {
-    display: none;
   }
 }
 

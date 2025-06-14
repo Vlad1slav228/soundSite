@@ -1,3 +1,5 @@
+"use client"
+
 import {
   FORM_TITLE,
   MICROPHONE_IMG,
@@ -75,7 +77,7 @@ export default function AddReviewForm() {
         <Image
           src={MICROPHONE_IMG}
           alt="Микрофон"
-          className={s.addReviewMicroImg}
+          className="microImg" 
         />
       </div>
     </section>
