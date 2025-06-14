@@ -10,9 +10,29 @@
 }
 
 .authorizationGroup {
-  padding: $padding_60 0;
+  padding: $padding_140 0;
   display: flex;
   justify-content: space-between;
+
+  @media (width < $desktop) {
+    padding: $padding_100 0;
+    margin: 0 $margin_25;
+  }
+
+  @media (width < $laptop) {
+    display: flex;
+    flex-direction: column;
+
+    img {
+      align-self: flex-end;
+      margin-left: auto;
+    }
+  }
+
+  @media (width < $tablet) {
+    margin: 0 $margin_16;
+    padding: $padding_60 0;
+  }
 }
 
 .callbackForm {
@@ -56,6 +76,10 @@
   grid-template-columns: repeat(2, 1fr);
   grid-row-gap: $gap_24;
   grid-column-gap: $gap_16;
+
+  @media (width < $tablet) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .formField {
@@ -190,4 +214,23 @@
 
 .loadingIcon {
   animation: spin 1s linear infinite;
+}
+
+.authMicroImg {
+  @media (width < $tablet) {
+    display: none;
+  }
+}
+
+.errorUnderline {
+  background-color: red !important;
+}
+
+.errorText {
+  color: red;
+  font-family: $onestLight;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  top: 8px;
 }

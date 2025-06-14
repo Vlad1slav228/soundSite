@@ -225,7 +225,6 @@ export default function BookingForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Помечаем все поля как "тронутые" для отображения ошибок
     const allTouched: TouchedFields = {
       name: true,
       surname: true,
@@ -236,16 +235,13 @@ export default function BookingForm() {
     };
     setTouched(allTouched);
 
-    // Валидируем все поля
     (Object.keys(formData) as Array<keyof FormData>).forEach((key) => {
       validateField(key, formData[key]);
     });
 
-    // Проверяем есть ли ошибки
     const hasErrors = Object.values(errors).some((error) => error);
     if (!hasErrors) {
       console.log("Форма отправлена:", formData);
-      // Здесь можно добавить отправку формы
     }
   };
 

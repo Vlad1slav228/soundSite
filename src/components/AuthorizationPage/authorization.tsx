@@ -20,6 +20,21 @@ import {
   SUCCESS_MESSAGE,
 } from "@/mocks/AuthorizationPage/authorizaton";
 
+type FormErrors = {
+  firstName: boolean;
+  lastName: boolean;
+  email: boolean;
+  otp: boolean;
+  agreed: boolean;
+};
+
+type TouchedFields = {
+  firstName: boolean;
+  lastName: boolean;
+  email: boolean;
+  otp: boolean;
+};
+
 export default function AuthorizationForm() {
   const [step, setStep] = useState<"input" | "otp" | "success">("input");
   const [email, setEmail] = useState("");
@@ -28,9 +43,76 @@ export default function AuthorizationForm() {
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<FormErrors>({
+    firstName: false,
+    lastName: false,
+    email: false,
+    otp: false,
+    agreed: false,
+  });
+  const [touched, setTouched] = useState<TouchedFields>({
+    firstName: false,
+    lastName: false,
+    email: false,
+    otp: false,
+  });
+
+  const validateField = (name: keyof TouchedFields, value: string) => {
+    let isValid = true;
+
+    switch (name) {
+      case "firstName":
+      case "lastName":
+        isValid = value.trim().length >= 2;
+        break;
+      case "email":
+        isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+        break;
+      case "otp":
+        isValid = value.trim().length > 0;
+        break;
+      default:
+        break;
+    }
+
+    setErrors((prev) => ({ ...prev, [name]: !isValid }));
+  };
+
+  const handleBlur = (field: keyof TouchedFields) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+    switch (field) {
+      case "firstName":
+        validateField(field, firstName);
+        break;
+      case "lastName":
+        validateField(field, lastName);
+        break;
+      case "email":
+        validateField(field, email);
+        break;
+      case "otp":
+        validateField(field, otp);
+        break;
+    }
+  };
 
   const handleSendOTP = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    setTouched({
+      firstName: true,
+      lastName: true,
+      email: true,
+      otp: false,
+    });
+
+    validateField("firstName", firstName);
+    validateField("lastName", lastName);
+    validateField("email", email);
+
+    const hasErrors = errors.firstName || errors.lastName || errors.email;
+    if (hasErrors) return;
+
     setError("");
     setLoading(true);
     try {
@@ -68,10 +150,16 @@ export default function AuthorizationForm() {
 
   const handleVerifyOTP = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Mark OTP field as touched
+    setTouched((prev) => ({ ...prev, otp: true }));
+    validateField("otp", otp);
+
+    if (errors.otp) return;
+
     setError("");
     setLoading(true);
     try {
-      console.log("API:", API_BASE_URL);
       const res = await fetch(`${API_BASE_URL}/api/v1/auth/verify-otp/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -109,11 +197,24 @@ export default function AuthorizationForm() {
                         placeholder={NAME_PLACEHOLDER}
                         required
                         value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
+                        onChange={(e) => {
+                          setFirstName(e.target.value);
+                          if (touched.firstName) {
+                            validateField("firstName", e.target.value);
+                          }
+                        }}
+                        onBlur={() => handleBlur("firstName")}
                       />
                     </div>
-                    <div className={s.inputUnderline}></div>
+                    <div
+                      className={`${s.inputUnderline} ${
+                        touched.firstName && errors.firstName ? s.errorUnderline : ""
+                      }`}
+                    ></div>
                   </div>
+                  {touched.firstName && errors.firstName && (
+                    <p className={s.errorText}>Введите корректное имя</p>
+                  )}
                 </div>
 
                 <div className={s.formField}>
@@ -125,11 +226,24 @@ export default function AuthorizationForm() {
                         placeholder={SURNAME_PLACEHOLDER}
                         required
                         value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
+                        onChange={(e) => {
+                          setLastName(e.target.value);
+                          if (touched.lastName) {
+                            validateField("lastName", e.target.value);
+                          }
+                        }}
+                        onBlur={() => handleBlur("lastName")}
                       />
                     </div>
-                    <div className={s.inputUnderline}></div>
+                    <div
+                      className={`${s.inputUnderline} ${
+                        touched.lastName && errors.lastName ? s.errorUnderline : ""
+                      }`}
+                    ></div>
                   </div>
+                  {touched.lastName && errors.lastName && (
+                    <p className={s.errorText}>Введите корректную фамилию</p>
+                  )}
                 </div>
 
                 <div className={s.formField}>
@@ -141,11 +255,24 @@ export default function AuthorizationForm() {
                         placeholder={EMAIL_PLACEHOLDER}
                         required
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => {
+                          setEmail(e.target.value);
+                          if (touched.email) {
+                            validateField("email", e.target.value);
+                          }
+                        }}
+                        onBlur={() => handleBlur("email")}
                       />
                     </div>
-                    <div className={s.inputUnderline}></div>
+                    <div
+                      className={`${s.inputUnderline} ${
+                        touched.email && errors.email ? s.errorUnderline : ""
+                      }`}
+                    ></div>
                   </div>
+                  {touched.email && errors.email && (
+                    <p className={s.errorText}>Введите корректный email</p>
+                  )}
                 </div>
               </div>
 
@@ -192,12 +319,25 @@ export default function AuthorizationForm() {
                     type="text"
                     placeholder="Пароль"
                     value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
+                    onChange={(e) => {
+                      setOtp(e.target.value);
+                      if (touched.otp) {
+                        validateField("otp", e.target.value);
+                      }
+                    }}
+                    onBlur={() => handleBlur("otp")}
                     required
                   />
                 </div>
-                <div className={s.inputUnderline}></div>
+                <div
+                  className={`${s.inputUnderline} ${
+                    touched.otp && errors.otp ? s.errorUnderline : ""
+                  }`}
+                ></div>
               </div>
+              {touched.otp && errors.otp && (
+                <p className={s.errorText}>Введите корректный код</p>
+              )}
             </div>
             <button
               type="submit"
@@ -224,7 +364,7 @@ export default function AuthorizationForm() {
           </div>
         )}
 
-        <Image src={MICROPHONE_IMG} alt="Микрофон" />
+        <Image src={MICROPHONE_IMG} alt="Микрофон" className={s.authMicroImg} />
       </div>
     </section>
   );
