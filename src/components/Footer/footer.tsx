@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   ABOUT_TITLE,
   CONTACTS_TITLE,
@@ -78,8 +78,87 @@ export default function Footer() {
     email: false,
   });
 
+  const phoneInputRef = useRef<HTMLInputElement>(null);
+  const [lastPhoneCursor, setLastPhoneCursor] = useState(0);
+  const [lastPhoneValue, setLastPhoneValue] = useState("");
+  const [isBackspace, setIsBackspace] = useState(false);
+
+  const handlePhoneKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    setLastPhoneCursor(e.currentTarget.selectionStart || 0);
+    setLastPhoneValue(e.currentTarget.value);
+    setIsBackspace(e.key === "Backspace");
+  };
+
+  const formatPhone = (value: string): string => {
+    let rawNumbers = value.replace(/\D/g, "");
+
+    if (rawNumbers.startsWith("8")) {
+      rawNumbers = "7" + rawNumbers.slice(1);
+    } else if (!rawNumbers.startsWith("7")) {
+      rawNumbers = "7" + rawNumbers;
+    }
+
+    rawNumbers = rawNumbers.slice(0, 11);
+
+    let formatted = "+7";
+    if (rawNumbers.length > 1) formatted += "(" + rawNumbers.slice(1, 4);
+    if (rawNumbers.length >= 4) formatted += ")";
+    if (rawNumbers.length > 4) formatted += "-" + rawNumbers.slice(4, 7);
+    if (rawNumbers.length > 7) formatted += "-" + rawNumbers.slice(7, 9);
+    if (rawNumbers.length > 9) formatted += "-" + rawNumbers.slice(9, 11);
+
+    return formatted;
+  };
+
+  const countDigitsBeforeCursor = (value: string, cursor: number): number => {
+    return value
+      .substring(0, cursor)
+      .split("")
+      .filter((char) => /\d/.test(char)).length;
+  };
+
+  const findCursorPositionFromDigits = (
+    formatted: string,
+    digitIndex: number
+  ): number => {
+    let count = 0;
+    for (let i = 0; i < formatted.length; i++) {
+      if (/\d/.test(formatted[i])) {
+        count++;
+        if (count === digitIndex + 1) return i + 1;
+      }
+    }
+    return formatted.length;
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhone(e.target.value);
+    setFormData((prev) => ({ ...prev, phone: formatted }));
+
+    const digitsBeforeCursor = countDigitsBeforeCursor(
+      lastPhoneValue,
+      lastPhoneCursor
+    );
+    const newCursor = findCursorPositionFromDigits(
+      formatted,
+      digitsBeforeCursor - (isBackspace ? 1 : 0)
+    );
+
+    setTimeout(() => {
+      if (phoneInputRef.current) {
+        phoneInputRef.current.setSelectionRange(newCursor, newCursor);
+      }
+    }, 0);
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
+
+    if (name === "phone") {
+      handlePhoneChange(e);
+      return;
+    }
+
     setFormData((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
@@ -99,10 +178,6 @@ export default function Footer() {
     validateField(name as keyof FormData, formData[name as keyof FormData]);
   };
 
-  const normalizePhone = (phone: string) => {
-    return phone.replace(/[^\d\+]/g, "");
-  };
-
   const validateField = (name: keyof FormData, value: string | boolean) => {
     let isValid = true;
 
@@ -112,15 +187,14 @@ export default function Footer() {
         isValid = typeof value === "string" && value.trim().length >= 2;
         break;
       case "phone":
-        const normalized = normalizePhone(value as string);
-        isValid =
-          /^(\+7|7|8)\d{10}$/.test(normalized) ||
-          /^\+\d{11,15}$/.test(normalized);
+        const normalized = value.toString().replace(/\D/g, "");
+        isValid = normalized.length === 11 && normalized.startsWith("7");
         break;
       case "email":
         isValid =
           typeof value === "string" &&
-          (value === "" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value));
+          value.trim() !== "" &&
+          /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
         break;
       case "agreed":
         isValid = value === true;
@@ -282,12 +356,14 @@ export default function Footer() {
                     <div style={{ display: "flex" }}>
                       <span className={s.requiredMark}>{REQUIRED_MARK}</span>
                       <input
+                        ref={phoneInputRef}
                         type="tel"
                         name="phone"
                         id="phone"
                         placeholder={PHONE_PLACEHOLDER}
                         value={formData.phone}
                         onChange={handleChange}
+                        onKeyDown={handlePhoneKeyDown}
                         onBlur={handleBlur}
                         required
                       />
@@ -308,6 +384,7 @@ export default function Footer() {
                 <div className={s.formField}>
                   <div className={s.inputGroup}>
                     <div style={{ display: "flex" }}>
+                      <span className={s.requiredMark}>{REQUIRED_MARK}</span>
                       <input
                         type="email"
                         name="email"
@@ -316,6 +393,7 @@ export default function Footer() {
                         value={formData.email}
                         onChange={handleChange}
                         onBlur={handleBlur}
+                        required
                       />
                     </div>
                     <div
@@ -347,6 +425,9 @@ export default function Footer() {
                     </a>
                   </span>
                 </label>
+                {errors.agreed && (
+                  <p className={s.errorText}>Необходимо ваше согласие</p>
+                )}
               </div>
             </div>
             <button type="submit" className="greenButton">

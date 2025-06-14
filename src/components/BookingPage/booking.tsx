@@ -19,7 +19,6 @@ import Image from "next/image";
 import React, { useState, useRef, useEffect } from "react";
 import Calendar from "./BookingPageCalendar/calendar";
 
-// Массив временных промежутков
 const TIME_SLOTS = [
   "09:00 - 10:00",
   "10:00 - 11:00",
@@ -97,6 +96,10 @@ export default function BookingForm() {
   const calendarRef = useRef<HTMLDivElement>(null);
   const timeDropdownRef = useRef<HTMLDivElement>(null);
   const dateInputRef = useRef<HTMLInputElement>(null);
+  const phoneInputRef = useRef<HTMLInputElement>(null);
+  const [lastPhoneCursor, setLastPhoneCursor] = useState(0);
+  const [lastPhoneValue, setLastPhoneValue] = useState("");
+  const [isBackspace, setIsBackspace] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -123,9 +126,74 @@ export default function BookingForm() {
     };
   }, []);
 
+  const handlePhoneKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    setLastPhoneCursor(e.currentTarget.selectionStart || 0);
+    setLastPhoneValue(e.currentTarget.value);
+    setIsBackspace(e.key === "Backspace");
+  };
+
+  const formatPhone = (value: string): string => {
+    let rawNumbers = value.replace(/\D/g, '');
+
+    if (rawNumbers.startsWith('8')) {
+      rawNumbers = '7' + rawNumbers.slice(1);
+    } else if (!rawNumbers.startsWith('7')) {
+      rawNumbers = '7' + rawNumbers;
+    }
+
+    rawNumbers = rawNumbers.slice(0, 11);
+
+    let formatted = "+7";
+    if (rawNumbers.length > 1) formatted += "(" + rawNumbers.slice(1, 4);
+    if (rawNumbers.length >= 4) formatted += ")";
+    if (rawNumbers.length > 4) formatted += "-" + rawNumbers.slice(4, 7);
+    if (rawNumbers.length > 7) formatted += "-" + rawNumbers.slice(7, 9);
+    if (rawNumbers.length > 9) formatted += "-" + rawNumbers.slice(9, 11);
+
+    return formatted;
+  };
+
+  const countDigitsBeforeCursor = (value: string, cursor: number): number => {
+    return value
+      .substring(0, cursor)
+      .split("")
+      .filter((char) => /\d/.test(char)).length;
+  };
+
+  const findCursorPositionFromDigits = (formatted: string, digitIndex: number): number => {
+    let count = 0;
+    for (let i = 0; i < formatted.length; i++) {
+      if (/\d/.test(formatted[i])) {
+        count++;
+        if (count === digitIndex + 1) return i + 1;
+      }
+    }
+    return formatted.length;
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhone(e.target.value);
+    setFormData(prev => ({ ...prev, phone: formatted }));
+
+    const digitsBeforeCursor = countDigitsBeforeCursor(lastPhoneValue, lastPhoneCursor);
+    const newCursor = findCursorPositionFromDigits(formatted, digitsBeforeCursor - (isBackspace ? 1 : 0));
+
+    setTimeout(() => {
+      if (phoneInputRef.current) {
+        phoneInputRef.current.setSelectionRange(newCursor, newCursor);
+      }
+    }, 0);
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
+    
+    if (name === 'phone') {
+      handlePhoneChange(e);
+      return;
+    }
+
+    setFormData(prev => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
@@ -140,12 +208,8 @@ export default function BookingForm() {
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const { name } = e.target;
-    setTouched((prev) => ({ ...prev, [name]: true }));
+    setTouched(prev => ({ ...prev, [name]: true }));
     validateField(name as keyof FormData, formData[name as keyof FormData]);
-  };
-
-  const normalizePhone = (phone: string) => {
-    return phone.replace(/[^\d\+]/g, "");
   };
 
   const validateField = (name: keyof FormData, value: string | boolean) => {
@@ -157,16 +221,13 @@ export default function BookingForm() {
         isValid = typeof value === "string" && value.trim().length >= 2;
         break;
       case "phone":
-        const normalized = normalizePhone(value as string);
-        isValid =
-          /^(\+7|7|8)\d{10}$/.test(normalized) ||
-          /^\+\d{11,15}$/.test(normalized);
+        const normalized = value.toString().replace(/\D/g, '');
+        isValid = normalized.length === 11 && normalized.startsWith('7');
         break;
       case "email":
-        isValid =
-          typeof value === "string" &&
-          value.trim() !== "" &&
-          /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+        isValid = typeof value === "string" && 
+                 value.trim() !== "" && 
+                 /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
         break;
       case "date":
         isValid = typeof value === "string" && value.trim().length > 0;
@@ -181,7 +242,7 @@ export default function BookingForm() {
         break;
     }
 
-    setErrors((prev) => ({ ...prev, [name]: !isValid }));
+    setErrors(prev => ({ ...prev, [name]: !isValid }));
   };
 
   const handleDateSelect = (date: Date) => {
@@ -190,20 +251,19 @@ export default function BookingForm() {
       month: "2-digit",
       year: "numeric",
     });
-    setFormData((prev) => ({ ...prev, date: formattedDate }));
+    setFormData(prev => ({ ...prev, date: formattedDate }));
     setCalendarDate(date);
     setShowCalendar(false);
 
     if (dateInputRef.current) {
-      const isoDate = date.toISOString().split("T")[0];
-      dateInputRef.current.value = isoDate;
+      dateInputRef.current.value = date.toISOString().split("T")[0];
     }
 
     validateField("date", formattedDate);
   };
 
   const handleTimeSelect = (time: string) => {
-    setFormData((prev) => ({ ...prev, time }));
+    setFormData(prev => ({ ...prev, time }));
     setShowTimeDropdown(false);
     validateField("time", time);
   };
@@ -212,14 +272,14 @@ export default function BookingForm() {
     e.preventDefault();
     setShowCalendar(!showCalendar);
     setShowTimeDropdown(false);
-    setTouched((prev) => ({ ...prev, date: true }));
+    setTouched(prev => ({ ...prev, date: true }));
   };
 
   const toggleTimeDropdown = (e: React.MouseEvent) => {
     e.preventDefault();
     setShowTimeDropdown(!showTimeDropdown);
     setShowCalendar(false);
-    setTouched((prev) => ({ ...prev, time: true }));
+    setTouched(prev => ({ ...prev, time: true }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -239,7 +299,7 @@ export default function BookingForm() {
       validateField(key, formData[key]);
     });
 
-    const hasErrors = Object.values(errors).some((error) => error);
+    const hasErrors = Object.values(errors).some(error => error);
     if (!hasErrors) {
       console.log("Форма отправлена:", formData);
     }
@@ -307,11 +367,13 @@ export default function BookingForm() {
                   <div className={s.inputWrapper}>
                     <span className={s.requiredMark}>{REQUIRED_MARK}</span>
                     <input
+                      ref={phoneInputRef}
                       type="tel"
                       name="phone"
                       placeholder={PHONE_PLACEHOLDER}
                       value={formData.phone}
                       onChange={handleChange}
+                      onKeyDown={handlePhoneKeyDown}
                       onBlur={handleBlur}
                       required
                     />
@@ -350,7 +412,7 @@ export default function BookingForm() {
                   ></div>
                 </div>
                 {touched.email && errors.email && (
-                  <p className={s.errorText}>Введите корректный email</p>
+                  <p className={s.errorText}>Введите корректный email (пример: example@mail.com)</p>
                 )}
               </div>
 
@@ -425,8 +487,7 @@ export default function BookingForm() {
                             (e.currentTarget.style.backgroundColor = "#F0F8D3")
                           }
                           onMouseLeave={(e) =>
-                            (e.currentTarget.style.backgroundColor =
-                              "transparent")
+                            (e.currentTarget.style.backgroundColor = "transparent")
                           }
                           onMouseDown={(e) =>
                             (e.currentTarget.style.backgroundColor = "#CEE86B")
@@ -475,7 +536,7 @@ export default function BookingForm() {
         <Image
           src={MICROPHONE_IMG}
           alt="Микрофон"
-          className={s.bookingMicroImg}
+          className="microImg" 
         />
       </div>
     </section>
