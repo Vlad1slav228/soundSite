@@ -29,10 +29,11 @@ type Service = {
   duration_min: number;
 };
 
-// type Slot = {
-//   start: string;
-//   service: number;
-// };
+type Slot = {
+  service_id: number;
+  service_name: string;
+  slots: string[];
+};
 
 export default function AccountPage({
   profile,
@@ -54,28 +55,59 @@ export default function AccountPage({
     month: "long",
   });
 
+  const [selectedDay, setSelectedDay] = useState<Date>(now);
+  const [startIndex, setStartIndex] = useState(0);
+  const [direction, setDirection] = useState<"next" | "prev" | null>(null);
+
   const [services, setServices] = useState<Service[]>([]);
-  const [servicesErr, setServicesErr] = useState("");
+  const [serviceSlots, setServiceSlots] = useState<Record<number, Slot>>({});
+  const [expandedService, setExpandedService] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    (async () => {
+    async function fetchData() {
+      setLoading(true);
+      setError("");
       try {
         const res = await fetchWithAuth("/api/v1/services/", {
           method: "GET",
           credentials: "include",
         });
-        if (!res.ok) throw new Error(`Ошибка: ${res.status}`);
-
+        if (!res.ok) throw new Error("Ошибка получения услуг");
         const data = await res.json();
-        setServices(data.results ?? []);
-      } catch (e: any) {
-        setServicesErr(e.message ?? "Не удалось получить услуги");
-      }
-    })();
-  }, []);
+        setServices(data.results || []);
 
-  const [selectedDay, setSelectedDay] = useState<Date>(now);
-  const [startIndex, setStartIndex] = useState(0);
+        const slotsResponses = await Promise.all(
+          (data.results || []).map(async (service: Service) => {
+            const r = await fetchWithAuth(
+              `/api/v1/slots/?date=${selectedDay
+                .toISOString()
+                .slice(0, 10)}&service=${service.id}`,
+              { method: "GET", credentials: "include" }
+            );
+            if (!r.ok) return null;
+            const slotData = await r.json();
+            const slot = Array.isArray(slotData) ? slotData[0] : slotData;
+            return { ...slot, service_id: service.id };
+          })
+        );
+
+        const slotsMap: Record<number, Slot> = {};
+        slotsResponses.forEach((slot) => {
+          if (slot && Array.isArray(slot.slots)) {
+            slotsMap[slot.service_id] = slot;
+          }
+        });
+        setServiceSlots(slotsMap);
+      } catch (e: any) {
+        setError(e.message || "Ошибка");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, [selectedDay]);
 
   const days = useMemo(() => {
     return Array.from({ length: 365 }, (_, i) => {
@@ -102,37 +134,8 @@ export default function AccountPage({
       )
     : "";
 
-  // const scrollRef = useRef<HTMLDivElement>(null);
-  // const isDragging = useRef(false);
-  // const startX = useRef(0);
-  // const scrollLeft = useRef(0);
-
-  // const onMouseDown = (e: React.MouseEvent) => {
-  //   isDragging.current = true;
-  //   startX.current = e.pageX - (scrollRef.current?.offsetLeft ?? 0);
-  //   scrollLeft.current = scrollRef.current!.scrollLeft;
-  // };
-
-  // const onMouseLeave = () => {
-  //   isDragging.current = false;
-  // };
-  // const onMouseUp = () => {
-  //   isDragging.current = false;
-  // };
-  // const onMouseMove = (e: React.MouseEvent) => {
-  //   if (!isDragging.current) return;
-  //   e.preventDefault();
-  //   const x = e.pageX - (scrollRef.current?.offsetLeft ?? 0);
-  //   const walk = (x - startX.current) * 1;
-  //   scrollRef.current!.scrollLeft = scrollLeft.current - walk;
-  // };
-
   const canPrev = startIndex > 0;
   const canNext = startIndex + 7 < days.length;
-  // const goPrev = () => canPrev && setStartIndex(startIndex - 7);
-  // const goNext = () => canNext && setStartIndex(startIndex + 7);
-
-  const [direction, setDirection] = useState<"next" | "prev" | null>(null);
 
   const goPrev = () => {
     if (!canPrev) return;
@@ -145,20 +148,6 @@ export default function AccountPage({
     setDirection("next");
     setStartIndex((prev) => prev + 7);
   };
-
-  // const week = useMemo(() => {
-  //   const base = new Date(selectedDay);
-  //   base.setHours(0, 0, 0, 0);
-  //   const monday = new Date(base);
-  //   const diff = (base.getDay() + 6) % 7;
-  //   monday.setDate(monday.getDate() - diff);
-
-  //   return Array.from({ length: 7 }, (_, i) => {
-  //     const d = new Date(monday);
-  //     d.setDate(monday.getDate() + i);
-  //     return d;
-  //   });
-  // }, [selectedDay]);
 
   return (
     <section className={s.accountBlock}>
@@ -213,6 +202,7 @@ export default function AccountPage({
                   {daysWindow.map((d) => {
                     const isActive =
                       d.toDateString() === selectedDay.toDateString();
+
                     return (
                       <button
                         key={d.toISOString()}
@@ -221,9 +211,7 @@ export default function AccountPage({
                         }`}
                         onClick={() => setSelectedDay(d)}
                       >
-                        <span className={s.calendarItemDate}>
-                          {d.getDate()}
-                        </span>
+                        <span className={s.calendarItemDate}>{d.getDate()}</span>
                         <span className={s.calendarItemDay}>
                           {WEEKDAYS_DATA[d.getDay()]}
                         </span>
@@ -234,17 +222,64 @@ export default function AccountPage({
               </div>
             </div>
             <ul className={s.bookings}>
-              {servicesErr && <li className={s.errorText}>{servicesErr}</li>}
+              {error && <li className={s.errorText}>{error}</li>}
+              {loading && <li className={s.bookingsItem}>Загрузка…</li>}
 
-              {services.map((srv) => (
-                <li key={srv.id} className={s.bookingsItem}>
-                  <p className={s.bookingsTitle}>{srv.title}</p>
-                </li>
-              ))}
+              {!loading &&
+                !error &&
+                services.length > 0 &&
+                services.map((service) => {
+                  const slot = serviceSlots[service.id];
+                  const hasSlots =
+                    slot && Array.isArray(slot.slots) && slot.slots.length > 0;
 
-              {!servicesErr && services.length === 0 && (
-                <li className={s.bookingsItem}>Загрузка…</li>
-              )}
+                  return (
+                    <li
+                      key={service.id}
+                      className={`${s.bookingsItem} ${
+                        !hasSlots ? s.disabledService : ""
+                      }`}
+                      style={
+                        !hasSlots ? { opacity: 0.5, cursor: "not-allowed" } : {}
+                      }
+                    >
+                      <button
+                        className={s.bookingsTitle}
+                        disabled={!hasSlots}
+                        onClick={() =>
+                          hasSlots &&
+                          setExpandedService(
+                            expandedService === service.id ? null : service.id
+                          )
+                        }
+                        style={{
+                          width: "100%",
+                          textAlign: "left",
+                          background: "none",
+                          border: "none",
+                          padding: 0,
+                        }}
+                      >
+                        {service.title}
+                      </button>
+                      {hasSlots && expandedService === service.id && (
+                        <ul className={s.slotsList}>
+                          {slot.slots.map((time: string, i: number) => (
+                            <li key={i} className={s.slotItem}>
+                              {time}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  );
+                })}
+
+              {!loading &&
+                !error &&
+                services.every(
+                  (s) => !serviceSlots[s.id] || !serviceSlots[s.id].slots.length
+                ) && <li className={s.bookingsItem}>Нет доступных услуг</li>}
             </ul>
           </div>
           <button

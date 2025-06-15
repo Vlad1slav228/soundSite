@@ -15,6 +15,7 @@ export default function AddReviewForm() {
   const [review, setReview] = useState("");
   const [error, setError] = useState(false);
   const [touched, setTouched] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const validateReview = (text: string) => {
     return text.trim().length >= 6;
@@ -41,8 +42,39 @@ export default function AddReviewForm() {
     
     if (isValid) {
       console.log("Отправка отзыва:", review);
+      setIsSubmitted(true);
     }
   };
+
+  const handleBack = () => {
+    setIsSubmitted(false);
+    setReview("");
+    setTouched(false);
+    setError(false);
+  };
+
+  if (isSubmitted) {
+    return (
+      <section className={s.addReviewBlock}>
+        <div className={`container ${s.addReviewGroup}`}>
+          <div className={s.successContent}>
+            <button 
+              onClick={handleBack} 
+              className={`greenButton ${s.backButton}`}
+            >
+              Назад
+            </button>
+            <h1 className={s.successTitle}>Отзыв успешно отправлен!</h1>
+          </div>
+          <Image
+            src={MICROPHONE_IMG}
+            alt="Микрофон"
+            className="microImg" 
+          />
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className={s.addReviewBlock}>
