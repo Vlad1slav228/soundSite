@@ -40,13 +40,13 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: $gap_60;
 
   @media (width < $tablet) {
     margin: 0 auto;
   }
 
   h1 {
+    margin-bottom: $margin_60;
     font-family: $onestLight;
     font-weight: 400;
     font-size: 44px;
@@ -56,6 +56,7 @@
   }
 
   button[type="submit"] {
+    margin-top: $margin_45;
     &::after {
       width: 24px;
       height: 24px;
@@ -65,8 +66,11 @@
 
   @media (width < $tablet) {
     h1 {
-      font-size: 36px;
-      margin: 0 auto;
+      font-size: 32px;
+      margin: 0 auto $margin_40 auto;
+    }
+    button[type="submit"] {
+      margin-top: $margin_25;
     }
   }
 }
@@ -131,6 +135,7 @@
   width: 100%;
   height: 1px;
   background-color: $rangeColor;
+  margin-bottom: $margin_8;
 }
 
 .sendButton {
@@ -145,10 +150,50 @@
 }
 
 .errorText {
+  margin-top: $gap_16;
   color: red;
   font-family: $onestLight;
   margin: 0;
   padding: 0;
   font-size: 14px;
   top: 8px;
+}
+
+.successContent {
+  display: flex;
+  flex-direction: column;
+  gap: $gap_60;
+  width: 100%;
+  max-width: 460px;
+
+  @media (width < $tablet) {
+    margin: 0 auto;
+  }
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $gap_8;
+  
+  &::before {
+      width: 24px;
+      height: 24px;
+      content: url(../../../public/AddReviewForm/chevronLeft.png);
+  }
+}
+
+.successTitle {
+  font-family: $onestLight;
+  font-weight: 400;
+  font-size: 44px;
+  line-height: 44px;
+  text-transform: uppercase;
+  color: $classicBlack;
+
+  @media (width < $tablet) {
+    font-size: 36px;
+    margin: 0 auto;
+  }
 }

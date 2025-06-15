@@ -57,6 +57,7 @@ export default function AccountPage({
 
   const [selectedDay, setSelectedDay] = useState<Date>(now);
   const [startIndex, setStartIndex] = useState(0);
+  const [direction, setDirection] = useState<"next" | "prev" | null>(null);
 
   const [services, setServices] = useState<Service[]>([]);
   const [serviceSlots, setServiceSlots] = useState<Record<number, Slot>>({});
@@ -133,35 +134,21 @@ export default function AccountPage({
       )
     : "";
 
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const isDragging = useRef(false);
-  const startX = useRef(0);
-  const scrollLeft = useRef(0);
-
-  const onMouseDown = (e: React.MouseEvent) => {
-    isDragging.current = true;
-    startX.current = e.pageX - (scrollRef.current?.offsetLeft ?? 0);
-    scrollLeft.current = scrollRef.current!.scrollLeft;
-  };
-
-  const onMouseLeave = () => {
-    isDragging.current = false;
-  };
-  const onMouseUp = () => {
-    isDragging.current = false;
-  };
-  const onMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging.current) return;
-    e.preventDefault();
-    const x = e.pageX - (scrollRef.current?.offsetLeft ?? 0);
-    const walk = (x - startX.current) * 1;
-    scrollRef.current!.scrollLeft = scrollLeft.current - walk;
-  };
-
   const canPrev = startIndex > 0;
   const canNext = startIndex + 7 < days.length;
-  const goPrev = () => canPrev && setStartIndex(startIndex - 7);
-  const goNext = () => canNext && setStartIndex(startIndex + 7);
+
+  const goPrev = () => {
+    if (!canPrev) return;
+    setDirection("prev");
+    setStartIndex((prev) => prev - 7);
+  };
+
+  const goNext = () => {
+    if (!canNext) return;
+    setDirection("next");
+    setStartIndex((prev) => prev + 7);
+  };
+
   return (
     <section className={s.accountBlock}>
       <div className={`container ${s.accountLayout}`}>
@@ -201,33 +188,37 @@ export default function AccountPage({
                   <Image src={ARROW_RIGHT} alt="Стрелка вправо" />
                 </button>
               </div>
-              <div
-                className={s.calendar}
-                ref={scrollRef}
-                onMouseDown={onMouseDown}
-                onMouseUp={onMouseUp}
-                onMouseLeave={onMouseLeave}
-                onMouseMove={onMouseMove}
-              >
-                {daysWindow.map((d) => {
-                  const isActive =
-                    d.toDateString() === selectedDay.toDateString();
+              <div className={s.calendarWrapperInner}>
+                <div
+                  className={`${s.calendarAnimated} ${
+                    direction === "next"
+                      ? s.slideInFromRight
+                      : direction === "prev"
+                      ? s.slideInFromLeft
+                      : ""
+                  }`}
+                  onAnimationEnd={() => setDirection(null)}
+                >
+                  {daysWindow.map((d) => {
+                    const isActive =
+                      d.toDateString() === selectedDay.toDateString();
 
-                  return (
-                    <button
-                      key={d.toISOString()}
-                      className={`${s.calendarItem} ${
-                        isActive ? s["calendarItem--active"] : ""
-                      }`}
-                      onClick={() => setSelectedDay(d)}
-                    >
-                      <span className={s.calendarItemDate}>{d.getDate()}</span>
-                      <span className={s.calendarItemDay}>
-                        {WEEKDAYS_DATA[d.getDay()]}
-                      </span>
-                    </button>
-                  );
-                })}
+                    return (
+                      <button
+                        key={d.toISOString()}
+                        className={`${s.calendarItem} ${
+                          isActive ? s["calendarItem--active"] : ""
+                        }`}
+                        onClick={() => setSelectedDay(d)}
+                      >
+                        <span className={s.calendarItemDate}>{d.getDate()}</span>
+                        <span className={s.calendarItemDay}>
+                          {WEEKDAYS_DATA[d.getDay()]}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </div>
             <ul className={s.bookings}>
