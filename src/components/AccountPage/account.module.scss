@@ -89,9 +89,57 @@
   }
 }
 
+.calendarWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $gap_10;
+}
+
+.calendarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  gap: $gap_8;
+
+  .arrow {
+    display: flex;
+    padding: $padding_3;
+    background: $limeMain;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $limeDark;
+    }
+
+    &:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+
+    img {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .monthLabel {
+    font-family: $onestLight;
+    font-size: 15px;
+    color: $classicBlack;
+  }
+}
+
 .calendar {
+  cursor: grab;
   display: flex;
   gap: $gap_8;
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .calendarItem {
@@ -100,7 +148,7 @@
   align-items: center;
   gap: $gap_4;
   background: none;
-  cursor: pointer;
+  cursor: grab;
 
   &--active {
     .calendarItemDate {
@@ -110,6 +158,7 @@
 }
 
 .calendarItemDate {
+  // border: 1px solid #000;
   background-color: $cloudWhite;
   font-family: $onestRegular;
   font-size: 16px;
@@ -119,6 +168,28 @@
   padding: $padding_12;
   width: 40px;
   height: 40px;
+
+  &:hover:not(.empty):not(.disabledDay) {
+    background-color: $calendarHover;
+  }
+
+  &.currentDay {
+    background-color: $currentDay;
+  }
+
+  &.selectedDay {
+    background-color: $limeMain;
+    font-weight: bold;
+  }
+
+  &.disabledDay {
+    color: $disabledDay;
+    cursor: not-allowed;
+  }
+
+  &.empty {
+    visibility: hidden;
+  }
 }
 
 .calendarItemDay {
@@ -310,6 +381,6 @@
 }
 
 .string {
-   height: 1px;
+  height: 1px;
   background: $rangeColor;
 }

@@ -1,6 +1,10 @@
 import accountIcon from "../../../public/PersonalAccount/accountIcon.png";
+import leftArrow from "../../../public/PersonalAccount/iconleft.png";
+import rightArrow from "../../../public/PersonalAccount/iconRight.png";
 
 export const ACCOUNT_ICON = accountIcon;
+export const ARROW_LEFT = leftArrow;
+export const ARROW_RIGHT = rightArrow;
 export const ACCOUNT_FIRST_NAME = "Anna";
 export const ACCOUNT_EMAIL = "a.nur@yandex.ru";
 export const WEEKDAYS_DATA = ["вс", "пн", "вт", "ср", "чт", "пт", "сб"];

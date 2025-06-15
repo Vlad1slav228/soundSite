@@ -8,6 +8,7 @@ import AccountPage from "@/components/AccountPage/account";
 import Footer from "@/components/Footer/footer";
 import Loading from "@/components/LoadingPage/loading";
 import type { Profile } from "@/components/AccountPage/account";
+import { useRouter } from "next/navigation";
 
 export default function PersonalAccount() {
   // const [profile, setProfile] = useState<any>(null);
@@ -62,13 +63,28 @@ export default function PersonalAccount() {
     })();
   }, [profile]);
 
+  const router = useRouter();
+
   const handleLogout = async () => {
-    localStorage.removeItem("profile");
-    localStorage.removeItem("access_token");
     try {
-      await fetchWithAuth("/api/v1/auth/logout/", { method: "POST" });
-    } catch {}
-    location.href = "/";
+      const res = await fetchWithAuth("/api/v1/auth/logout/", {
+        method: "POST",
+        credentials: "include", 
+      });
+      if (!res.ok) {
+        /* сервер вернул 401/5xx – сообщим и всё-равно продолжим */
+        console.warn("Logout error:", await res.text());
+      }
+    } catch (e) {
+      console.warn("Logout network error:", e);
+    } finally {
+      localStorage.removeItem("profile");
+      localStorage.removeItem("access_token");
+
+      window.dispatchEvent(new StorageEvent("storage"));
+
+      router.replace("/");
+    }
   };
 
   if (error) return <p style={{ color: "red" }}>{error}</p>;
