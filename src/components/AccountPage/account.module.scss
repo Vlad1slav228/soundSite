@@ -384,3 +384,8 @@
   height: 1px;
   background: $rangeColor;
 }
+
+.disabledService {
+  opacity: 0.5;
+  pointer-events: none;
+}
