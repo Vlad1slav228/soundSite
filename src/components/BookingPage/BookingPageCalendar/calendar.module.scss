@@ -116,20 +116,20 @@
   transition: background-color 0.2s;
 
   &:hover:not(.empty):not(.disabledDay) {
-    background-color: #f0f8d3;
+    background-color: $calendarHover;
   }
 
   &.currentDay {
-    background-color: #f7f7f7;
+    background-color: $currentDay;
   }
 
   &.selectedDay {
-    background-color: #cee86b;
+    background-color: $limeMain;
     font-weight: bold;
   }
 
   &.disabledDay {
-    color: #d6d6d6;
+    color: $disabledDay;
     cursor: not-allowed;
   }
 
