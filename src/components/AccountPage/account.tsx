@@ -368,7 +368,7 @@ export default function AccountPage({
                 >
                   <Image src={ARROW_LEFT} alt="Стрелка влево" />
                 </button>
-                <span className={s.monthLabel}>{monthLabel}</span>
+                <p className={s.monthLabel}>{monthLabel}</p>
                 <button
                   onClick={goNext}
                   disabled={!canNext}
@@ -403,12 +403,12 @@ export default function AccountPage({
                         onClick={() => !isPast && setSelectedDay(d)}
                         disabled={isPast}
                       >
-                        <span className={s.calendarItemDate}>
+                        <p className={s.calendarItemDate}>
                           {d.getDate()}
-                        </span>
-                        <span className={s.calendarItemDay}>
+                        </p>
+                        <p className={s.calendarItemDay}>
                           {WEEKDAYS_DATA[d.getDay()]}
-                        </span>
+                        </p>
                       </button>
                     );
                   })}
@@ -614,7 +614,7 @@ export default function AccountPage({
             {bookingsError && <p className={s.errorText}>{bookingsError}</p>}
 
             {!bookingsLoading && !bookingsError && bookings.length === 0 && (
-              <p>У вас пока нет записей</p>
+              <p className={s.lackOfBookingsText}>У вас пока нет записей</p>
             )}
 
             {!bookingsLoading &&
@@ -657,9 +657,9 @@ export default function AccountPage({
                           )}
                       </div>
                       <div className={s.serviceCardFooter}>
-                        <span className={s.serviceCardPrice}>
+                        <p className={s.serviceCardPrice}>
                           {booking.service.price} ₽
-                        </span>
+                        </p>
                         {isPast && booking.can_review && (
                           <button className={s.reviewButton}>
                             Оставить отзыв
@@ -667,7 +667,7 @@ export default function AccountPage({
                         )}
                         {isPast && !booking.can_review && (
                           <button
-                            className={`${s.reviewButton} ${s.reviewButtonDisabled}`}
+                            className={s.reviewButton}
                             disabled
                           >
                             Отзыв оставлен

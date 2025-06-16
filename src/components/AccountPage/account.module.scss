@@ -776,8 +776,11 @@
   opacity: 0.7;
 }
 
-.reviewButtonDisabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  background-color: $cloudGray !important;
+.lackOfBookingsText{
+  font-family: $onestLight;
+  font-size: 24px;
+  color: $classicBlack;
+  display: flex;
+  justify-content: center;
+  margin-top: $margin_40;
 }
