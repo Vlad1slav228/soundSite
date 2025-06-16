@@ -11,7 +11,6 @@ import {
   ARROW_RIGHT,
   CANCEL_APPLICATION_BUTTON,
   LOGOUT_BUTTON,
-  SERVICES_DATA,
   WEEKDAYS_DATA,
 } from "@/mocks/AccountPage/account";
 import s from "./account.module.scss";
@@ -35,12 +34,55 @@ type Slot = {
   slots: string[];
 };
 
+type Booking = {
+  id: number;
+  service: {
+    id: number;
+    title: string;
+    features: string;
+    price: string;
+    duration_min: number;
+    is_active: boolean;
+  };
+  start_at: string;
+  end_at: string;
+  status: string;
+  source: string;
+  is_paid: boolean;
+  paid_at: string | null;
+  can_review: boolean;
+  tracks: Array<{
+    id: number;
+    title: string;
+    file: string;
+    file_converted: string;
+    uploaded: string;
+  }>;
+  reviews: Array<{
+    id: number;
+    booking_info: {
+      id: number;
+      service: string;
+      start_at: string;
+      end_at: string;
+    };
+    user: number;
+    rating: number;
+    text: string;
+    reply: string;
+    created: string;
+  }>;
+};
+
 export default function AccountPage({
   profile,
   onLogout,
 }: Readonly<{ profile: Profile; onLogout: () => void }>) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [now, setNow] = useState(() => new Date());
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [bookingsLoading, setBookingsLoading] = useState(false);
+  const [bookingsError, setBookingsError] = useState("");
 
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 1_000);
@@ -55,6 +97,29 @@ export default function AccountPage({
     day: "numeric",
     month: "long",
   });
+
+  // Функция для загрузки записей пользователя
+  const fetchBookings = async () => {
+    setBookingsLoading(true);
+    setBookingsError("");
+    try {
+      const res = await fetchWithAuth("/api/v1/bookings/", {
+        method: "GET",
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error("Ошибка получения записей");
+      const data = await res.json();
+      setBookings(data.results || []);
+    } catch (e: any) {
+      setBookingsError(e.message || "Ошибка загрузки записей");
+    } finally {
+      setBookingsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchBookings();
+  }, []);
 
   useEffect(() => {
     if (isSidebarOpen && window.innerWidth < 1024) {
@@ -81,10 +146,44 @@ export default function AccountPage({
     setSelectedSlot(null);
   };
 
-  const handleBookAppointment = () => {
-    if (selectedSlot) {
+  const handleBookAppointment = async () => {
+    if (!selectedSlot) return;
+
+    try {
+      const dateStr = selectedDay.toISOString().split("T")[0];
+      const timeStr = selectedSlot.time.padEnd(5, ":00");
+
+      // Проверка на прошедшую дату/время
+      const selectedDateTime = new Date(`${dateStr}T${timeStr}`);
+      if (selectedDateTime < now) {
+        alert("Нельзя записаться на прошедшую дату или время");
+        return;
+      }
+
+      const res = await fetchWithAuth("/api/v1/bookings/", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          service_id: selectedSlot.serviceId,
+          start_at: `${dateStr}T${timeStr}`,
+        }),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Ошибка при создании записи");
+      }
+
+      const newBooking = await res.json();
+      setBookings((prev) => [newBooking, ...prev]);
       alert(`Запись на ${selectedSlot.time} подтверждена!`);
       setSelectedSlot(null);
+    } catch (error: any) {
+      alert(error.message || "Произошла ошибка при записи");
+      console.error("Booking error:", error);
     }
   };
 
@@ -197,6 +296,37 @@ export default function AccountPage({
     setSelectedSlot(null);
   };
 
+  // Функция для форматирования даты и времени
+  const formatDateTime = (dateTimeString: string) => {
+    const date = new Date(dateTimeString);
+    return {
+      date: date.toLocaleDateString("ru-RU", {
+        day: "numeric",
+        month: "long",
+      }),
+      time: date.toLocaleTimeString("ru-RU", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    };
+  };
+
+  // Проверка, является ли день прошедшим
+  const isPastDay = (day: Date) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return day < today;
+  };
+
+  // Проверка, является ли временной слот прошедшим
+  const isPastTimeSlot = (day: Date, time: string) => {
+    const now = new Date();
+    const [hours, minutes] = time.split(":").map(Number);
+    const slotDate = new Date(day);
+    slotDate.setHours(hours, minutes, 0, 0);
+    return slotDate < now;
+  };
+
   return (
     <section className={s.accountBlock}>
       <div
@@ -262,14 +392,16 @@ export default function AccountPage({
                   {daysWindow.map((d) => {
                     const isActive =
                       d.toDateString() === selectedDay.toDateString();
+                    const isPast = isPastDay(d);
 
                     return (
                       <button
                         key={d.toISOString()}
                         className={`${s.calendarItem} ${
                           isActive ? s["calendarItem--active"] : ""
-                        }`}
-                        onClick={() => setSelectedDay(d)}
+                        } ${isPast ? s.calendarItemPast : ""}`}
+                        onClick={() => !isPast && setSelectedDay(d)}
+                        disabled={isPast}
                       >
                         <span className={s.calendarItemDate}>
                           {d.getDate()}
@@ -324,22 +456,31 @@ export default function AccountPage({
                                   const hours = parseInt(time.split(":")[0]);
                                   return hours >= 9 && hours < 12;
                                 })
-                                .map((time: string, i: number) => (
-                                  <button
-                                    key={i}
-                                    className={`${s.slotItem} ${
-                                      selectedSlot?.serviceId === service.id &&
-                                      selectedSlot?.time === time
-                                        ? s.slotItemActive
-                                        : ""
-                                    }`}
-                                    onClick={() =>
-                                      handleSlotSelect(service.id, time)
-                                    }
-                                  >
-                                    {time}
-                                  </button>
-                                ))}
+                                .map((time: string, i: number) => {
+                                  const isPast = isPastTimeSlot(
+                                    selectedDay,
+                                    time
+                                  );
+                                  return (
+                                    <button
+                                      key={i}
+                                      className={`${s.slotItem} ${
+                                        selectedSlot?.serviceId ===
+                                          service.id &&
+                                        selectedSlot?.time === time
+                                          ? s.slotItemActive
+                                          : ""
+                                      } ${isPast ? s.slotItemPast : ""}`}
+                                      onClick={() =>
+                                        !isPast &&
+                                        handleSlotSelect(service.id, time)
+                                      }
+                                      disabled={isPast}
+                                    >
+                                      {time}
+                                    </button>
+                                  );
+                                })}
                             </div>
                           </div>
 
@@ -351,22 +492,31 @@ export default function AccountPage({
                                   const hours = parseInt(time.split(":")[0]);
                                   return hours >= 12 && hours < 18;
                                 })
-                                .map((time: string, i: number) => (
-                                  <button
-                                    key={i}
-                                    className={`${s.slotItem} ${
-                                      selectedSlot?.serviceId === service.id &&
-                                      selectedSlot?.time === time
-                                        ? s.slotItemActive
-                                        : ""
-                                    }`}
-                                    onClick={() =>
-                                      handleSlotSelect(service.id, time)
-                                    }
-                                  >
-                                    {time}
-                                  </button>
-                                ))}
+                                .map((time: string, i: number) => {
+                                  const isPast = isPastTimeSlot(
+                                    selectedDay,
+                                    time
+                                  );
+                                  return (
+                                    <button
+                                      key={i}
+                                      className={`${s.slotItem} ${
+                                        selectedSlot?.serviceId ===
+                                          service.id &&
+                                        selectedSlot?.time === time
+                                          ? s.slotItemActive
+                                          : ""
+                                      } ${isPast ? s.slotItemPast : ""}`}
+                                      onClick={() =>
+                                        !isPast &&
+                                        handleSlotSelect(service.id, time)
+                                      }
+                                      disabled={isPast}
+                                    >
+                                      {time}
+                                    </button>
+                                  );
+                                })}
                             </div>
                           </div>
 
@@ -382,28 +532,35 @@ export default function AccountPage({
                                     const hours = parseInt(time.split(":")[0]);
                                     return hours >= 18;
                                   })
-                                  .map((time: string, i: number) => (
-                                    <button
-                                      key={i}
-                                      className={`${s.slotItem} ${
-                                        selectedSlot?.serviceId ===
-                                          service.id &&
-                                        selectedSlot?.time === time
-                                          ? s.slotItemActive
-                                          : ""
-                                      }`}
-                                      onClick={() =>
-                                        handleSlotSelect(service.id, time)
-                                      }
-                                    >
-                                      {time}
-                                    </button>
-                                  ))}
+                                  .map((time: string, i: number) => {
+                                    const isPast = isPastTimeSlot(
+                                      selectedDay,
+                                      time
+                                    );
+                                    return (
+                                      <button
+                                        key={i}
+                                        className={`${s.slotItem} ${
+                                          selectedSlot?.serviceId ===
+                                            service.id &&
+                                          selectedSlot?.time === time
+                                            ? s.slotItemActive
+                                            : ""
+                                        } ${isPast ? s.slotItemPast : ""}`}
+                                        onClick={() =>
+                                          !isPast &&
+                                          handleSlotSelect(service.id, time)
+                                        }
+                                        disabled={isPast}
+                                      >
+                                        {time}
+                                      </button>
+                                    );
+                                  })}
                               </div>
                             </div>
                           )}
 
-                          {/* Кнопки подтверждения/отмены */}
                           {selectedSlot?.serviceId === service.id && (
                             <div className={s.slotActions}>
                               <button
@@ -453,27 +610,75 @@ export default function AccountPage({
             </div>
           </header>
           <div className={s.serviceCardWrapper}>
-            {SERVICES_DATA.map((service, index) => (
-              <Fragment key={index}>
-                <article className={s.serviceCard}>
-                  <div className={s.serviceCardContent}>
-                    <h2 className={s.serviceCardTitle}>{service.title}</h2>
-                    <ul className={s.serviceCardList}>
-                      {service.list.map((item, i) => (
-                        <li key={i} className={s.servicesCardListItem}>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className={s.serviceCardFooter}>
-                    <span className={s.serviceCardPrice}>{service.price}</span>
-                    <button className={s.reviewButton}>{service.button}</button>
-                  </div>
-                </article>
-                <div className={s.string} aria-hidden="true"></div>
-              </Fragment>
-            ))}
+            {bookingsLoading && <p>Загрузка записей...</p>}
+            {bookingsError && <p className={s.errorText}>{bookingsError}</p>}
+
+            {!bookingsLoading && !bookingsError && bookings.length === 0 && (
+              <p>У вас пока нет записей</p>
+            )}
+
+            {!bookingsLoading &&
+              bookings.map((booking) => {
+                const { date, time } = formatDateTime(booking.start_at);
+                const bookingDate = new Date(booking.start_at);
+                const isPast = bookingDate < now;
+                const duration = booking.service.duration_min;
+
+                return (
+                  <Fragment key={booking.id}>
+                    <article
+                      className={`${s.serviceCard} ${
+                        isPast ? s.pastBooking : ""
+                      }`}
+                    >
+                      <div className={s.serviceCardContent}>
+                        <h2 className={s.serviceCardTitle}>
+                          {booking.service.title}
+                        </h2>
+                        <div className={s.bookingDetails}>
+                          <p className={s.bookingDetail}>{date}</p>
+                          <p className={s.bookingDetail}>{time}</p>
+                          <p className={s.bookingDetail}>{duration} мин.</p>
+                        </div>
+                        {booking.service.features &&
+                          Array.isArray(booking.service.features) && (
+                            <ul className={s.serviceCardList}>
+                              {booking.service.features.map(
+                                (feature, index) => (
+                                  <li
+                                    key={index}
+                                    className={s.servicesCardListItem}
+                                  >
+                                    {feature}
+                                  </li>
+                                )
+                              )}
+                            </ul>
+                          )}
+                      </div>
+                      <div className={s.serviceCardFooter}>
+                        <span className={s.serviceCardPrice}>
+                          {booking.service.price} ₽
+                        </span>
+                        {isPast && booking.can_review && (
+                          <button className={s.reviewButton}>
+                            Оставить отзыв
+                          </button>
+                        )}
+                        {isPast && !booking.can_review && (
+                          <button
+                            className={`${s.reviewButton} ${s.reviewButtonDisabled}`}
+                            disabled
+                          >
+                            Отзыв оставлен
+                          </button>
+                        )}
+                      </div>
+                    </article>
+                    <div className={s.string} aria-hidden="true"></div>
+                  </Fragment>
+                );
+              })}
           </div>
         </section>
       </div>
