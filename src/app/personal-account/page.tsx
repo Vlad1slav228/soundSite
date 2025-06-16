@@ -8,7 +8,7 @@ import AccountPage from "@/components/AccountPage/account";
 import Footer from "@/components/Footer/footer";
 import Loading from "@/components/LoadingPage/loading";
 import type { Profile } from "@/components/AccountPage/account";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 export default function PersonalAccount() {
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -34,7 +34,7 @@ export default function PersonalAccount() {
     fetchProfile();
   }, []);
 
-  const router = useRouter();
+  // const router = useRouter();
 
   const handleLogout = async () => {
     try {
@@ -48,10 +48,8 @@ export default function PersonalAccount() {
     } catch (e) {
       console.warn("Logout network error:", e);
     } finally {
-      localStorage.removeItem("profile");
-      localStorage.removeItem("access_token");
-      window.dispatchEvent(new StorageEvent("storage"));
-      router.replace("/");
+      setProfile(null);
+      window.location.replace("/");
     }
   };
 
