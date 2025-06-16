@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { fetchWithAuth } from "@/lib/fetchWithAuth";
 import {
   ACCOUNT_ICON,
@@ -39,6 +39,7 @@ export default function AccountPage({
   profile,
   onLogout,
 }: Readonly<{ profile: Profile; onLogout: () => void }>) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [now, setNow] = useState(() => new Date());
 
   useEffect(() => {
@@ -55,9 +56,42 @@ export default function AccountPage({
     month: "long",
   });
 
+  useEffect(() => {
+    if (isSidebarOpen && window.innerWidth < 1024) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isSidebarOpen]);
+
+  const [selectedSlot, setSelectedSlot] = useState<{
+    serviceId: number;
+    time: string;
+  } | null>(null);
+
+  const handleSlotSelect = (serviceId: number, time: string) => {
+    setSelectedSlot({ serviceId, time });
+  };
+
+  const handleCancelSelection = () => {
+    setSelectedSlot(null);
+  };
+
+  const handleBookAppointment = () => {
+    if (selectedSlot) {
+      alert(`Запись на ${selectedSlot.time} подтверждена!`);
+      setSelectedSlot(null);
+    }
+  };
+
   const [selectedDay, setSelectedDay] = useState<Date>(now);
   const [startIndex, setStartIndex] = useState(0);
   const [direction, setDirection] = useState<"next" | "prev" | null>(null);
+  const [visibleDaysCount, setVisibleDaysCount] = useState(7);
 
   const [services, setServices] = useState<Service[]>([]);
   const [serviceSlots, setServiceSlots] = useState<Record<number, Slot>>({});
@@ -109,6 +143,15 @@ export default function AccountPage({
     fetchData();
   }, [selectedDay]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setVisibleDaysCount(window.innerWidth < 768 ? 4 : 7);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const days = useMemo(() => {
     return Array.from({ length: 365 }, (_, i) => {
       const d = new Date(now);
@@ -118,8 +161,8 @@ export default function AccountPage({
   }, [now]);
 
   const daysWindow = useMemo(
-    () => days.slice(startIndex, startIndex + 7),
-    [days, startIndex]
+    () => days.slice(startIndex, startIndex + visibleDaysCount),
+    [days, startIndex, visibleDaysCount]
   );
 
   const capitalize = (str: string) =>
@@ -135,24 +178,41 @@ export default function AccountPage({
     : "";
 
   const canPrev = startIndex > 0;
-  const canNext = startIndex + 7 < days.length;
+  const canNext = startIndex + visibleDaysCount < days.length;
 
   const goPrev = () => {
     if (!canPrev) return;
     setDirection("prev");
-    setStartIndex((prev) => prev - 7);
+    setStartIndex((prev) => Math.max(0, prev - visibleDaysCount));
   };
 
   const goNext = () => {
     if (!canNext) return;
     setDirection("next");
-    setStartIndex((prev) => prev + 7);
+    setStartIndex((prev) => prev + visibleDaysCount);
+  };
+
+  const resetSidebarState = () => {
+    setExpandedService(null);
+    setSelectedSlot(null);
   };
 
   return (
     <section className={s.accountBlock}>
+      <div
+        className={`${s.sidebarOverlay} ${isSidebarOpen ? s.active : ""}`}
+        onClick={() => {
+          setIsSidebarOpen(false);
+          resetSidebarState();
+        }}
+      />
+
       <div className={`container ${s.accountLayout}`}>
-        <aside className={s.accountSidebar}>
+        <aside
+          className={`${s.accountSidebar} ${
+            isSidebarOpen ? s.sidebarOpen : ""
+          }`}
+        >
           <div className={s.accountSidebarInner}>
             <header className={s.accountHeader}>
               <div className={s.accountProfile}>
@@ -211,7 +271,9 @@ export default function AccountPage({
                         }`}
                         onClick={() => setSelectedDay(d)}
                       >
-                        <span className={s.calendarItemDate}>{d.getDate()}</span>
+                        <span className={s.calendarItemDate}>
+                          {d.getDate()}
+                        </span>
                         <span className={s.calendarItemDay}>
                           {WEEKDAYS_DATA[d.getDay()]}
                         </span>
@@ -238,10 +300,7 @@ export default function AccountPage({
                       key={service.id}
                       className={`${s.bookingsItem} ${
                         !hasSlots ? s.disabledService : ""
-                      }`}
-                      style={
-                        !hasSlots ? { opacity: 0.5, cursor: "not-allowed" } : {}
-                      }
+                      } ${expandedService === service.id ? s.expanded : ""}`}
                     >
                       <button
                         className={s.bookingsTitle}
@@ -252,34 +311,120 @@ export default function AccountPage({
                             expandedService === service.id ? null : service.id
                           )
                         }
-                        style={{
-                          width: "100%",
-                          textAlign: "left",
-                          background: "none",
-                          border: "none",
-                          padding: 0,
-                        }}
                       >
                         {service.title}
                       </button>
                       {hasSlots && expandedService === service.id && (
-                        <ul className={s.slotsList}>
-                          {slot.slots.map((time: string, i: number) => (
-                            <li key={i} className={s.slotItem}>
-                              {time}
-                            </li>
-                          ))}
-                        </ul>
+                        <div className={s.slotsList}>
+                          <div className={s.slotsTimeGroup}>
+                            <h4 className={s.slotsTimeGroupTitle}>Утро</h4>
+                            <div className={s.slotsTimeGroupItems}>
+                              {slot.slots
+                                .filter((time) => {
+                                  const hours = parseInt(time.split(":")[0]);
+                                  return hours >= 9 && hours < 12;
+                                })
+                                .map((time: string, i: number) => (
+                                  <button
+                                    key={i}
+                                    className={`${s.slotItem} ${
+                                      selectedSlot?.serviceId === service.id &&
+                                      selectedSlot?.time === time
+                                        ? s.slotItemActive
+                                        : ""
+                                    }`}
+                                    onClick={() =>
+                                      handleSlotSelect(service.id, time)
+                                    }
+                                  >
+                                    {time}
+                                  </button>
+                                ))}
+                            </div>
+                          </div>
+
+                          <div className={s.slotsTimeGroup}>
+                            <h4 className={s.slotsTimeGroupTitle}>День</h4>
+                            <div className={s.slotsTimeGroupItems}>
+                              {slot.slots
+                                .filter((time) => {
+                                  const hours = parseInt(time.split(":")[0]);
+                                  return hours >= 12 && hours < 18;
+                                })
+                                .map((time: string, i: number) => (
+                                  <button
+                                    key={i}
+                                    className={`${s.slotItem} ${
+                                      selectedSlot?.serviceId === service.id &&
+                                      selectedSlot?.time === time
+                                        ? s.slotItemActive
+                                        : ""
+                                    }`}
+                                    onClick={() =>
+                                      handleSlotSelect(service.id, time)
+                                    }
+                                  >
+                                    {time}
+                                  </button>
+                                ))}
+                            </div>
+                          </div>
+
+                          {slot.slots.some((time) => {
+                            const hours = parseInt(time.split(":")[0]);
+                            return hours >= 18;
+                          }) && (
+                            <div className={s.slotsTimeGroup}>
+                              <h4 className={s.slotsTimeGroupTitle}>Вечер</h4>
+                              <div className={s.slotsTimeGroupItems}>
+                                {slot.slots
+                                  .filter((time) => {
+                                    const hours = parseInt(time.split(":")[0]);
+                                    return hours >= 18;
+                                  })
+                                  .map((time: string, i: number) => (
+                                    <button
+                                      key={i}
+                                      className={`${s.slotItem} ${
+                                        selectedSlot?.serviceId ===
+                                          service.id &&
+                                        selectedSlot?.time === time
+                                          ? s.slotItemActive
+                                          : ""
+                                      }`}
+                                      onClick={() =>
+                                        handleSlotSelect(service.id, time)
+                                      }
+                                    >
+                                      {time}
+                                    </button>
+                                  ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Кнопки подтверждения/отмены */}
+                          {selectedSlot?.serviceId === service.id && (
+                            <div className={s.slotActions}>
+                              <button
+                                className={`greenButton ${s.bookButton}`}
+                                onClick={handleBookAppointment}
+                              >
+                                Записаться
+                              </button>
+                              <button
+                                className={`greenButton ${s.cancelButton}`}
+                                onClick={handleCancelSelection}
+                              >
+                                Отмена
+                              </button>
+                            </div>
+                          )}
+                        </div>
                       )}
                     </li>
                   );
                 })}
-
-              {!loading &&
-                !error &&
-                services.every(
-                  (s) => !serviceSlots[s.id] || !serviceSlots[s.id].slots.length
-                ) && <li className={s.bookingsItem}>Нет доступных услуг</li>}
             </ul>
           </div>
           <button
@@ -289,9 +434,18 @@ export default function AccountPage({
             {LOGOUT_BUTTON}
           </button>
         </aside>
+
         <section className={s.applicationMain}>
           <header className={s.applicationHeader}>
-            <h1 className={s.applicationTitle}>{APPLICATION_TITLE}</h1>
+            <div className={s.headerGroup}>
+              <button
+                className={s.sidebarToggle}
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              >
+                <Image src={ARROW_LEFT} alt="Меню" />
+              </button>
+              <h1 className={s.applicationTitle}>{APPLICATION_TITLE}</h1>
+            </div>
             <div className={s.applicationFilters}>
               <button className={s.tab}>{ALL_APPLICATION_BUTTON}</button>
               <button className={s.tab}>{ACTIVE_APPLICATION_BUTTON}</button>

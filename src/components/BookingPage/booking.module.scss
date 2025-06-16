@@ -194,11 +194,11 @@
   color: $graphiteBlack;
 
   &:hover {
-    background-color: #f0f8d3;
+    background-color: $calendarHover;
   }
 
   &:active {
-    background-color: #cee86b;
+    background-color: $limeMain;
   }
 }
 

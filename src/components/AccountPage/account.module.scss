@@ -22,6 +22,7 @@
 
   @media (width < $desktop) {
     max-width: 265px;
+    padding: $padding_40 $padding_24;
   }
 
   @media (width < $laptop) {
@@ -33,17 +34,34 @@
   display: flex;
   flex-direction: column;
   gap: $gap_32;
+
+  @media (width < $laptop) {
+    gap: $gap_20;
+  }
 }
 
 .accountHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (width < $desktop) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $gap_12;
+  }
 }
 
 .accountProfile {
   display: flex;
   gap: $gap_8;
+}
+
+.accountProfImg {
+  @media (width < $desktop) {
+    width: 28px;
+    height: 28px;
+  }
 }
 
 .accountProfileInfo {
@@ -59,6 +77,10 @@
   line-height: 100%;
   letter-spacing: -0.03em;
   color: $graphiteBlack_2;
+
+  @media (width < $desktop) {
+    font-size: 14px;
+  }
 }
 
 .accountEmail {
@@ -86,6 +108,19 @@
 
   .date {
     font-size: 12px;
+  }
+
+  @media (width < $desktop) {
+    .time {
+      font-size: 16px;
+    }
+
+    .date {
+      font-size: 12px;
+    }
+    align-items: flex-start;
+    flex-direction: row;
+    gap: $gap_4;
   }
 }
 
@@ -168,13 +203,21 @@
 }
 
 @keyframes slideLeft {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 @keyframes slideRight {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .calendarItem {
@@ -185,9 +228,14 @@
   align-items: center;
   padding: 12px;
   transition: all 0.2s ease;
-  
+
   &.active {
     background: $limeMain;
+  }
+
+  @media (width < $desktop) {
+    flex: 0 0 calc((100% / 4) - 8px);
+    padding: $padding_6;
   }
 }
 
@@ -207,7 +255,6 @@
 }
 
 .calendarItemDate {
-  // border: 1px solid #000;
   background-color: $cloudWhite;
   font-family: $onestRegular;
   font-size: 16px;
@@ -239,6 +286,13 @@
   &.empty {
     visibility: hidden;
   }
+
+  @media (width < $desktop) {
+    width: 32px;
+    height: 32px;
+    padding: 8px;
+    font-size: 14px;
+  }
 }
 
 .calendarItemDay {
@@ -247,6 +301,10 @@
   line-height: 100%;
   letter-spacing: -0.03em;
   color: $grayNum;
+
+  @media (width < $desktop) {
+    font-size: 16px;
+  }
 }
 
 .calendarWrapperInner {
@@ -256,7 +314,7 @@
 
 .calendarAnimated {
   display: flex;
-  gap: 8px;
+  gap: $gap_12;
   transition: transform 0.4s ease;
 }
 
@@ -296,9 +354,22 @@
 .bookingsItem {
   display: flex;
   flex-direction: column;
-  gap: $gap_6;
-  padding: $padding_12;
+  gap: $gap_20;
+  padding: $padding_16;
   background-color: $cloudWhite;
+
+  &.disabledService {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:not(.expanded):hover {
+    background-color: $limeMain;
+  }
+
+  @media (width < $desktop) {
+    padding: $padding_12;
+  }
 }
 
 .bookingsTime {
@@ -311,8 +382,14 @@
 .bookingsTitle {
   font-family: $onestRegular;
   font-size: 16px;
+  display: flex;
   color: $classicBlack;
   letter-spacing: -0.05em;
+  width: 100%;
+  align-items: left;
+  background: none;
+  border: none;
+  padding: 0;
 }
 
 .logoutButton {
@@ -336,7 +413,6 @@
   }
 
   @media (width < $tablet) {
-    flex-direction: column;
     gap: $gap_16;
     align-items: start;
   }
@@ -404,6 +480,10 @@
   display: flex;
   flex-direction: column;
   gap: $gap_8;
+
+  @media (width < $desktop) {
+    max-width: 496px;
+  }
 }
 
 .servicesCardListItem {
@@ -474,4 +554,195 @@
 .disabledService {
   opacity: 0.5;
   pointer-events: none;
+}
+
+.slotsList {
+  display: flex;
+  flex-direction: column;
+}
+
+.slotItem {
+  font-family: $onestRegular;
+  font-size: 14px;
+  color: $classicBlack;
+  letter-spacing: -0.03em;
+  padding: $padding_8 $padding_12;
+  background-color: $cloudWhite;
+  border: 1px solid $cloudGray;
+  border-radius: 4px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: $calendarHover;
+  }
+
+  &:active {
+    background-color: $limeMain;
+  }
+
+  &Active {
+    background-color: $limeMain !important;
+    color: $classicBlack !important;
+  }
+}
+
+.slotsTimeGroup {
+  margin-bottom: $gap_20;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.slotsTimeGroupTitle {
+  font-family: $onestLight;
+  font-size: 12px;
+  color: $graphiteBlack_2;
+  margin-bottom: $gap_12;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.slotsTimeGroupItems {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $gap_8;
+
+  @media (width < $desktop) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.slotActions {
+  display: flex;
+  gap: $gap_12;
+  margin-top: $gap_20;
+  justify-content: flex-start;
+}
+
+.bookButton {
+  background-color: $limeMain;
+  color: $classicBlack;
+  cursor: pointer;
+  font-family: $onestRegular;
+  font-size: 14px;
+
+  &:hover {
+    background-color: $limeDark;
+  }
+
+  @media (width < $desktop) {
+    padding: $padding_12 $padding_16 !important;
+  }
+}
+
+.cancelButton {
+  padding: $padding_8 $padding_16;
+  background-color: $disabledDay;
+  color: $classicBlack;
+  cursor: pointer;
+  font-family: $onestRegular;
+  font-size: 14px;
+
+  &:hover {
+    background-color: $cloudGray;
+  }
+
+  @media (width < $desktop) {
+    padding: $padding_12 $padding_16 !important;
+  }
+}
+
+// Добавляем новые стили для кнопки и сайдбара
+.sidebarToggle {
+  display: none;
+
+  @media (width < $laptop) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: $limeMain;
+    margin-right: $margin_12;
+    cursor: pointer;
+
+    img {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.3s ease;
+    }
+  }
+
+  @media (width < $laptop) {
+    margin-right: 0;
+  }
+}
+
+.accountSidebar {
+  @media (width < $laptop) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    min-height: 600px;
+    width: 260px;
+    background-color: $classicWhite;
+    border-right: 1px solid $cloudGray;
+    padding: $padding_24 $padding_16;
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: $gap_40;
+    overflow-y: auto;
+
+    &.sidebarOpen {
+      transform: translateX(0);
+    }
+  }
+}
+
+.sidebarOverlay {
+  display: none;
+
+  @media (width < $laptop) {
+    &.active {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      cursor: pointer;
+    }
+  }
+}
+
+// Обновляем стили заголовка для мобильных
+.applicationHeader {
+  @media (width < $laptop) {
+    display: flex;
+    align-items: center;
+
+    .applicationTitle {
+      margin-left: 12px;
+    }
+  }
+
+  @media (width < $tablet) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.headerGroup {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
