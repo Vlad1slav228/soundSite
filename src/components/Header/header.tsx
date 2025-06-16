@@ -15,20 +15,13 @@ import s from "./header.module.scss";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { API_BASE_URL } from "@/lib/config";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-  setIsLoggedIn(localStorage.getItem("profile") !== null);
-
-  const handler = () =>
-    setIsLoggedIn(localStorage.getItem("profile") !== null);
-
-  window.addEventListener("storage", handler);
-  return () => window.removeEventListener("storage", handler);
-}, []);
+  const [checkingAuth, setCheckingAuth] = useState(false);
+  const router = useRouter();
 
 useEffect(() => {
     document.body.style.overflow = isMenuOpen ? "hidden" : "";
@@ -46,6 +39,27 @@ useEffect(() => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+ const handleAccountClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (checkingAuth) return; 
+    setCheckingAuth(true);
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/v1/auth/me/`, {
+        method: "GET",
+        credentials: "include",
+      });
+      if (res.ok) {
+        router.push("/personal-account");
+      } else {
+        router.push("/authorization");
+      }
+    } catch {
+      router.push("/authorization");
+    } finally {
+      setCheckingAuth(false);
+    }
+  };
 
   return (
     <header className={s.header}>
@@ -96,7 +110,8 @@ useEffect(() => {
                 {CALLPHONE_LINK}
               </a>
               <Link
-                href={isLoggedIn ? "/personal-account" : "/authorization"}
+                href="/personal-account"
+                onClick={handleAccountClick}
                 aria-label="Личный кабинет"
               >
                 <Image src={ACCOUNT_ICON} alt="Личный кабинет" />
