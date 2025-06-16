@@ -169,9 +169,6 @@ export default function AuthorizationForm() {
 
       if (!res.ok) throw new Error("Неверный код");
 
-      const data = await res.json();
-      localStorage.setItem("access_token", data.access);
-
       setStep("success");
     } catch (err: any) {
       setError(err.message);
