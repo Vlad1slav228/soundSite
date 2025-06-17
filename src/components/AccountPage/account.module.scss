@@ -341,8 +341,9 @@
   font-family: $onestRegular;
   font-size: 16px;
   color: $classicBlack;
-  letter-spacing: -0.05em;
+  letter-spacing: 0.01em;
   background: none;
+  font-weight: 600;
 }
 
 .bookingsPrice {
@@ -595,7 +596,6 @@
 .bookingDetails {
   display: flex;
   gap: $gap_12;
-  margin-bottom: $gap_16;
 }
 
 .bookingDetail {
@@ -604,7 +604,6 @@
   color: $classicBlack;
   padding: $padding_12 $padding_12;
   background-color: $cloudGray;
-  border-radius: 4px;
 }
 
 .serviceCardList {
@@ -653,6 +652,10 @@
   letter-spacing: 0.04em;
   font-size: 53px;
   text-transform: uppercase;
+
+  @media (width < $desktop) {
+    font-size: 32px;
+  }
 
   @media (width < $desktop) {
     font-size: 24px;

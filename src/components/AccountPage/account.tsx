@@ -547,51 +547,47 @@ export default function AccountPage({
                                   </h4>
                                   <div className={s.slotsTimeGroupItems}>
                                     {timeSlots.length > 0 ? (
-                                      timeSlots.map(
-                                        (time: string, i: number) => {
-                                          const isPast = isPastTimeSlot(
-                                            selectedDay,
-                                            time
-                                          );
-                                          const isSelected =
-                                            selectedSlot?.serviceId ===
-                                              service.id &&
-                                            selectedSlot?.time === time;
-                                          return (
-                                            <button
-                                              key={i}
-                                              className={`${s.slotItem} ${
-                                                isSelected
-                                                  ? s.slotItemActive
-                                                  : ""
-                                              } ${
-                                                isPast ? s.slotItemPast : ""
-                                              }`}
-                                              onClick={() =>
-                                                !isPast &&
-                                                handleSlotSelect(
-                                                  service.id,
-                                                  time
-                                                )
-                                              }
-                                              disabled={isPast}
-                                            >
-                                              {time}
-                                            </button>
-                                          );
-                                        }
-                                      )
+                                      <>
+                                        {timeSlots.map(
+                                          (time: string, i: number) => {
+                                            const isPast = isPastTimeSlot(
+                                              selectedDay,
+                                              time
+                                            );
+                                            const isSelected =
+                                              selectedSlot?.serviceId ===
+                                                service.id &&
+                                              selectedSlot?.time === time;
+                                            return (
+                                              <button
+                                                key={i}
+                                                className={`${s.slotItem} ${
+                                                  isSelected
+                                                    ? s.slotItemActive
+                                                    : ""
+                                                } ${
+                                                  isPast ? s.slotItemPast : ""
+                                                }`}
+                                                onClick={() =>
+                                                  !isPast &&
+                                                  handleSlotSelect(
+                                                    service.id,
+                                                    time
+                                                  )
+                                                }
+                                                disabled={isPast}
+                                              >
+                                                {time}
+                                              </button>
+                                            );
+                                          }
+                                        )}
+                                      </>
                                     ) : (
                                       <p className={s.noSlotsText}>
                                         Извините, слоты закончились
                                       </p>
                                     )}
-                                    {timeSlots.length > 0 &&
-                                      !hasAvailableSlots && (
-                                        <p className={s.noSlotsText}>
-                                          Извините, слоты закончились
-                                        </p>
-                                      )}
                                   </div>
                                 </div>
                               );
