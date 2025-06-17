@@ -221,7 +221,7 @@ export default function AccountPage({
   const [selectedDay, setSelectedDay] = useState<Date>(now);
   const [startIndex, setStartIndex] = useState(0);
   const [direction, setDirection] = useState<"next" | "prev" | null>(null);
-  const [visibleDaysCount, setVisibleDaysCount] = useState(7);
+  const [visibleDaysCount, setVisibleDaysCount] = useState(6);
 
   const [services, setServices] = useState<Service[]>([]);
   const [serviceSlots, setServiceSlots] = useState<Record<number, Slot>>({});
@@ -275,7 +275,7 @@ export default function AccountPage({
 
   useEffect(() => {
     const handleResize = () => {
-      setVisibleDaysCount(window.innerWidth < 768 ? 4 : 7);
+      setVisibleDaysCount(window.innerWidth < 1440 ? 4 : 6);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
