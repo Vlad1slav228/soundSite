@@ -312,7 +312,6 @@
   display: flex;
   flex-direction: column;
   gap: $gap_20;
-  padding: $padding_16;
   background-color: $cloudWhite;
 
   &.disabledService {
@@ -324,16 +323,17 @@
     cursor: pointer;
     background-color: $limeMain;
   }
+}
+
+.bookingsWrapper {
+  padding: $padding_16;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
   @media (width < $desktop) {
     padding: $padding_12;
   }
-}
-
-.bookingsWrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .bookingsTitle {
@@ -344,6 +344,10 @@
   letter-spacing: 0.01em;
   background: none;
   font-weight: 600;
+
+  .expanded & {
+    cursor: default;
+  }
 }
 
 .bookingsPrice {
@@ -353,8 +357,13 @@
 }
 
 .slotsList {
+  padding: 0 $padding_16 $padding_16 $padding_16;
   display: flex;
   flex-direction: column;
+
+  @media (width < $desktop) {
+    padding:  0 $padding_12 $padding_12 $padding_12;
+  }
 }
 
 .slotsTimeGroup {
