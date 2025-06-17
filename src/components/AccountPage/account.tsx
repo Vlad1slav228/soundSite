@@ -221,7 +221,7 @@ export default function AccountPage({
   const [selectedDay, setSelectedDay] = useState<Date>(now);
   const [startIndex, setStartIndex] = useState(0);
   const [direction, setDirection] = useState<"next" | "prev" | null>(null);
-  const [visibleDaysCount, setVisibleDaysCount] = useState(6);
+  const [visibleDaysCount, setVisibleDaysCount] = useState(7);
 
   const [services, setServices] = useState<Service[]>([]);
   const [serviceSlots, setServiceSlots] = useState<Record<number, Slot>>({});
@@ -275,7 +275,7 @@ export default function AccountPage({
 
   useEffect(() => {
     const handleResize = () => {
-      setVisibleDaysCount(window.innerWidth < 1440 ? 4 : 6);
+      setVisibleDaysCount(window.innerWidth < 768 ? 4 : 7);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -499,16 +499,18 @@ export default function AccountPage({
                         !hasSlots ? s.disabledService : ""
                       } ${expandedService === service.id ? s.expanded : ""}`}
                     >
-                      <div className={s.bookingsWrapper}>
+                      <div
+                        className={s.bookingsWrapper}
+                        onClick={() =>
+                          hasSlots &&
+                          setExpandedService(
+                            expandedService === service.id ? null : service.id
+                          )
+                        }
+                      >
                         <button
                           className={s.bookingsTitle}
                           disabled={!hasSlots}
-                          onClick={() =>
-                            hasSlots &&
-                            setExpandedService(
-                              expandedService === service.id ? null : service.id
-                            )
-                          }
                         >
                           {service.title}
                         </button>
