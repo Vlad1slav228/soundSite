@@ -581,6 +581,23 @@ export default function AccountPage({
                               </div>
                             );
                           })}
+
+                          {selectedSlot?.serviceId === service.id && (
+                            <div className={s.slotActions}>
+                              <button
+                                className={`greenButton ${s.bookButton}`}
+                                onClick={handleBookAppointment}
+                              >
+                                Записаться
+                              </button>
+                              <button
+                                className={`greenButton ${s.cancelButton}`}
+                                onClick={handleCancelSelection}
+                              >
+                                Отмена
+                              </button>
+                            </div>
+                          )}
                         </div>
                       )}
                     </li>
