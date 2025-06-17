@@ -348,12 +348,20 @@
   .expanded & {
     cursor: default;
   }
+
+  @media (width < $desktop) {
+    font-size: 14px;
+  }
 }
 
 .bookingsPrice {
   font-family: $onestLight;
   font-size: 16px;
   color: $classicBlack;
+
+  @media (width < $desktop) {
+    font-size: 14px;
+  }
 }
 
 .slotsList {
