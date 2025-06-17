@@ -704,3 +704,24 @@
   margin: 0;
   grid-column: 1 / -1;
 }
+
+.tab {
+  background-color: $limeMain;
+  color: $classicBlack;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $calendarHover;
+  }
+
+  &.activeTab {
+    background-color: $limeMain;
+  }
+}
+
+.canceledBooking {
+  opacity: 40%;
+  pointer-events: none;
+}
+
+

@@ -87,6 +87,9 @@ export default function AccountPage({
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [bookingsLoading, setBookingsLoading] = useState(false);
   const [bookingsError, setBookingsError] = useState("");
+  const [activeFilter, setActiveFilter] = useState<
+    "all" | "active" | "canceled"
+  >("all");
 
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 1_000);
@@ -275,7 +278,7 @@ export default function AccountPage({
 
   useEffect(() => {
     const handleResize = () => {
-      setVisibleDaysCount(window.innerWidth < 768 ? 4 : 7);
+      setVisibleDaysCount(window.innerWidth < 768 ? 4 : 6);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -388,6 +391,14 @@ export default function AccountPage({
       console.error("Error updating slots:", e);
     }
   };
+
+  const filteredBookings = useMemo(() => {
+    if (activeFilter === "all") return bookings;
+    if (activeFilter === "active") {
+      return bookings.filter((booking) => booking.status === "pending");
+    }
+    return bookings.filter((booking) => booking.status === "canceled");
+  }, [bookings, activeFilter]);
 
   return (
     <section className={s.accountBlock}>
@@ -536,10 +547,6 @@ export default function AccountPage({
                                 return hours >= from && hours < to;
                               });
 
-                              const hasAvailableSlots = timeSlots.some(
-                                (time) => !isPastTimeSlot(selectedDay, time)
-                              );
-
                               return (
                                 <div className={s.slotsTimeGroup} key={label}>
                                   <h4 className={s.slotsTimeGroupTitle}>
@@ -636,9 +643,30 @@ export default function AccountPage({
               <h1 className={s.applicationTitle}>{APPLICATION_TITLE}</h1>
             </div>
             <div className={s.applicationFilters}>
-              <button className={s.tab}>{ALL_APPLICATION_BUTTON}</button>
-              <button className={s.tab}>{ACTIVE_APPLICATION_BUTTON}</button>
-              <button className={s.tab}>{CANCEL_APPLICATION_BUTTON}</button>
+              <button
+                className={`${s.tab} ${
+                  activeFilter === "all" ? s.activeTab : ""
+                }`}
+                onClick={() => setActiveFilter("all")}
+              >
+                {ALL_APPLICATION_BUTTON}
+              </button>
+              <button
+                className={`${s.tab} ${
+                  activeFilter === "active" ? s.activeTab : ""
+                }`}
+                onClick={() => setActiveFilter("active")}
+              >
+                {ACTIVE_APPLICATION_BUTTON}
+              </button>
+              <button
+                className={`${s.tab} ${
+                  activeFilter === "canceled" ? s.activeTab : ""
+                }`}
+                onClick={() => setActiveFilter("canceled")}
+              >
+                {CANCEL_APPLICATION_BUTTON}
+              </button>
             </div>
           </header>
           <div className={s.serviceCardWrapper}>
@@ -650,18 +678,19 @@ export default function AccountPage({
             )}
 
             {!bookingsLoading &&
-              bookings.map((booking) => {
+              filteredBookings.map((booking) => {
                 const { date, time } = formatDateTime(booking.start_at);
                 const bookingDate = new Date(booking.start_at);
                 const isPast = bookingDate < now;
                 const duration = booking.service.duration_min;
+                const isCanceled = booking.status === "canceled";
 
                 return (
                   <Fragment key={booking.id}>
                     <article
                       className={`${s.serviceCard} ${
                         isPast ? s.pastBooking : ""
-                      }`}
+                      } ${isCanceled ? s.canceledBooking : ""}`}
                     >
                       <div className={s.serviceCardContent}>
                         <h2 className={s.serviceCardTitle}>
