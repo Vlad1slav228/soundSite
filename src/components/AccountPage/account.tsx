@@ -25,6 +25,7 @@ export type Profile = {
 type Service = {
   id: number;
   title: string;
+  price: string;
   duration_min: number;
 };
 
@@ -346,7 +347,11 @@ export default function AccountPage({
           <div className={s.accountSidebarInner}>
             <header className={s.accountHeader}>
               <div className={s.accountProfile}>
-                <Image src={ACCOUNT_ICON} alt="Иконка профиля" />
+                <Image
+                  src={ACCOUNT_ICON}
+                  alt="Иконка профиля"
+                  className={s.accountProfImg}
+                />
                 <div className={s.accountProfileInfo}>
                   <p className={s.accountFirstName}>{profile.first_name}</p>
                   <p className={s.accountEmail}>{profile.email}</p>
@@ -403,9 +408,7 @@ export default function AccountPage({
                         onClick={() => !isPast && setSelectedDay(d)}
                         disabled={isPast}
                       >
-                        <p className={s.calendarItemDate}>
-                          {d.getDate()}
-                        </p>
+                        <p className={s.calendarItemDate}>{d.getDate()}</p>
                         <p className={s.calendarItemDay}>
                           {WEEKDAYS_DATA[d.getDay()]}
                         </p>
@@ -434,18 +437,22 @@ export default function AccountPage({
                         !hasSlots ? s.disabledService : ""
                       } ${expandedService === service.id ? s.expanded : ""}`}
                     >
-                      <button
-                        className={s.bookingsTitle}
-                        disabled={!hasSlots}
-                        onClick={() =>
-                          hasSlots &&
-                          setExpandedService(
-                            expandedService === service.id ? null : service.id
-                          )
-                        }
-                      >
-                        {service.title}
-                      </button>
+                      <div className={s.bookingsWrapper}>
+                        <button
+                          className={s.bookingsTitle}
+                          disabled={!hasSlots}
+                          onClick={() =>
+                            hasSlots &&
+                            setExpandedService(
+                              expandedService === service.id ? null : service.id
+                            )
+                          }
+                        >
+                          {service.title}
+                        </button>
+                        <p className={s.bookingsPrice}>{service.price} ₽</p>
+                      </div>
+
                       {hasSlots && expandedService === service.id && (
                         <div className={s.slotsList}>
                           <div className={s.slotsTimeGroup}>
@@ -666,10 +673,7 @@ export default function AccountPage({
                           </button>
                         )}
                         {isPast && !booking.can_review && (
-                          <button
-                            className={s.reviewButton}
-                            disabled
-                          >
+                          <button className={s.reviewButton} disabled>
                             Отзыв оставлен
                           </button>
                         )}
