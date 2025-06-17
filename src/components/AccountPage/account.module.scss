@@ -323,6 +323,10 @@
     cursor: pointer;
     background-color: $limeMain;
   }
+
+  @media (width < $laptop) {
+    gap: $gap_16;
+  }
 }
 
 .bookingsWrapper {
