@@ -15,6 +15,7 @@ import {
 } from "@/mocks/AccountPage/account";
 import s from "./account.module.scss";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export type Profile = {
   first_name: string;
@@ -52,6 +53,7 @@ type Booking = {
   is_paid: boolean;
   paid_at: string | null;
   can_review: boolean;
+  has_review: boolean;
   tracks: Array<{
     id: number;
     title: string;
@@ -79,6 +81,7 @@ export default function AccountPage({
   profile,
   onLogout,
 }: Readonly<{ profile: Profile; onLogout: () => void }>) {
+  const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [now, setNow] = useState(() => new Date());
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -110,7 +113,16 @@ export default function AccountPage({
       });
       if (!res.ok) throw new Error("Ошибка получения записей");
       const data = await res.json();
-      setBookings(data.results || []);
+
+      const sortedBookings = (data.results || []).sort(
+        (a: Booking, b: Booking) => {
+          return (
+            new Date(a.start_at).getTime() - new Date(b.start_at).getTime()
+          );
+        }
+      );
+
+      setBookings(sortedBookings);
     } catch (e: any) {
       setBookingsError(e.message || "Ошибка загрузки записей");
     } finally {
@@ -134,6 +146,14 @@ export default function AccountPage({
     };
   }, [isSidebarOpen]);
 
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     fetchBookings();
+  //   }, 30000);
+
+  //   return () => clearInterval(interval);
+  // }, []);
+
   const [selectedSlot, setSelectedSlot] = useState<{
     serviceId: number;
     time: string;
@@ -154,10 +174,18 @@ export default function AccountPage({
       const dateStr = selectedDay.toISOString().split("T")[0];
       const timeStr = selectedSlot.time.padEnd(5, ":00");
 
-      // Проверка на прошедшую дату/время
       const selectedDateTime = new Date(`${dateStr}T${timeStr}`);
       if (selectedDateTime < now) {
         alert("Нельзя записаться на прошедшую дату или время");
+        return;
+      }
+
+      await updateSlotsAfterBooking();
+
+      const currentSlots = serviceSlots[selectedSlot.serviceId]?.slots || [];
+      if (!currentSlots.includes(selectedSlot.time)) {
+        alert("Извините, слот был уже забронирован");
+        setSelectedSlot(null);
         return;
       }
 
@@ -182,6 +210,8 @@ export default function AccountPage({
       setBookings((prev) => [newBooking, ...prev]);
       alert(`Запись на ${selectedSlot.time} подтверждена!`);
       setSelectedSlot(null);
+      await fetchBookings();
+      await updateSlotsAfterBooking();
     } catch (error: any) {
       alert(error.message || "Произошла ошибка при записи");
       console.error("Booking error:", error);
@@ -328,6 +358,37 @@ export default function AccountPage({
     return slotDate < now;
   };
 
+  const updateSlotsAfterBooking = async () => {
+    try {
+      const slotsResponses = await Promise.all(
+        services.map(async (service) => {
+          const r = await fetchWithAuth(
+            `/api/v1/slots/?date=${selectedDay
+              .toISOString()
+              .slice(0, 10)}&service=${service.id}`,
+            { method: "GET", credentials: "include" }
+          );
+          if (!r.ok) return null;
+          const slotData = await r.json();
+          return {
+            ...(Array.isArray(slotData) ? slotData[0] : slotData),
+            service_id: service.id,
+          };
+        })
+      );
+
+      const slotsMap: Record<number, Slot> = {};
+      slotsResponses.forEach((slot) => {
+        if (slot && Array.isArray(slot.slots)) {
+          slotsMap[slot.service_id] = slot;
+        }
+      });
+      setServiceSlots(slotsMap);
+    } catch (e) {
+      console.error("Error updating slots:", e);
+    }
+  };
+
   return (
     <section className={s.accountBlock}>
       <div
@@ -418,6 +479,7 @@ export default function AccountPage({
                 </div>
               </div>
             </div>
+
             <ul className={s.bookings}>
               {error && <li className={s.errorText}>{error}</li>}
               {loading && <li className={s.bookingsItem}>Загрузка…</li>}
@@ -455,118 +517,83 @@ export default function AccountPage({
 
                       {hasSlots && expandedService === service.id && (
                         <div className={s.slotsList}>
-                          <div className={s.slotsTimeGroup}>
-                            <h4 className={s.slotsTimeGroupTitle}>Утро</h4>
-                            <div className={s.slotsTimeGroupItems}>
-                              {slot.slots
-                                .filter((time) => {
-                                  const hours = parseInt(time.split(":")[0]);
-                                  return hours >= 9 && hours < 12;
-                                })
-                                .map((time: string, i: number) => {
-                                  const isPast = isPastTimeSlot(
-                                    selectedDay,
-                                    time
-                                  );
-                                  return (
-                                    <button
-                                      key={i}
-                                      className={`${s.slotItem} ${
-                                        selectedSlot?.serviceId ===
-                                          service.id &&
-                                        selectedSlot?.time === time
-                                          ? s.slotItemActive
-                                          : ""
-                                      } ${isPast ? s.slotItemPast : ""}`}
-                                      onClick={() =>
-                                        !isPast &&
-                                        handleSlotSelect(service.id, time)
-                                      }
-                                      disabled={isPast}
-                                    >
-                                      {time}
-                                    </button>
-                                  );
-                                })}
-                            </div>
-                          </div>
+                          {[
+                            { label: "Утро", from: 9, to: 12 },
+                            { label: "День", from: 12, to: 18 },
+                            { label: "Вечер", from: 18, to: 24 },
+                          ]
+                            .filter(({ from }) =>
+                              slot.slots.some((time) => {
+                                const hours = parseInt(time.split(":")[0], 10);
+                                return hours >= from;
+                              })
+                            )
+                            .map(({ label, from, to }) => {
+                              const timeSlots = slot.slots.filter((time) => {
+                                const hours = parseInt(time.split(":")[0], 10);
+                                return hours >= from && hours < to;
+                              });
 
-                          <div className={s.slotsTimeGroup}>
-                            <h4 className={s.slotsTimeGroupTitle}>День</h4>
-                            <div className={s.slotsTimeGroupItems}>
-                              {slot.slots
-                                .filter((time) => {
-                                  const hours = parseInt(time.split(":")[0]);
-                                  return hours >= 12 && hours < 18;
-                                })
-                                .map((time: string, i: number) => {
-                                  const isPast = isPastTimeSlot(
-                                    selectedDay,
-                                    time
-                                  );
-                                  return (
-                                    <button
-                                      key={i}
-                                      className={`${s.slotItem} ${
-                                        selectedSlot?.serviceId ===
-                                          service.id &&
-                                        selectedSlot?.time === time
-                                          ? s.slotItemActive
-                                          : ""
-                                      } ${isPast ? s.slotItemPast : ""}`}
-                                      onClick={() =>
-                                        !isPast &&
-                                        handleSlotSelect(service.id, time)
-                                      }
-                                      disabled={isPast}
-                                    >
-                                      {time}
-                                    </button>
-                                  );
-                                })}
-                            </div>
-                          </div>
+                              const hasAvailableSlots = timeSlots.some(
+                                (time) => !isPastTimeSlot(selectedDay, time)
+                              );
 
-                          {slot.slots.some((time) => {
-                            const hours = parseInt(time.split(":")[0]);
-                            return hours >= 18;
-                          }) && (
-                            <div className={s.slotsTimeGroup}>
-                              <h4 className={s.slotsTimeGroupTitle}>Вечер</h4>
-                              <div className={s.slotsTimeGroupItems}>
-                                {slot.slots
-                                  .filter((time) => {
-                                    const hours = parseInt(time.split(":")[0]);
-                                    return hours >= 18;
-                                  })
-                                  .map((time: string, i: number) => {
-                                    const isPast = isPastTimeSlot(
-                                      selectedDay,
-                                      time
-                                    );
-                                    return (
-                                      <button
-                                        key={i}
-                                        className={`${s.slotItem} ${
-                                          selectedSlot?.serviceId ===
-                                            service.id &&
-                                          selectedSlot?.time === time
-                                            ? s.slotItemActive
-                                            : ""
-                                        } ${isPast ? s.slotItemPast : ""}`}
-                                        onClick={() =>
-                                          !isPast &&
-                                          handleSlotSelect(service.id, time)
+                              return (
+                                <div className={s.slotsTimeGroup} key={label}>
+                                  <h4 className={s.slotsTimeGroupTitle}>
+                                    {label}
+                                  </h4>
+                                  <div className={s.slotsTimeGroupItems}>
+                                    {timeSlots.length > 0 ? (
+                                      timeSlots.map(
+                                        (time: string, i: number) => {
+                                          const isPast = isPastTimeSlot(
+                                            selectedDay,
+                                            time
+                                          );
+                                          const isSelected =
+                                            selectedSlot?.serviceId ===
+                                              service.id &&
+                                            selectedSlot?.time === time;
+                                          return (
+                                            <button
+                                              key={i}
+                                              className={`${s.slotItem} ${
+                                                isSelected
+                                                  ? s.slotItemActive
+                                                  : ""
+                                              } ${
+                                                isPast ? s.slotItemPast : ""
+                                              }`}
+                                              onClick={() =>
+                                                !isPast &&
+                                                handleSlotSelect(
+                                                  service.id,
+                                                  time
+                                                )
+                                              }
+                                              disabled={isPast}
+                                            >
+                                              {time}
+                                            </button>
+                                          );
                                         }
-                                        disabled={isPast}
-                                      >
-                                        {time}
-                                      </button>
-                                    );
-                                  })}
-                              </div>
-                            </div>
-                          )}
+                                      )
+                                    ) : (
+                                      <p className={s.noSlotsText}>
+                                        Извините, слоты закончились
+                                      </p>
+                                    )}
+                                    {timeSlots.length > 0 &&
+                                      !hasAvailableSlots && (
+                                        <p className={s.noSlotsText}>
+                                          Извините, слоты закончились
+                                        </p>
+                                      )}
+                                  </div>
+                                </div>
+                              );
+                            })}
 
                           {selectedSlot?.serviceId === service.id && (
                             <div className={s.slotActions}>
@@ -667,14 +694,25 @@ export default function AccountPage({
                         <p className={s.serviceCardPrice}>
                           {booking.service.price} ₽
                         </p>
-                        {isPast && booking.can_review && (
-                          <button className={s.reviewButton}>
-                            Оставить отзыв
-                          </button>
-                        )}
-                        {isPast && !booking.can_review && (
-                          <button className={s.reviewButton} disabled>
-                            Отзыв оставлен
+                        {isPast && (
+                          <button
+                            className={`${s.reviewButton} ${
+                              booking.reviews?.length
+                                ? s.reviewButtonDisabled
+                                : s.reviewButtonActive
+                            }`}
+                            onClick={() => {
+                              if (!booking.reviews?.length) {
+                                router.push(
+                                  `/add-review?bookingId=${booking.id}`
+                                );
+                              }
+                            }}
+                            disabled={!!booking.reviews?.length}
+                          >
+                            {booking.reviews?.length
+                              ? "Отзыв оставлен"
+                              : "Оставить отзыв"}
                           </button>
                         )}
                       </div>

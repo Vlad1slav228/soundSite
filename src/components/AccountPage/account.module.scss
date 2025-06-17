@@ -253,7 +253,7 @@
   &.active {
     background: $limeMain;
   }
-  
+
   &--active {
     .calendarItemDate {
       background: $limeMain;
@@ -429,10 +429,11 @@
 }
 
 .slotItemPast {
-  background-color: $disabledDay !important;
-  color: $cloudGray !important;
+  background-color: $disabledDay;
+  color: $grayString_2;
   cursor: not-allowed !important;
   opacity: 0.7;
+  pointer-events: none;
 }
 
 .slotActions {
@@ -490,7 +491,7 @@
   justify-content: space-between;
   align-items: center;
   background-color: $classicBlack;
-  
+
   @media (width < $laptop) {
     display: flex;
     align-items: center;
@@ -682,16 +683,34 @@
   font-family: $onestRegular;
   font-size: 14px;
   letter-spacing: -0.03em;
-  color: $classicWhite;
 
   &::after {
     width: 24px;
     height: 24px;
     content: url(../../../public/PersonalAccount/chevronRight.png);
   }
+
+  &Active {
+    background-color: $classicBlack;
+    color: $classicWhite;
+  }
+
+  &Disabled {
+    background-color: $disabledDay;
+    color: $calendarGray;
+    cursor: not-allowed;
+  }
 }
 
 .string {
   height: 1px;
   background: $rangeColor;
+}
+
+.noSlotsText {
+  font-family: $onestRegular;
+  font-size: 14px;
+  text-align: center;
+  margin: 0;
+  grid-column: 1 / -1;
 }
