@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   FORM_TITLE,
@@ -10,8 +10,10 @@ import {
 import s from "./addReview.module.scss";
 import Image from "next/image";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function AddReviewForm() {
+  const router = useRouter();
   const [review, setReview] = useState("");
   const [error, setError] = useState(false);
   const [touched, setTouched] = useState(false);
@@ -39,7 +41,7 @@ export default function AddReviewForm() {
     setTouched(true);
     const isValid = validateReview(review);
     setError(!isValid);
-    
+
     if (isValid) {
       console.log("Отправка отзыва:", review);
       setIsSubmitted(true);
@@ -51,6 +53,7 @@ export default function AddReviewForm() {
     setReview("");
     setTouched(false);
     setError(false);
+    router.push(`/personal-account`);
   };
 
   if (isSubmitted) {
@@ -58,19 +61,15 @@ export default function AddReviewForm() {
       <section className={s.addReviewBlock}>
         <div className={`container ${s.addReviewGroup}`}>
           <div className={s.successContent}>
-            <button 
-              onClick={handleBack} 
+            <button
+              onClick={handleBack}
               className={`greenButton ${s.backButton}`}
             >
               Назад
             </button>
             <h1 className={s.successTitle}>Отзыв успешно отправлен!</h1>
           </div>
-          <Image
-            src={MICROPHONE_IMG}
-            alt="Микрофон"
-            className="microImg" 
-          />
+          <Image src={MICROPHONE_IMG} alt="Микрофон" className="microImg" />
         </div>
       </section>
     );
@@ -106,11 +105,7 @@ export default function AddReviewForm() {
             {SEND_BUTTON}
           </button>
         </form>
-        <Image
-          src={MICROPHONE_IMG}
-          alt="Микрофон"
-          className="microImg" 
-        />
+        <Image src={MICROPHONE_IMG} alt="Микрофон" className="microImg" />
       </div>
     </section>
   );
