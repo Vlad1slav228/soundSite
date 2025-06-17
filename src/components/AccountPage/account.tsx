@@ -510,12 +510,15 @@ export default function AccountPage({
                         !hasSlots ? s.disabledService : ""
                       } ${expandedService === service.id ? s.expanded : ""}`}
                     >
-                      <div className={s.bookingsWrapper} onClick={() =>
-                        hasSlots &&
-                        setExpandedService(
-                          expandedService === service.id ? null : service.id
-                        )
-                      }>
+                      <div
+                        className={s.bookingsWrapper}
+                        onClick={() =>
+                          hasSlots &&
+                          setExpandedService(
+                            expandedService === service.id ? null : service.id
+                          )
+                        }
+                      >
                         <button
                           className={s.bookingsTitle}
                           disabled={!hasSlots}
@@ -531,88 +534,53 @@ export default function AccountPage({
                             { label: "Утро", from: 9, to: 12 },
                             { label: "День", from: 12, to: 18 },
                             { label: "Вечер", from: 18, to: 24 },
-                          ]
-                            .filter(({ from }) =>
-                              slot.slots.some((time) => {
-                                const hours = parseInt(time.split(":")[0], 10);
-                                return hours >= from;
-                              })
-                            )
-                            .map(({ label, from, to }) => {
-                              const timeSlots = slot.slots.filter((time) => {
-                                const hours = parseInt(time.split(":")[0], 10);
-                                return hours >= from && hours < to;
-                              });
+                          ].map(({ label, from, to }) => {
+                            const timeSlots = slot.slots.filter((time) => {
+                              const hours = parseInt(time.split(":")[0], 10);
+                              return hours >= from && hours < to;
+                            });
 
-                              return (
-                                <div className={s.slotsTimeGroup} key={label}>
-                                  <h4 className={s.slotsTimeGroupTitle}>
-                                    {label}
-                                  </h4>
-                                  <div className={s.slotsTimeGroupItems}>
-                                    {timeSlots.length > 0 ? (
-                                      <>
-                                        {timeSlots.map(
-                                          (time: string, i: number) => {
-                                            const isPast = isPastTimeSlot(
-                                              selectedDay,
-                                              time
-                                            );
-                                            const isSelected =
-                                              selectedSlot?.serviceId ===
-                                                service.id &&
-                                              selectedSlot?.time === time;
-                                            return (
-                                              <button
-                                                key={i}
-                                                className={`${s.slotItem} ${
-                                                  isSelected
-                                                    ? s.slotItemActive
-                                                    : ""
-                                                } ${
-                                                  isPast ? s.slotItemPast : ""
-                                                }`}
-                                                onClick={() =>
-                                                  !isPast &&
-                                                  handleSlotSelect(
-                                                    service.id,
-                                                    time
-                                                  )
-                                                }
-                                                disabled={isPast}
-                                              >
-                                                {time}
-                                              </button>
-                                            );
+                            return (
+                              <div className={s.slotsTimeGroup} key={label}>
+                                <h4 className={s.slotsTimeGroupTitle}>
+                                  {label}
+                                </h4>
+                                <div className={s.slotsTimeGroupItems}>
+                                  {timeSlots.length > 0 ? (
+                                    timeSlots.map((time: string, i: number) => {
+                                      const isPast = isPastTimeSlot(
+                                        selectedDay,
+                                        time
+                                      );
+                                      const isSelected =
+                                        selectedSlot?.serviceId ===
+                                          service.id &&
+                                        selectedSlot?.time === time;
+                                      return (
+                                        <button
+                                          key={i}
+                                          className={`${s.slotItem} ${
+                                            isSelected ? s.slotItemActive : ""
+                                          } ${isPast ? s.slotItemPast : ""}`}
+                                          onClick={() =>
+                                            !isPast &&
+                                            handleSlotSelect(service.id, time)
                                           }
-                                        )}
-                                      </>
-                                    ) : (
-                                      <p className={s.noSlotsText}>
-                                        Извините, слоты закончились
-                                      </p>
-                                    )}
-                                  </div>
+                                          disabled={isPast}
+                                        >
+                                          {time}
+                                        </button>
+                                      );
+                                    })
+                                  ) : (
+                                    <p className={s.noSlotsText}>
+                                      Извините, слоты закончились
+                                    </p>
+                                  )}
                                 </div>
-                              );
-                            })}
-
-                          {selectedSlot?.serviceId === service.id && (
-                            <div className={s.slotActions}>
-                              <button
-                                className={`greenButton ${s.bookButton}`}
-                                onClick={handleBookAppointment}
-                              >
-                                Записаться
-                              </button>
-                              <button
-                                className={`greenButton ${s.cancelButton}`}
-                                onClick={handleCancelSelection}
-                              >
-                                Отмена
-                              </button>
-                            </div>
-                          )}
+                              </div>
+                            );
+                          })}
                         </div>
                       )}
                     </li>
