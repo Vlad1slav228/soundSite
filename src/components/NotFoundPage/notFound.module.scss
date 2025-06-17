@@ -1,0 +1,63 @@
+@use "../../styles/fonts.scss" as *;
+
+.notFound {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #fff 60%, #cee86b 100%);
+  text-align: center;
+  padding: 40px 0;
+}
+
+.illustration {
+  margin-bottom: 24px;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+.title {
+  font-family: $onestLight;
+  font-size: 42px;
+  color: #000;
+  margin-bottom: 12px;
+  letter-spacing: 0.02em;
+}
+
+.text {
+  font-size: 20px;
+  color: #393939;
+  margin-bottom: 32px;
+  font-family: $onestRegular;
+  line-height: 1.6;
+
+  .emotion {
+    display: inline-block;
+    font-size: 26px;
+    margin-top: 12px;
+    color: #a7be34;
+  }
+}
+
+.link {
+  width: fit-content;
+  margin: 0 auto;
+  display: flex;
+  text-decoration: none;
+  font-family: $onestLight;
+  font-size: 18px;
+  color: #000;
+  text-transform: uppercase;
+  background-color: #cee86b;
+  padding: 10px 12px;
+
+}
