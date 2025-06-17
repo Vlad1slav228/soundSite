@@ -10,14 +10,20 @@ import {
 import s from "./addReview.module.scss";
 import Image from "next/image";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { fetchWithAuth } from "@/lib/fetchWithAuth";
 
 export default function AddReviewForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const bookingId = searchParams.get('bookingId');
+  
   const [review, setReview] = useState("");
   const [error, setError] = useState(false);
   const [touched, setTouched] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const validateReview = (text: string) => {
     return text.trim().length >= 6;
@@ -36,23 +42,52 @@ export default function AddReviewForm() {
     setError(!validateReview(review));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setTouched(true);
     const isValid = validateReview(review);
     setError(!isValid);
 
-    if (isValid) {
-      console.log("Отправка отзыва:", review);
+    if (!isValid || !bookingId) {
+      setSubmitError("Пожалуйста, введите корректный отзыв (минимум 6 символов)");
+      return;
+    }
+
+    setIsLoading(true);
+    setSubmitError("");
+
+    try {
+      const response = await fetchWithAuth(`/api/v1/reviews/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          booking: parseInt(bookingId),
+          text: review,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        
+        if (response.status === 400) {
+          throw new Error(errorData.detail || "Невозможно оставить отзыв для этого бронирования");
+        }
+        throw new Error("Произошла ошибка на сервере. Попробуйте позже.");
+      }
+
       setIsSubmitted(true);
+    } catch (error: any) {
+      setSubmitError(
+        error.message || "Произошла непредвиденная ошибка. Пожалуйста, попробуйте позже."
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleBack = () => {
-    setIsSubmitted(false);
-    setReview("");
-    setTouched(false);
-    setError(false);
     router.push(`/personal-account`);
   };
 
@@ -80,6 +115,7 @@ export default function AddReviewForm() {
       <div className={`container ${s.addReviewGroup}`}>
         <form className={s.callbackForm} onSubmit={handleSubmit}>
           <h1>{FORM_TITLE}</h1>
+
           <div className={s.inputGroup}>
             <div className={s.inputWrapper}>
               <span className={s.requiredMark}>{REQUIRED_MARK}</span>
@@ -90,6 +126,7 @@ export default function AddReviewForm() {
                 value={review}
                 onChange={handleChange}
                 onBlur={handleBlur}
+                disabled={isLoading}
               />
             </div>
             <div
@@ -99,10 +136,17 @@ export default function AddReviewForm() {
             ></div>
           </div>
           {touched && error && (
-            <p className={s.errorText}>Введите корректные данные</p>
+            <p className={s.errorText}>Отзыв должен содержать минимум 6 символов</p>
           )}
-          <button type="submit" className={`greenButton ${s.sendButton}`}>
-            {SEND_BUTTON}
+          {submitError && (
+            <p className={s.errorText}>{submitError}</p>
+          )}
+          <button 
+            type="submit" 
+            className={`greenButton ${s.sendButton}`}
+            disabled={isLoading || (touched && error)}
+          >
+            {isLoading ? "Отправка..." : SEND_BUTTON}
           </button>
         </form>
         <Image src={MICROPHONE_IMG} alt="Микрофон" className="microImg" />
