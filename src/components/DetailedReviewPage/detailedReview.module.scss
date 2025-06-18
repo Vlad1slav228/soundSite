@@ -1,0 +1,63 @@
+@use "../../styles/colors.scss" as *;
+@use "../../styles/padding_margin_gap.scss" as *;
+
+.reviewDetailPage {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: $classicWhite;
+  padding: $padding_40 0;
+}
+
+.reviewCard {
+  background: #232323;
+  border-radius: 24px;
+  box-shadow: 0 4px 24px 0 rgba(0,0,0,0.10);
+  padding: 32px 40px;
+  min-width: 340px;
+  max-width: 500px;
+  color: #fff;
+  font-family: Onest, Arial, sans-serif;
+
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 12px;
+    font-weight: 600;
+    color: #cee86b;
+  }
+
+  p {
+    font-size: 1.1rem;
+    margin: 6px 0 12px 0;
+    line-height: 1.6;
+    color: #fff;
+  }
+
+  strong {
+    color: #cee86b;
+    font-weight: 500;
+    font-size: 1rem;
+    margin-right: 4px;
+  }
+
+  .replyBlock {
+    background: rgba(206, 232, 107, 0.08);
+    border-left: 4px solid #cee86b;
+    padding: 14px 18px;
+    margin-top: 24px;
+    border-radius: 16px;
+
+    strong {
+      color: #cee86b;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    p {
+      color: #cee86b;
+      margin: 4px 0 0 0;
+      font-size: 1.06rem;
+    }
+  }
+}

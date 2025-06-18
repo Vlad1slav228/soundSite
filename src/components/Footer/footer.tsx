@@ -299,7 +299,7 @@ export default function Footer() {
               <div className={s.formFields}>
                 <div className={s.formField}>
                   <div className={s.inputGroup}>
-                    <div style={{ display: "flex" }}>
+                    <div style={{ display: "flex", padding: "0 12px" }}>
                       <span className={s.requiredMark}>{REQUIRED_MARK}</span>
                       <input
                         type="text"
@@ -325,7 +325,7 @@ export default function Footer() {
 
                 <div className={s.formField}>
                   <div className={s.inputGroup}>
-                    <div style={{ display: "flex" }}>
+                    <div style={{ display: "flex", padding: "0 12px" }}>
                       <span className={s.requiredMark}>{REQUIRED_MARK}</span>
                       <input
                         type="text"
@@ -353,7 +353,7 @@ export default function Footer() {
 
                 <div className={s.formField}>
                   <div className={s.inputGroup}>
-                    <div style={{ display: "flex" }}>
+                    <div style={{ display: "flex", padding: "0 12px" }}>
                       <span className={s.requiredMark}>{REQUIRED_MARK}</span>
                       <input
                         ref={phoneInputRef}
@@ -383,7 +383,7 @@ export default function Footer() {
 
                 <div className={s.formField}>
                   <div className={s.inputGroup}>
-                    <div style={{ display: "flex" }}>
+                    <div style={{ display: "flex", padding: "0 12px" }}>
                       <span className={s.requiredMark}>{REQUIRED_MARK}</span>
                       <input
                         type="email"

@@ -31,6 +31,7 @@
   }
 
   @media (width < $tablet) {
+    display: block;
     padding: 0 $padding_16 0 $padding_16;
   }
 }
@@ -85,11 +86,11 @@
   }
 }
 
-.reviewerName {
+.reviewService {
   font-family: $onestLight;
   font-size: 48px;
   line-height: 110%;
-  color: $classicWhite;
+  color: $limeMain;
   font-weight: 400;
 
   @media (width < $tablet) {
@@ -112,19 +113,32 @@
   }
 }
 
+.reviewFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  color: $lightGray;
+  font-family: $onestLight;
+
+  @media (width < $tablet) {
+    font-size: 12px;
+  }
+}
+
 .string {
   height: 1px;
   background-color: $rangeColor;
 }
 
 .loadMoreButton {
- width: 100%;
- justify-content: center;
+  width: 100%;
+  justify-content: center;
 }
 
 .reviwsMicroImg {
   margin-top: $margin_185;
-  
+
   @media (width < $desktop) {
     margin-left: $margin_20;
   }
@@ -137,4 +151,10 @@
   @media (width < $tablet) {
     display: none;
   }
+}
+
+.errorText {
+  font-size: 16px;
+  font-family: $onestLight;
+  color: $classicWhite;
 }

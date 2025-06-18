@@ -430,27 +430,31 @@ export default function AccountPage({
     return () => clearInterval(interval);
   }, [services, selectedDay]);
 
-    const filteredBookings = useMemo(() => {
+  const filteredBookings = useMemo(() => {
     let result = [...bookings];
-    
+
     // Сортировка по дате (ближайшие сверху)
-    result.sort((a, b) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime());
-    
+    result.sort(
+      (a, b) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime()
+    );
+
     // Перемещаем вниз отмененные и прошедшие
     result.sort((a, b) => {
-      const aIsPastOrCanceled = new Date(a.start_at) < now || a.status === "canceled";
-      const bIsPastOrCanceled = new Date(b.start_at) < now || b.status === "canceled";
-      
+      const aIsPastOrCanceled =
+        new Date(a.start_at) < now || a.status === "canceled";
+      const bIsPastOrCanceled =
+        new Date(b.start_at) < now || b.status === "canceled";
+
       if (aIsPastOrCanceled && !bIsPastOrCanceled) return 1;
       if (!aIsPastOrCanceled && bIsPastOrCanceled) return -1;
       return 0;
     });
 
     if (activeFilter === "active") {
-      return result.filter(booking => booking.status === "pending");
+      return result.filter((booking) => booking.status === "pending");
     }
     if (activeFilter === "canceled") {
-      return result.filter(booking => booking.status === "canceled");
+      return result.filter((booking) => booking.status === "canceled");
     }
     return result;
   }, [bookings, activeFilter, now]);
@@ -800,27 +804,20 @@ export default function AccountPage({
                           )}
                           {isPast && (
                             <button
-                              className={`${s.reviewButton} ${
+                              className={
                                 booking.reviews?.length
-                                  ? s.reviewButtonDisabled
-                                  : s.reviewButtonActive
-                              }`}
+                                  ? `${s.reviewButton} ${s.reviewViewButton}`
+                                  : s.reviewButton
+                              }
                               onClick={() => {
                                 if (!booking.reviews?.length) {
                                   router.push(
                                     `/add-review?bookingId=${booking.id}`
                                   );
                                 } else {
-                                  // Переход к странице отзывов с якорем на конкретный отзыв
-                                  router.push(
-                                    `/reviews#review-${booking.reviews[0].id}`
-                                  );
+                                  router.push(`/review?booking=${booking.id}`);
                                 }
                               }}
-                              disabled={
-                                !!booking.reviews?.length &&
-                                !booking.reviews[0]?.id
-                              }
                             >
                               {booking.reviews?.length
                                 ? "Посмотреть отзыв"
