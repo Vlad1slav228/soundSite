@@ -14,14 +14,14 @@ export type ServiceProps = Readonly<{
 export default function ServiceCard({ service }: ServiceProps) {
   return (
     <article className={s.servicesCard}>
-        <h3 className={s.servicesCardTitle}>{service.title}</h3>
-        <ul className={s.servicesCardList}>
-          {service.list.map((item, index) => (
-            <li key={index} className={s.servicesCardListItem}>
-              {item}
-            </li>
-          ))}
-        </ul>
+      <h3 className={s.servicesCardTitle}>{service.title}</h3>
+      <ul className={s.servicesCardList}>
+        {service.list.map((item, index) => (
+          <li key={index} className={s.servicesCardListItem}>
+            {item}
+          </li>
+        ))}
+      </ul>
 
       <div className={s.servicesCardFooter}>
         <p className={s.servicesCardPrice}>{service.price}</p>
