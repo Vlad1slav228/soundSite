@@ -7,28 +7,28 @@ export const CROSS_ICON = crossIcon;
 export const REVIEWS_BUTTON = "Все отзывы";
 export const REVIEWS_DATA = [
   {
-    fullName: "Svetlana Ganakova",
+    fullName: "Анна Соловьёва",
     reviewText:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Animi cum quia illo? Odit commodi cupiditate possimus sequi alias tenetur esse aspernatur nulla ullam molestias, magnam quis minima quae, ipsam iste excepturi saepe nostrum dolores rem vero ratione earum a tempora. Ipsum facere est ut dolorum officiis nemo quibusdam! Cum officiis rerum veniam nam reprehenderit eveniet eos totam.",
+      "Очень уютная студия, замечательный звукорежиссёр. Записывалась впервые, всё объяснили и помогли. Спасибо за отличный результат!",
   },
   {
-    fullName: "Leonid Adasdasd",
-    reviewText: "ыфвафвыаЧЯСмясчмячсмчямсчясмrrupti eius dolorem?",
+    fullName: "Михаил Котов",
+    reviewText: "Профессиональный подход и современное оборудование. Заказал сведение и мастеринг — всё сделали быстро и качественно. Рекомендую!",
   },
   {
-    fullName: "ASdasd Olwer",
+    fullName: "Виктория Миронова",
     reviewText:
-      "Lorem ipsum dolаавфавфавфавфввыфафыафывctetur adipisicing elit. Id iusto eaque incidunt obcaecati reiciendis culpa distinctio nam dignissimos, doloremque perspiciatis provident, dolor quam commodi perferendis in nihil sunt necessitatibus. Odio numquam libero commodi distinctio illo temporibus dolores tempore, expedita reiciendis aut praesentium, sequi neque iure, porro eum obcaecati error corrupti eius dolorem?",
+      "Потрясающая атмосфера! Чувствовала себя уверенно, а результат превзошёл ожидания. Обязательно приду ещё раз.",
   },
   {
-    fullName: "davvvv Makarov",
+    fullName: "Егор Соколов",
     reviewText:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Id iusto eaque incidunt obcaecati reiciendis culpa distinctio nam dignissimos, doloremque perspiciatis provident, dolor quam commodi perferendis in nihil sunt necessitatibus. Odio numquam libero commodi distinctio illo temporibus dolores tempore, expedita reiciendis aut praesentium, sequi neque iure, porro eum obcaecati error corrupti eius dolorem?",
+      "Приятный персонал, хорошие цены. Студия находится в удобном месте, парковка рядом. Всё устроило.",
   },
   {
-    fullName: "asdfasdfsd dfsdfsdf",
+    fullName: "Мария Фролова",
     reviewText:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Id iusto eaque incidunt obcaecati reiciendis culpa distinctio nam dignissimos, doloremque perspiciatis provident, dolor quam commodi perferendis in nihil sunt necessitatibus. Odio numquam libero commodi distinctio illo temporibus dolores tempore, expedita reiciendis aut praesentium, sequi neque iure, porro eum obcaecati error corrupti eius dolorem?",
+      "Оставила свою первую запись здесь — очень довольна качеством. Быстро получили готовый материал, отличный сервис!",
   },
 ];
 
