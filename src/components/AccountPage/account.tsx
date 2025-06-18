@@ -431,12 +431,27 @@ export default function AccountPage({
   }, [services, selectedDay]);
 
   const filteredBookings = useMemo(() => {
-    if (activeFilter === "all") return bookings;
+    const result = [...bookings];
+
+    // Сначала сортируем по дате (новые сверху)
+    result.sort(
+      (a, b) => new Date(b.start_at).getTime() - new Date(a.start_at).getTime()
+    );
+
+    result.sort((a, b) => {
+      const aIsPast = new Date(a.start_at) < now;
+      const bIsPast = new Date(b.start_at) < now;
+      return aIsPast === bIsPast ? 0 : aIsPast ? 1 : -1;
+    });
+
     if (activeFilter === "active") {
-      return bookings.filter((booking) => booking.status === "pending");
+      return result.filter((booking) => booking.status === "pending");
     }
-    return bookings.filter((booking) => booking.status === "canceled");
-  }, [bookings, activeFilter]);
+    if (activeFilter === "canceled") {
+      return result.filter((booking) => booking.status === "canceled");
+    }
+    return result;
+  }, [bookings, activeFilter, now]);
 
   async function handleTrackDownload(downloadUrl: string, trackTitle?: string) {
     try {
@@ -836,12 +851,12 @@ export default function AccountPage({
               })}
             {!bookingsLoading &&
               filteredBookings.length > visibleBookingsCount && (
-                  <button
-                    className={`greenButton ${s.loadMoreButton}`}
-                    onClick={loadMoreBookings}
-                  >
-                    Загрузить еще
-                  </button>
+                <button
+                  className={`greenButton ${s.loadMoreButton}`}
+                  onClick={loadMoreBookings}
+                >
+                  Загрузить еще
+                </button>
               )}
           </div>
         </section>
