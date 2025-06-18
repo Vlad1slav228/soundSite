@@ -836,14 +836,12 @@ export default function AccountPage({
               })}
             {!bookingsLoading &&
               filteredBookings.length > visibleBookingsCount && (
-                <div className={s.loadMoreWrapper}>
                   <button
                     className={`greenButton ${s.loadMoreButton}`}
                     onClick={loadMoreBookings}
                   >
                     Загрузить еще
                   </button>
-                </div>
               )}
           </div>
         </section>
