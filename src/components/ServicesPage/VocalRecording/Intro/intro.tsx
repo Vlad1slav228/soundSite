@@ -4,9 +4,7 @@ import Link from "next/link";
 import { APPLY_BUTTON, SERVICES_DATA, STUDIO_IMG } from "@/mocks/services";
 
 export default function IntroVocalRecording() {
-  const service = SERVICES_DATA.find(
-    (item) => item.slug === "vocal-recording"
-  );
+  const service = SERVICES_DATA.find((item) => item.slug === "vocal-recording");
 
   if (!service) return null;
   return (
@@ -35,7 +33,12 @@ export default function IntroVocalRecording() {
         </ul>
         <div className={s.introServiceFooter}>
           <p className={s.introServicePrice}>{service.price}</p>
-          <button className={`greenButton ${s.greenButton}`}>{APPLY_BUTTON}</button>
+          <Link
+            href={`/bookings/${service.slug}`}
+            className={`greenButton ${s.greenButton}`}
+          >
+            {APPLY_BUTTON}
+          </Link>
         </div>
       </div>
       <Image src={STUDIO_IMG} alt="Студия звукозаписи" />

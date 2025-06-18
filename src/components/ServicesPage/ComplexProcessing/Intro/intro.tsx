@@ -10,7 +10,7 @@ export default function IntroComplexProcessing() {
 
   if (!service) return null;
   return (
-  <section className={s.introBlock}>
+    <section className={s.introBlock}>
       <div className={`container ${s.introContent}`}>
         <nav className={s.breadcrumbs} aria-label="breadcrumb">
           <ul>
@@ -35,7 +35,12 @@ export default function IntroComplexProcessing() {
         </ul>
         <div className={s.introServiceFooter}>
           <p className={s.introServicePrice}>{service.price}</p>
-          <button className={`greenButton ${s.greenButton}`}>{APPLY_BUTTON}</button>
+          <Link
+            href={`/bookings/${service.slug}`}
+            className={`greenButton ${s.greenButton}`}
+          >
+            {APPLY_BUTTON}
+          </Link>
         </div>
       </div>
       <Image src={STUDIO_IMG} alt="Студия звукозаписи" />

@@ -16,8 +16,10 @@ import {
 } from "@/mocks/BookingPage/booking";
 import s from "./booking.module.scss";
 import Image from "next/image";
+import { API_BASE_URL } from "@/lib/config";
 import React, { useState, useRef, useEffect } from "react";
 import Calendar from "./BookingPageCalendar/calendar";
+import { useSearchParams } from "next/navigation";
 
 const TIME_SLOTS = [
   "09:00 - 10:00",
@@ -61,6 +63,8 @@ type TouchedFields = {
 };
 
 export default function BookingForm() {
+  const searchParams = useSearchParams();
+  const serviceId = searchParams.get("serviceId");
   const [formData, setFormData] = useState<FormData>({
     name: "",
     surname: "",
@@ -133,12 +137,12 @@ export default function BookingForm() {
   };
 
   const formatPhone = (value: string): string => {
-    let rawNumbers = value.replace(/\D/g, '');
+    let rawNumbers = value.replace(/\D/g, "");
 
-    if (rawNumbers.startsWith('8')) {
-      rawNumbers = '7' + rawNumbers.slice(1);
-    } else if (!rawNumbers.startsWith('7')) {
-      rawNumbers = '7' + rawNumbers;
+    if (rawNumbers.startsWith("8")) {
+      rawNumbers = "7" + rawNumbers.slice(1);
+    } else if (!rawNumbers.startsWith("7")) {
+      rawNumbers = "7" + rawNumbers;
     }
 
     rawNumbers = rawNumbers.slice(0, 11);
@@ -160,7 +164,10 @@ export default function BookingForm() {
       .filter((char) => /\d/.test(char)).length;
   };
 
-  const findCursorPositionFromDigits = (formatted: string, digitIndex: number): number => {
+  const findCursorPositionFromDigits = (
+    formatted: string,
+    digitIndex: number
+  ): number => {
     let count = 0;
     for (let i = 0; i < formatted.length; i++) {
       if (/\d/.test(formatted[i])) {
@@ -173,10 +180,16 @@ export default function BookingForm() {
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatPhone(e.target.value);
-    setFormData(prev => ({ ...prev, phone: formatted }));
+    setFormData((prev) => ({ ...prev, phone: formatted }));
 
-    const digitsBeforeCursor = countDigitsBeforeCursor(lastPhoneValue, lastPhoneCursor);
-    const newCursor = findCursorPositionFromDigits(formatted, digitsBeforeCursor - (isBackspace ? 1 : 0));
+    const digitsBeforeCursor = countDigitsBeforeCursor(
+      lastPhoneValue,
+      lastPhoneCursor
+    );
+    const newCursor = findCursorPositionFromDigits(
+      formatted,
+      digitsBeforeCursor - (isBackspace ? 1 : 0)
+    );
 
     setTimeout(() => {
       if (phoneInputRef.current) {
@@ -187,13 +200,13 @@ export default function BookingForm() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
-    
-    if (name === 'phone') {
+
+    if (name === "phone") {
       handlePhoneChange(e);
       return;
     }
 
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
@@ -208,7 +221,7 @@ export default function BookingForm() {
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const { name } = e.target;
-    setTouched(prev => ({ ...prev, [name]: true }));
+    setTouched((prev) => ({ ...prev, [name]: true }));
     validateField(name as keyof FormData, formData[name as keyof FormData]);
   };
 
@@ -221,13 +234,14 @@ export default function BookingForm() {
         isValid = typeof value === "string" && value.trim().length >= 2;
         break;
       case "phone":
-        const normalized = value.toString().replace(/\D/g, '');
-        isValid = normalized.length === 11 && normalized.startsWith('7');
+        const normalized = value.toString().replace(/\D/g, "");
+        isValid = normalized.length === 11 && normalized.startsWith("7");
         break;
       case "email":
-        isValid = typeof value === "string" && 
-                 value.trim() !== "" && 
-                 /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+        isValid =
+          typeof value === "string" &&
+          value.trim() !== "" &&
+          /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
         break;
       case "date":
         isValid = typeof value === "string" && value.trim().length > 0;
@@ -242,7 +256,7 @@ export default function BookingForm() {
         break;
     }
 
-    setErrors(prev => ({ ...prev, [name]: !isValid }));
+    setErrors((prev) => ({ ...prev, [name]: !isValid }));
   };
 
   const handleDateSelect = (date: Date) => {
@@ -251,7 +265,7 @@ export default function BookingForm() {
       month: "2-digit",
       year: "numeric",
     });
-    setFormData(prev => ({ ...prev, date: formattedDate }));
+    setFormData((prev) => ({ ...prev, date: formattedDate }));
     setCalendarDate(date);
     setShowCalendar(false);
 
@@ -263,7 +277,7 @@ export default function BookingForm() {
   };
 
   const handleTimeSelect = (time: string) => {
-    setFormData(prev => ({ ...prev, time }));
+    setFormData((prev) => ({ ...prev, time }));
     setShowTimeDropdown(false);
     validateField("time", time);
   };
@@ -272,17 +286,17 @@ export default function BookingForm() {
     e.preventDefault();
     setShowCalendar(!showCalendar);
     setShowTimeDropdown(false);
-    setTouched(prev => ({ ...prev, date: true }));
+    setTouched((prev) => ({ ...prev, date: true }));
   };
 
   const toggleTimeDropdown = (e: React.MouseEvent) => {
     e.preventDefault();
     setShowTimeDropdown(!showTimeDropdown);
     setShowCalendar(false);
-    setTouched(prev => ({ ...prev, time: true }));
+    setTouched((prev) => ({ ...prev, time: true }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const allTouched: TouchedFields = {
@@ -299,9 +313,38 @@ export default function BookingForm() {
       validateField(key, formData[key]);
     });
 
-    const hasErrors = Object.values(errors).some(error => error);
-    if (!hasErrors) {
-      console.log("Форма отправлена:", formData);
+    const hasErrors = Object.values(errors).some((error) => error);
+    if (!hasErrors && serviceId) {
+      try {
+        const [day, month, year] = formData.date.split(".");
+        const dateTime = `${year}-${month}-${day}T${
+          formData.time.split(" - ")[0]
+        }:00`;
+
+        const response = await fetch(`${API_BASE_URL}/api/v1/services?id=${serviceId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: formData.email,
+            first_name: formData.name,
+            last_name: formData.surname,
+            phone: formData.phone.replace(/\D/g, "").substring(1), // Убираем +7
+            service_id: parseInt(serviceId),
+            start_at: dateTime,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Ошибка при отправке формы");
+        }
+
+        const data = await response.json();
+        console.log("Успешно отправлено:", data);
+      } catch (error) {
+        console.error("Ошибка:", error);
+      }
     }
   };
 
@@ -309,6 +352,7 @@ export default function BookingForm() {
     <section className={s.bookingBlock}>
       <div className={`container ${s.bookingGroup}`}>
         <form className={s.callbackForm} onSubmit={handleSubmit}>
+          <input type="hidden" name="service_id" value={serviceId || ""} />
           <h1>{FORM_TITLE}</h1>
           <div className={s.formFieldsGroup}>
             <div className={s.formFields}>
@@ -412,7 +456,9 @@ export default function BookingForm() {
                   ></div>
                 </div>
                 {touched.email && errors.email && (
-                  <p className={s.errorText}>Введите корректный email (пример: example@mail.com)</p>
+                  <p className={s.errorText}>
+                    Введите корректный email (пример: example@mail.com)
+                  </p>
                 )}
               </div>
 
@@ -487,7 +533,8 @@ export default function BookingForm() {
                             (e.currentTarget.style.backgroundColor = "#F0F8D3")
                           }
                           onMouseLeave={(e) =>
-                            (e.currentTarget.style.backgroundColor = "transparent")
+                            (e.currentTarget.style.backgroundColor =
+                              "transparent")
                           }
                           onMouseDown={(e) =>
                             (e.currentTarget.style.backgroundColor = "#CEE86B")
@@ -533,11 +580,7 @@ export default function BookingForm() {
             {BOOKING_BUTTON}
           </button>
         </form>
-        <Image
-          src={MICROPHONE_IMG}
-          alt="Микрофон"
-          className="microImg" 
-        />
+        <Image src={MICROPHONE_IMG} alt="Микрофон" className="microImg" />
       </div>
     </section>
   );

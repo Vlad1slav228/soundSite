@@ -40,7 +40,12 @@ export default function IntroService({ service }: ServiceProps) {
         </ul>
         <div className={s.introServiceFooter}>
           <p className={s.introServicePrice}>{service.price}</p>
-          <button className={`greenButton ${s.greenButton}`}>{APPLY_BUTTON}</button>
+          <Link 
+            href={`/bookings/${service.slug}`} 
+            className={`greenButton ${s.greenButton}`}
+          >
+            {APPLY_BUTTON}
+          </Link>
         </div>
       </div>
       <Image src={STUDIO_IMG} alt="Студия звукозаписи"/>
