@@ -1,14 +1,19 @@
 import s from "./intro.module.scss";
 import Image from "next/image";
 import Link from "next/link";
-import { APPLY_BUTTON, SERVICES_DATA, STUDIO_IMG } from "@/mocks/services";
+import { APPLY_BUTTON, STUDIO_IMG } from "@/mocks/services";
 
-export default function IntroBasicProcessing() {
-  const service = SERVICES_DATA.find(
-    (item) => item.slug === "basic-processing"
-  );
+interface ServiceProps {
+  service: {
+    slug: string;
+    title: string;
+    list: string[];
+    price: string;
+    button: string;
+  };
+}
 
-  if (!service) return null;
+export default function IntroService({ service }: ServiceProps) {
   return (
     <section className={s.introBlock}>
       <div className={`container ${s.introContent}`}>
