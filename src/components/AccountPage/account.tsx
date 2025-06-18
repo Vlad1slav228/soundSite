@@ -224,6 +224,28 @@ export default function AccountPage({
     }
   };
 
+  const handleCancelBooking = async (bookingId: number) => {
+    if (!window.confirm("Вы уверены, что хотите отменить запись?")) return;
+
+    try {
+      const res = await fetchWithAuth(`/api/v1/bookings/${bookingId}/cancel/`, {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (!res.ok) {
+        throw new Error("Ошибка при отмене записи");
+      }
+
+      await fetchBookings();
+      await updateSlotsAfterBooking();
+      alert("Запись успешно отменена");
+    } catch (error: any) {
+      alert(error.message || "Произошла ошибка при отмене записи");
+      console.error("Cancel booking error:", error);
+    }
+  };
+
   const [selectedDay, setSelectedDay] = useState<Date>(now);
   const [startIndex, setStartIndex] = useState(0);
   const [direction, setDirection] = useState<"next" | "prev" | null>(null);
@@ -234,6 +256,11 @@ export default function AccountPage({
   const [expandedService, setExpandedService] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [visibleBookingsCount, setVisibleBookingsCount] = useState(4);
+
+  const loadMoreBookings = () => {
+    setVisibleBookingsCount((prev) => prev + 4);
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -395,6 +422,14 @@ export default function AccountPage({
     }
   };
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      updateSlotsAfterBooking();
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [services, selectedDay]);
+
   const filteredBookings = useMemo(() => {
     if (activeFilter === "all") return bookings;
     if (activeFilter === "active") {
@@ -407,7 +442,7 @@ export default function AccountPage({
     try {
       const response = await fetch(downloadUrl, {
         method: "GET",
-        credentials: "include", 
+        credentials: "include",
       });
       if (!response.ok) {
         throw new Error("Ошибка при скачивании файла");
@@ -689,12 +724,17 @@ export default function AccountPage({
             )}
 
             {!bookingsLoading &&
-              filteredBookings.map((booking) => {
+              filteredBookings.slice(0, visibleBookingsCount).map((booking) => {
                 const { date, time } = formatDateTime(booking.start_at);
                 const bookingDate = new Date(booking.start_at);
                 const isPast = bookingDate < now;
                 const duration = booking.service.duration_min;
                 const isCanceled = booking.status === "canceled";
+
+                const canCancel =
+                  !isPast &&
+                  !isCanceled &&
+                  bookingDate.getTime() - now.getTime() > 30 * 60 * 1000;
 
                 return (
                   <Fragment key={booking.id}>
@@ -732,27 +772,37 @@ export default function AccountPage({
                         <p className={s.serviceCardPrice}>
                           {booking.service.price} ₽
                         </p>
-                        {isPast && (
-                          <button
-                            className={`${s.reviewButton} ${
-                              booking.reviews?.length
-                                ? s.reviewButtonDisabled
-                                : s.reviewButtonActive
-                            }`}
-                            onClick={() => {
-                              if (!booking.reviews?.length) {
-                                router.push(
-                                  `/add-review?bookingId=${booking.id}`
-                                );
-                              }
-                            }}
-                            disabled={!!booking.reviews?.length}
-                          >
-                            {booking.reviews?.length
-                              ? "Отзыв оставлен"
-                              : "Оставить отзыв"}
-                          </button>
-                        )}
+                        <div className={s.bookingActions}>
+                          {canCancel && (
+                            <button
+                              className={s.reviewButton}
+                              onClick={() => handleCancelBooking(booking.id)}
+                            >
+                              Отменить запись
+                            </button>
+                          )}
+                          {isPast && (
+                            <button
+                              className={`${s.reviewButton} ${
+                                booking.reviews?.length
+                                  ? s.reviewButtonDisabled
+                                  : s.reviewButtonActive
+                              }`}
+                              onClick={() => {
+                                if (!booking.reviews?.length) {
+                                  router.push(
+                                    `/add-review?bookingId=${booking.id}`
+                                  );
+                                }
+                              }}
+                              disabled={!!booking.reviews?.length}
+                            >
+                              {booking.reviews?.length
+                                ? "Отзыв оставлен"
+                                : "Оставить отзыв"}
+                            </button>
+                          )}
+                        </div>
                       </div>
                       {booking.tracks && booking.tracks.length > 0 && (
                         <>
@@ -784,6 +834,17 @@ export default function AccountPage({
                   </Fragment>
                 );
               })}
+            {!bookingsLoading &&
+              filteredBookings.length > visibleBookingsCount && (
+                <div className={s.loadMoreWrapper}>
+                  <button
+                    className={`greenButton ${s.loadMoreButton}`}
+                    onClick={loadMoreBookings}
+                  >
+                    Загрузить еще
+                  </button>
+                </div>
+              )}
           </div>
         </section>
       </div>

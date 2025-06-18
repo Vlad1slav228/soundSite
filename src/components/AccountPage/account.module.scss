@@ -463,6 +463,10 @@
   }
 }
 
+.loadMoreButton{
+  margin: $margin_40 auto;
+}
+
 .cancelButton {
   padding: $padding_8 $padding_16;
   background-color: $disabledDay;
@@ -694,6 +698,7 @@
   background-color: $classicBlack;
   gap: $gap_8;
   font-family: $onestRegular;
+  color: $classicWhite;
   font-size: 14px;
   letter-spacing: -0.03em;
   cursor: pointer;
@@ -765,7 +770,6 @@
     width: 100%; 
   }
 }
-
 
 .downloadButton {
   cursor: pointer;
