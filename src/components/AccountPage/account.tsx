@@ -11,6 +11,7 @@ import {
   ARROW_LEFT,
   ARROW_RIGHT,
   CANCEL_APPLICATION_BUTTON,
+  DOWNLOAD_ICON,
   LOGOUT_BUTTON,
   WEEKDAYS_DATA,
 } from "@/mocks/AccountPage/account";
@@ -61,6 +62,7 @@ type Booking = {
     file: string;
     file_converted: string;
     uploaded: string;
+    download_url: string;
   }>;
   reviews: Array<{
     id: number;
@@ -401,6 +403,32 @@ export default function AccountPage({
     return bookings.filter((booking) => booking.status === "canceled");
   }, [bookings, activeFilter]);
 
+  async function handleTrackDownload(downloadUrl: string, trackTitle?: string) {
+    try {
+      const response = await fetch(downloadUrl, {
+        method: "GET",
+        credentials: "include", 
+      });
+      if (!response.ok) {
+        throw new Error("Ошибка при скачивании файла");
+      }
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = trackTitle ? `${trackTitle}.wav` : `track.wav`;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        a.remove();
+        window.URL.revokeObjectURL(url);
+      }, 100);
+    } catch (error) {
+      alert("Не удалось скачать трек");
+    }
+  }
+
   return (
     <section className={s.accountBlock}>
       <div
@@ -675,7 +703,6 @@ export default function AccountPage({
                         isPast ? s.pastBooking : ""
                       } ${isCanceled ? s.canceledBooking : ""}`}
                     >
-                    
                       <div className={s.serviceCardContent}>
                         <h2 className={s.serviceCardTitle}>
                           {booking.service.title}
@@ -734,12 +761,24 @@ export default function AccountPage({
                               <AudioPlayer
                                 src={track.file}
                                 title={track.title}
+                                className={s.audioTrackBlock}
                               />
+                              <button
+                                className={s.downloadButton}
+                                title="Скачать трек"
+                                onClick={() =>
+                                  handleTrackDownload(
+                                    track.download_url,
+                                    track.title
+                                  )
+                                }
+                              >
+                                <Image src={DOWNLOAD_ICON} alt="Скачать трек" />
+                              </button>
                             </div>
                           ))}
                         </>
                       )}
-                    
                     </article>
                     <div className={s.string} aria-hidden="true"></div>
                   </Fragment>

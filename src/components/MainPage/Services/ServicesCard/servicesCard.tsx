@@ -24,7 +24,7 @@ export default function ServiceCard({ service }: ServiceProps) {
         </ul>
 
       <div className={s.servicesCardFooter}>
-        <span className={s.servicesCardPrice}>{service.price}</span>
+        <p className={s.servicesCardPrice}>{service.price}</p>
         <Link href={`/services/${service.slug}`} className="greenButton">
           {service.button}
         </Link>

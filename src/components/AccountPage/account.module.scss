@@ -749,7 +749,9 @@
 }
 
 .audioTrack {
-  width: 100%;
+  display: flex;
+  gap: $gap_16;
+  align-items: center;
   grid-column: 1 / span 2;
   border: 1px solid #000;
   padding: $padding_16 $padding_26;
@@ -758,5 +760,18 @@
   @media (width < $tablet) {
     padding: $padding_16;
   }
+  
+  .audioTrackBlock {
+    width: 100%; 
+  }
 }
 
+
+.downloadButton {
+  cursor: pointer;
+  border: none;
+  width: 40px;
+  height: 40px;
+  padding: $padding_12;
+  background-color: $limeMain;
+}

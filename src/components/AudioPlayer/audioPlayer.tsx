@@ -8,9 +8,10 @@ import { PAUSE_ICON, PLAY_ICON } from "@/mocks/MainPage/musicExamples";
 type AudioPlayerProps = Readonly<{
   src: string;
   title?: string;
+  className?: string;
 }>;
 
-export default function AudioPlayer({ src }: AudioPlayerProps) {
+export default function AudioPlayer({ src, className }: AudioPlayerProps) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -97,7 +98,7 @@ export default function AudioPlayer({ src }: AudioPlayerProps) {
   };
 
   return (
-    <div className={s.audioTrackBlock}>
+    <div className={`${s.audioTrackBlock} ${className || ""}`}>
       <button onClick={togglePlay} className={s.playButton}>
         <Image
           src={isPlaying ? PAUSE_ICON : PLAY_ICON}
@@ -105,7 +106,7 @@ export default function AudioPlayer({ src }: AudioPlayerProps) {
         />
       </button>
       <div className={s.audioTrackControls}>
-        <span className={s.time}>{currentTime}</span>
+        <p className={s.time}>{currentTime}</p>
         <input
           type="range"
           min="0"
@@ -115,7 +116,7 @@ export default function AudioPlayer({ src }: AudioPlayerProps) {
           className={s.progress}
           style={{ "--progress": `${progress}%` } as React.CSSProperties}
         />
-        <span className={s.time}>{duration}</span>
+        <p className={s.time}>{duration}</p>
         <audio ref={audioRef} src={src} preload="metadata">
           <track kind="captions" srcLang="ru" label="Субтитры отсутствуют" />
         </audio>

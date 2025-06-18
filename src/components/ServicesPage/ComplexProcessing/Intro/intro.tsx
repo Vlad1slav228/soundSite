@@ -34,7 +34,7 @@ export default function IntroComplexProcessing() {
           ))}
         </ul>
         <div className={s.introServiceFooter}>
-          <span className={s.introServicePrice}>{service.price}</span>
+          <p className={s.introServicePrice}>{service.price}</p>
           <button className={`greenButton ${s.greenButton}`}>{APPLY_BUTTON}</button>
         </div>
       </div>
