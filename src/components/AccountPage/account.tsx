@@ -808,12 +808,20 @@ export default function AccountPage({
                                   router.push(
                                     `/add-review?bookingId=${booking.id}`
                                   );
+                                } else {
+                                  // Переход к странице отзывов с якорем на конкретный отзыв
+                                  router.push(
+                                    `/reviews#review-${booking.reviews[0].id}`
+                                  );
                                 }
                               }}
-                              disabled={!!booking.reviews?.length}
+                              disabled={
+                                !!booking.reviews?.length &&
+                                !booking.reviews[0]?.id
+                              }
                             >
                               {booking.reviews?.length
-                                ? "Отзыв оставлен"
+                                ? "Посмотреть отзыв"
                                 : "Оставить отзыв"}
                             </button>
                           )}
