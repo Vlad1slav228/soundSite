@@ -79,23 +79,24 @@ export default function ReviewsList() {
               {loading && <p>Загрузка отзывов...</p>}
               {error && <p className={s.errorText}>{error}</p>}
               {!loading && !error && reviews.length === 0 && (
-                <p>Пока нет отзывов. Станьте первым!</p>
+                <p className={s.errorText}>Пока нет отзывов. Станьте первым!</p>
               )}
               {reviews.slice(0, visibleCount).map((review, index, arr) => (
                 <div key={review.id}>
                   <article className={s.reviewCard}>
-                    <div className={s.reviewHeader}>
-                      <h2 className={s.reviewerName}>
-                        {review.user?.first_name || "Аноним"}
-                      </h2>
+                    <h2 className={s.reviewService}>
+                      {review.booking_info?.service || "Услуга"}
+                    </h2>
+                    <p className={s.reviewText}>{review.text}</p>
+                    <div className={s.reviewFooter}>
+                      <p className={s.reviewUser}>
+                        {review.user?.first_name || "Аноним"}{" "}
+                        {review.user?.last_name}
+                      </p>
                       <p className={s.reviewDate}>
                         {formatDate(review.created)}
                       </p>
                     </div>
-                    <h3 className={s.reviewService}>
-                      {review.booking_info?.service || "Услуга"}
-                    </h3>
-                    <p className={s.reviewText}>{review.text}</p>
                   </article>
                   {index < arr.length - 1 && (
                     <div className={s.string} aria-hidden="true"></div>
