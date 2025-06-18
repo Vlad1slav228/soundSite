@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useEffect, useMemo, useState } from "react";
+import AudioPlayer from "../AudioPlayer/audioPlayer";
 import { fetchWithAuth } from "@/lib/fetchWithAuth";
 import {
   ACCOUNT_ICON,
@@ -674,6 +675,7 @@ export default function AccountPage({
                         isPast ? s.pastBooking : ""
                       } ${isCanceled ? s.canceledBooking : ""}`}
                     >
+                    
                       <div className={s.serviceCardContent}>
                         <h2 className={s.serviceCardTitle}>
                           {booking.service.title}
@@ -725,6 +727,19 @@ export default function AccountPage({
                           </button>
                         )}
                       </div>
+                      {booking.tracks && booking.tracks.length > 0 && (
+                        <>
+                          {booking.tracks.map((track) => (
+                            <div key={track.id} className={s.audioTrack}>
+                              <AudioPlayer
+                                src={track.file}
+                                title={track.title}
+                              />
+                            </div>
+                          ))}
+                        </>
+                      )}
+                    
                     </article>
                     <div className={s.string} aria-hidden="true"></div>
                   </Fragment>

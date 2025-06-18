@@ -583,7 +583,9 @@
 }
 
 .serviceCard {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-row-gap: $gap_16;
   justify-content: space-between;
   padding: $padding_40 $padding_24;
 
@@ -593,6 +595,7 @@
   }
 
   @media (width < $tablet) {
+    display: flex;
     flex-direction: column;
     gap: $gap_20;
   }
@@ -745,4 +748,15 @@
   pointer-events: none;
 }
 
+.audioTrack {
+  width: 100%;
+  grid-column: 1 / span 2;
+  border: 1px solid #000;
+  padding: $padding_16 $padding_26;
+  background-color: $graphiteBlack;
+
+  @media (width < $tablet) {
+    padding: $padding_16;
+  }
+}
 

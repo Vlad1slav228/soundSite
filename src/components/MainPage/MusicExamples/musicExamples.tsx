@@ -9,7 +9,7 @@ import {
 } from "@/mocks/MainPage/musicExamples";
 import s from "./musicExamples.module.scss";
 import Image from "next/image";
-import AudioPlayer from "./AudioPlayer/audioPlayer";
+import AudioPlayer from "@/components/AudioPlayer/audioPlayer";
 
 export default function MusicExamplesMain() {
   return (

@@ -7,6 +7,7 @@ import { PAUSE_ICON, PLAY_ICON } from "@/mocks/MainPage/musicExamples";
 
 type AudioPlayerProps = Readonly<{
   src: string;
+  title?: string;
 }>;
 
 export default function AudioPlayer({ src }: AudioPlayerProps) {

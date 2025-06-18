@@ -1,8 +1,3 @@
-import playIcon from "../../../public/MusicExamplesServices/iconPlay.png";
-import pauseIcon from "../../../public/MusicExamplesServices/iconPause.png";
-
-export const PLAY_ICON = playIcon;
-export const PAUSE_ICON = pauseIcon;
 export const BEFORE_TITLE = "До";
 export const AFTER_TITLE = "После";
 export const EMINEM_TRACK = "/MusicExamplesMain/Eminem.mp3";

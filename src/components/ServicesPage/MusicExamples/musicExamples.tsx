@@ -8,7 +8,7 @@ import {
   SERGEDEVANT_TRACK,
 } from "@/mocks/ServicesPage/musicExamples";
 import s from "./musicExamples.module.scss";
-import AudioPlayer from "./AudioPlayer/audioPlayer";
+import AudioPlayer from "@/components/AudioPlayer/audioPlayer";
 
 export default function MusicExamplesServices() {
   return (

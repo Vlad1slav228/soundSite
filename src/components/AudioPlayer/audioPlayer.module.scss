@@ -1,8 +1,8 @@
-@use "../../../../styles/colors.scss" as *;
-@use "../../../../styles/fonts.scss" as *;
-@use "../../../../styles/padding_margin_gap.scss" as *;
-@use "../../../../styles/breakpoints.scss" as *;
-@use "../../../../styles/border.scss" as *;
+@use "../../styles/colors.scss" as *;
+@use "../..//styles/fonts.scss" as *;
+@use "../../styles/padding_margin_gap.scss" as *;
+@use "../../styles/breakpoints.scss" as *;
+@use "../../styles/border.scss" as *;
 
 .audioTrackBlock {
   display: flex;
