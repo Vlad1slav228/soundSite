@@ -4,6 +4,7 @@
 @use "../../../styles/breakpoints.scss" as *;
 
 .heroBlock {
+  margin-top: -1px;
   padding: 0 $padding_22;
   background-color: $limeMain;
 

@@ -3,6 +3,7 @@
 import {
   ABOUT_TITLE,
   ACCOUNT_ICON,
+  ACCOUNT_TITLE,
   CALLPHONE_LINK,
   CONTACTS_TITLE,
   EXAMPLES_TITLE,
@@ -100,6 +101,7 @@ useEffect(() => {
                 <li>
                   <a href="/#contacts" onClick={handleLinkClick}>{CONTACTS_TITLE}</a>
                 </li>
+                <li className={s.linkAccount}><a href="/personal-account">{ACCOUNT_TITLE}</a></li>
               </ul>
             </nav>
           </li>

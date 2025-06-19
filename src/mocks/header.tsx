@@ -10,3 +10,4 @@ export const PHOTO_TITLE = "Фото";
 export const CONTACTS_TITLE = "Контакты";
 export const CALLPHONE_LINK = "+7 (916) 269-98-81";
 export const MENU_TITLE = "Меню";
+export const ACCOUNT_TITLE = "Личный кабинет";

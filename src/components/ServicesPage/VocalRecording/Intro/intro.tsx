@@ -1,12 +1,50 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import s from "./intro.module.scss";
 import Image from "next/image";
 import Link from "next/link";
-import { APPLY_BUTTON, SERVICES_DATA, STUDIO_IMG } from "@/mocks/services";
+import { APPLY_BUTTON, STUDIO_IMG } from "@/mocks/services";
+import { useEffect, useState } from "react";
+import { API_BASE_URL } from "@/lib/config";
 
-export default function IntroVocalRecording() {
-  const service = SERVICES_DATA.find((item) => item.slug === "vocal-recording");
+interface ServiceProps {
+  service: {
+    id: number;
+    title: string;
+    list: string[];
+    price: string;
+    button: string;
+  };
+}
 
-  if (!service) return null;
+export default function IntroVocalRecording({
+  service,
+}: Readonly<ServiceProps>) {
+  const router = useRouter();
+  const [isAuth, setIsAuth] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    async function checkAuth() {
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/v1/auth/me/`, {
+          credentials: "include",
+        });
+        setIsAuth(res.ok);
+      } catch {
+        setIsAuth(false);
+      }
+    }
+    checkAuth();
+  }, []);
+
+  const handleApplyClick = (e: React.MouseEvent) => {
+    if (isAuth) {
+      e.preventDefault();
+      router.push("/personal-account");
+    }
+  };
+
   return (
     <section className={s.introBlock}>
       <div className={`container ${s.introContent}`}>
@@ -34,8 +72,9 @@ export default function IntroVocalRecording() {
         <div className={s.introServiceFooter}>
           <p className={s.introServicePrice}>{service.price}</p>
           <Link
-            href={`/bookings/${service.slug}`}
+            href={`/booking?serviceId=${service.id}`}
             className={`greenButton ${s.greenButton}`}
+            onClick={handleApplyClick}
           >
             {APPLY_BUTTON}
           </Link>

@@ -1,11 +1,16 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import s from "./intro.module.scss";
 import Image from "next/image";
 import Link from "next/link";
 import { APPLY_BUTTON, STUDIO_IMG } from "@/mocks/services";
+import { useEffect, useState } from "react";
+import { API_BASE_URL } from "@/lib/config";
 
 interface ServiceProps {
   service: {
-    slug: string;
+    id: number;
     title: string;
     list: string[];
     price: string;
@@ -13,7 +18,31 @@ interface ServiceProps {
   };
 }
 
-export default function IntroService({ service }: ServiceProps) {
+export default function IntroService({ service }: Readonly<ServiceProps>) {
+  const router = useRouter();
+  const [isAuth, setIsAuth] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    async function checkAuth() {
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/v1/auth/me/`, {
+          credentials: "include",
+        });
+        setIsAuth(res.ok); 
+      } catch {
+        setIsAuth(false);
+      }
+    }
+    checkAuth();
+  }, []);
+
+  const handleApplyClick = (e: React.MouseEvent) => {
+    if (isAuth) {
+      e.preventDefault();
+      router.push("/personal-account");
+    }
+  };
+  
   return (
     <section className={s.introBlock}>
       <div className={`container ${s.introContent}`}>
@@ -40,15 +69,16 @@ export default function IntroService({ service }: ServiceProps) {
         </ul>
         <div className={s.introServiceFooter}>
           <p className={s.introServicePrice}>{service.price}</p>
-          <Link 
-            href={`/bookings/${service.slug}`} 
+          <Link
+            href={`/booking?serviceId=${service.id}`}
             className={`greenButton ${s.greenButton}`}
+            onClick={handleApplyClick}
           >
             {APPLY_BUTTON}
           </Link>
         </div>
       </div>
-      <Image src={STUDIO_IMG} alt="Студия звукозаписи"/>
+      <Image src={STUDIO_IMG} alt="Студия звукозаписи" />
     </section>
   );
 }

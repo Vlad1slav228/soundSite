@@ -122,6 +122,14 @@
   }
 }
 
+.linkAccount {
+  display: none;
+
+  @media (width < $tablet) {
+    display: block;
+  }
+}
+
 .callPhoneLink {
   display: flex;
   align-items: center;

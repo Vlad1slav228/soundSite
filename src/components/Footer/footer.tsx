@@ -28,6 +28,7 @@ import {
   YT_ICON,
 } from "@/mocks/footer";
 import s from "./footer.module.scss";
+import { API_BASE_URL } from "@/lib/config";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -206,26 +207,64 @@ export default function Footer() {
     setErrors((prev) => ({ ...prev, [name]: !isValid }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    const allTouched: TouchedFields = {
-      name: true,
-      surname: true,
-      phone: true,
-      email: true,
-    };
-    setTouched(allTouched);
+  const allTouched: TouchedFields = {
+    name: true,
+    surname: true,
+    phone: true,
+    email: true,
+  };
+  setTouched(allTouched);
 
-    (Object.keys(formData) as Array<keyof FormData>).forEach((key) => {
-      validateField(key, formData[key]);
+  (Object.keys(formData) as Array<keyof FormData>).forEach((key) => {
+    validateField(key, formData[key]);
+  });
+
+  const hasErrors = Object.values(errors).some((error) => error);
+  if (hasErrors) return;
+
+  const body = {
+    first_name: formData.name,
+    last_name: formData.surname,
+    phone: formData.phone,
+    email: formData.email,
+    agree_policy: formData.agreed,
+  };
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/v1/feedback/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
     });
 
-    const hasErrors = Object.values(errors).some((error) => error);
-    if (!hasErrors) {
-      console.log("Форма отправлена:", formData);
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(errorText || "Ошибка отправки формы");
     }
-  };
+
+    alert("Спасибо! Ваше сообщение отправлено.");
+    setFormData({
+      name: "",
+      surname: "",
+      phone: "",
+      email: "",
+      agreed: false,
+    });
+    setTouched({
+      name: false,
+      surname: false,
+      phone: false,
+      email: false,
+    });
+  } catch (error: any) {
+    alert(error.message || "Ошибка отправки");
+  }
+};
 
   return (
     <footer className={s.footer}>
@@ -420,7 +459,7 @@ export default function Footer() {
                 <label>
                   <span>
                     {PRIVACY_POLICY_TITLE}
-                    <a href="заглушка" target="_blank">
+                    <a href="/PP.pdf" target="_blank">
                       {PRIVACY_POLICY_LINK}
                     </a>
                   </span>

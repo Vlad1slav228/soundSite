@@ -286,7 +286,7 @@ export default function AuthorizationForm() {
                 <label>
                   <span>
                     {PRIVACY_POLICY_TITLE}
-                    <a href="заглушка" target="_blank">
+                    <a href="/PP.pdf" target="_blank">
                       {PRIVACY_POLICY_LINK}
                     </a>
                   </span>

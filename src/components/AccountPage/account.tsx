@@ -177,11 +177,18 @@ export default function AccountPage({
     if (!selectedSlot) return;
 
     try {
-      const dateStr = selectedDay.toISOString().split("T")[0];
-      const timeStr = selectedSlot.time.padEnd(5, ":00");
+      const year = selectedDay.getFullYear();
+    const month = String(selectedDay.getMonth() + 1).padStart(2, '0');
+    const day = String(selectedDay.getDate()).padStart(2, '0');
+    const dateStr = `${year}-${month}-${day}`;
+    const timeStr = selectedSlot.time.padEnd(5, ":00");
 
-      const selectedDateTime = new Date(`${dateStr}T${timeStr}`);
-      if (selectedDateTime < now) {
+        const selectedDateTime = new Date(`${dateStr}T${timeStr}`);
+    const nowLocal = new Date();
+
+   
+
+      if (selectedDateTime < nowLocal) {
         alert("Нельзя записаться на прошедшую дату или время");
         return;
       }
@@ -246,7 +253,11 @@ export default function AccountPage({
     }
   };
 
-  const [selectedDay, setSelectedDay] = useState<Date>(now);
+  const [selectedDay, setSelectedDay] = useState<Date>(() => {
+    const date = new Date(now);
+    date.setHours(0, 0, 0, 0);
+    return date;
+  });
   const [startIndex, setStartIndex] = useState(0);
   const [direction, setDirection] = useState<"next" | "prev" | null>(null);
   const [visibleDaysCount, setVisibleDaysCount] = useState(6);
@@ -267,6 +278,13 @@ export default function AccountPage({
       setLoading(true);
       setError("");
       try {
+      const year = selectedDay.getFullYear();
+      const month = String(selectedDay.getMonth() + 1).padStart(2, '0');
+      const day = String(selectedDay.getDate()).padStart(2, '0');
+      const dateStr = `${year}-${month}-${day}`;
+
+      console.log('Fetching slots for date:', dateStr);
+
         const res = await fetchWithAuth("/api/v1/services/", {
           method: "GET",
           credentials: "include",
@@ -278,9 +296,7 @@ export default function AccountPage({
         const slotsResponses = await Promise.all(
           (data.results || []).map(async (service: Service) => {
             const r = await fetchWithAuth(
-              `/api/v1/slots/?date=${selectedDay
-                .toISOString()
-                .slice(0, 10)}&service=${service.id}`,
+              `/api/v1/slots/?date=${dateStr}&service=${service.id}`,
               { method: "GET", credentials: "include" }
             );
             if (!r.ok) return null;
@@ -393,12 +409,14 @@ export default function AccountPage({
 
   const updateSlotsAfterBooking = async () => {
     try {
+    const year = selectedDay.getFullYear();
+    const month = String(selectedDay.getMonth() + 1).padStart(2, '0');
+    const day = String(selectedDay.getDate()).padStart(2, '0');
+    const dateStr = `${year}-${month}-${day}`;
+
       const slotsResponses = await Promise.all(
         services.map(async (service) => {
-          const r = await fetchWithAuth(
-            `/api/v1/slots/?date=${selectedDay
-              .toISOString()
-              .slice(0, 10)}&service=${service.id}`,
+          const r = await fetchWithAuth(`/api/v1/slots/?date=${dateStr}&service=${service.id}`,
             { method: "GET", credentials: "include" }
           );
           if (!r.ok) return null;

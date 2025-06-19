@@ -70,9 +70,14 @@
 
   a {
     &::after {
+      transition: all 0.3s ease;
       width: 24px;
       height: 24px;
       content: url(../../../../../public/ServicesMain/chevronRight.png);
+    }
+
+    &:hover::after {
+      transform: translateX(3px);
     }
   }
 

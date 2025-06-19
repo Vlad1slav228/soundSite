@@ -18,8 +18,9 @@ interface Service {
 export default async function ServicePage({
   params,
 }: {
-  params: { slug: string };
-}) {
+  readonly params: { readonly slug: string };
+}) 
+{
   try {
     const res = await fetchWithAuth(`/api/v1/services/${params.slug}/`, {
       method: "GET",
@@ -47,6 +48,7 @@ export default async function ServicePage({
     };
 
     const serviceData = {
+       id: service.id, 
       slug: params.slug,
       title: service.title,
       list: getFeaturesList(service.features),

@@ -68,14 +68,19 @@
 
   a {
     &::after {
+      transition: all 0.3s ease;
       width: 24px;
       height: 24px;
       content: url(../../../../public/SignUpMain/chevronRight.png);
     }
+
+    &:hover::after {
+      transform: translateX(3px);
+    }
   }
-  
+
   @media (width < $tablet) {
-    max-width: 100%; 
+    max-width: 100%;
   }
 }
 
