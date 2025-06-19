@@ -108,7 +108,6 @@ export default function AccountPage({
     month: "long",
   });
 
-  // Функция для загрузки записей пользователя
   const fetchBookings = async () => {
     setBookingsLoading(true);
     setBookingsError("");
@@ -151,14 +150,6 @@ export default function AccountPage({
       document.body.style.overflow = "";
     };
   }, [isSidebarOpen]);
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     fetchBookings();
-  //   }, 30000);
-
-  //   return () => clearInterval(interval);
-  // }, []);
 
   const [selectedSlot, setSelectedSlot] = useState<{
     serviceId: number;
@@ -456,7 +447,6 @@ export default function AccountPage({
       (a, b) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime()
     );
 
-    // Перемещаем вниз отмененные и прошедшие
     result.sort((a, b) => {
       const aIsPastOrCanceled =
         new Date(a.start_at) < now || a.status === "canceled";

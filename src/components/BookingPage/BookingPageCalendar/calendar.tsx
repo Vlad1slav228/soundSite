@@ -20,7 +20,6 @@ const Calendar: React.FC<CalendarProps> = ({ onDateSelect, selectedDate, disable
 
     const days: (number | null)[] = [];
 
-    // Пустые дни в начале месяца
     for (let i = 0; i < firstDayOffset; i++) {
       days.push(null);
     }
@@ -29,7 +28,6 @@ const Calendar: React.FC<CalendarProps> = ({ onDateSelect, selectedDate, disable
       days.push(i);
     }
 
-    // Пустые ячейки в конце месяца
     while (days.length % 7 !== 0) {
       days.push(null);
     }

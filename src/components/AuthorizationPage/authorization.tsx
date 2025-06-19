@@ -151,7 +151,6 @@ export default function AuthorizationForm() {
   const handleVerifyOTP = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Mark OTP field as touched
     setTouched((prev) => ({ ...prev, otp: true }));
     validateField("otp", otp);
 

@@ -8,7 +8,6 @@ import AccountPage from "@/components/AccountPage/account";
 import Footer from "@/components/Footer/footer";
 import Loading from "@/components/LoadingPage/loading";
 import type { Profile } from "@/components/AccountPage/account";
-// import { useRouter } from "next/navigation";
 
 export default function PersonalAccount() {
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -34,7 +33,6 @@ export default function PersonalAccount() {
     fetchProfile();
   }, []);
 
-  // const router = useRouter();
 
   const handleLogout = async () => {
     try {

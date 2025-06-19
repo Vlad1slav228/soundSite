@@ -10,7 +10,7 @@ interface Service {
   id: number;
   price: number;
   title: string;
-  features: string | string[]; // Может быть как строкой, так и массивом
+  features: string | string[]; 
   duration_min: number;
   is_active: boolean;
 }
@@ -55,7 +55,6 @@ export default function ServicesMain() {
     fetchServices();
   }, []);
 
-  // Функция для преобразования features в массив строк
   const getFeaturesList = (features: string | string[]): string[] => {
     if (Array.isArray(features)) {
       return features.filter(item => item.trim());
