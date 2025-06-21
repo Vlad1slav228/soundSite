@@ -1,14 +1,20 @@
+"use client";
+
 import "@/styles/reset.scss";
 import Header from "@/components/Header/header";
 import BookingForm from "@/components/BookingPage/booking";
+import { Suspense } from "react";
+import LoadingPage from "@/components/LoadingPage/loading";
 
 export default function Booking() {
   return (
     <>
       <Header />
       <main>
-        <BookingForm />
+        <Suspense fallback={<LoadingPage />}>
+          <BookingForm />
+        </Suspense>
       </main>
     </>
   );
-}  
+}

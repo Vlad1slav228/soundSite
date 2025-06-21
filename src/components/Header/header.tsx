@@ -87,21 +87,21 @@ useEffect(() => {
             <nav>
               <ul className={`${s.headerList} ${isMenuOpen ? s.navOpen : ""}`}>
                 <li>
-                  <a href="/#about" onClick={handleLinkClick}>{ABOUT_TITLE}</a>
+                  <Link href="/#about" onClick={handleLinkClick}>{ABOUT_TITLE}</Link>
                 </li>
                 <li>
-                  <a href="/#services" onClick={handleLinkClick}>{SERVICES_TITLE}</a>
+                  <Link href="/#services" onClick={handleLinkClick}>{SERVICES_TITLE}</Link>
                 </li>
                 <li>
-                  <a href="/#examples" onClick={handleLinkClick}>{EXAMPLES_TITLE}</a>
+                  <Link href="/#examples" onClick={handleLinkClick}>{EXAMPLES_TITLE}</Link>
                 </li>
                 <li>
-                  <a href="/#photo" onClick={handleLinkClick}>{PHOTO_TITLE}</a>
+                  <Link href="/#photo" onClick={handleLinkClick}>{PHOTO_TITLE}</Link>
                 </li>
                 <li>
-                  <a href="/#contacts" onClick={handleLinkClick}>{CONTACTS_TITLE}</a>
+                  <Link href="/#contacts" onClick={handleLinkClick}>{CONTACTS_TITLE}</Link>
                 </li>
-                <li className={s.linkAccount}><a href="/personal-account">{ACCOUNT_TITLE}</a></li>
+                <li className={s.linkAccount}><Link href="/personal-account">{ACCOUNT_TITLE}</Link></li>
               </ul>
             </nav>
           </li>

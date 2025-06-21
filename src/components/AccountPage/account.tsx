@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState, useCallback } from "react";
 import AudioPlayer from "../AudioPlayer/audioPlayer";
 import { fetchWithAuth } from "@/lib/fetchWithAuth";
 import {
@@ -128,8 +128,12 @@ export default function AccountPage({
       );
 
       setBookings(sortedBookings);
-    } catch (e: any) {
-      setBookingsError(e.message || "Ошибка загрузки записей");
+    } catch (e: unknown) {
+      if (typeof e === "object" && e && "message" in e) {
+        setBookingsError((e as { message: string }).message);
+      } else {
+        setBookingsError("Ошибка загрузки записей");
+      }
     } finally {
       setBookingsLoading(false);
     }
@@ -169,15 +173,13 @@ export default function AccountPage({
 
     try {
       const year = selectedDay.getFullYear();
-    const month = String(selectedDay.getMonth() + 1).padStart(2, '0');
-    const day = String(selectedDay.getDate()).padStart(2, '0');
-    const dateStr = `${year}-${month}-${day}`;
-    const timeStr = selectedSlot.time.padEnd(5, ":00");
+      const month = String(selectedDay.getMonth() + 1).padStart(2, "0");
+      const day = String(selectedDay.getDate()).padStart(2, "0");
+      const dateStr = `${year}-${month}-${day}`;
+      const timeStr = selectedSlot.time.padEnd(5, ":00");
 
-        const selectedDateTime = new Date(`${dateStr}T${timeStr}`);
-    const nowLocal = new Date();
-
-   
+      const selectedDateTime = new Date(`${dateStr}T${timeStr}`);
+      const nowLocal = new Date();
 
       if (selectedDateTime < nowLocal) {
         alert("Нельзя записаться на прошедшую дату или время");
@@ -216,8 +218,12 @@ export default function AccountPage({
       setSelectedSlot(null);
       await fetchBookings();
       await updateSlotsAfterBooking();
-    } catch (error: any) {
-      alert(error.message || "Произошла ошибка при записи");
+    } catch (error: unknown) {
+      if (typeof error === "object" && error && "message" in error) {
+        alert((error as { message: string }).message);
+      } else {
+        alert("Произошла ошибка при записи");
+      }
       console.error("Booking error:", error);
     }
   };
@@ -238,8 +244,15 @@ export default function AccountPage({
       await fetchBookings();
       await updateSlotsAfterBooking();
       alert("Запись успешно отменена");
-    } catch (error: any) {
-      alert(error.message || "Произошла ошибка при отмене записи");
+    } catch (error: unknown) {
+      if (typeof error === "object" && error && "message" in error) {
+        alert(
+          (error as { message: string }).message ||
+            "Произошла ошибка при отмене записи"
+        );
+      } else {
+        alert("Произошла ошибка при отмене записи");
+      }
       console.error("Cancel booking error:", error);
     }
   };
@@ -269,12 +282,12 @@ export default function AccountPage({
       setLoading(true);
       setError("");
       try {
-      const year = selectedDay.getFullYear();
-      const month = String(selectedDay.getMonth() + 1).padStart(2, '0');
-      const day = String(selectedDay.getDate()).padStart(2, '0');
-      const dateStr = `${year}-${month}-${day}`;
+        const year = selectedDay.getFullYear();
+        const month = String(selectedDay.getMonth() + 1).padStart(2, "0");
+        const day = String(selectedDay.getDate()).padStart(2, "0");
+        const dateStr = `${year}-${month}-${day}`;
 
-      console.log('Fetching slots for date:', dateStr);
+        console.log("Fetching slots for date:", dateStr);
 
         const res = await fetchWithAuth("/api/v1/services/", {
           method: "GET",
@@ -304,8 +317,12 @@ export default function AccountPage({
           }
         });
         setServiceSlots(slotsMap);
-      } catch (e: any) {
-        setError(e.message || "Ошибка");
+      } catch (error: unknown) {
+        if (typeof error === "object" && error && "message" in error) {
+          setError((error as { message: string }).message || "Ошибка");
+        } else {
+          setError("Ошибка");
+        }
       } finally {
         setLoading(false);
       }
@@ -398,16 +415,17 @@ export default function AccountPage({
     return slotDate < now;
   };
 
-  const updateSlotsAfterBooking = async () => {
+  const updateSlotsAfterBooking = useCallback(async () => {
     try {
-    const year = selectedDay.getFullYear();
-    const month = String(selectedDay.getMonth() + 1).padStart(2, '0');
-    const day = String(selectedDay.getDate()).padStart(2, '0');
-    const dateStr = `${year}-${month}-${day}`;
+      const year = selectedDay.getFullYear();
+      const month = String(selectedDay.getMonth() + 1).padStart(2, "0");
+      const day = String(selectedDay.getDate()).padStart(2, "0");
+      const dateStr = `${year}-${month}-${day}`;
 
       const slotsResponses = await Promise.all(
         services.map(async (service) => {
-          const r = await fetchWithAuth(`/api/v1/slots/?date=${dateStr}&service=${service.id}`,
+          const r = await fetchWithAuth(
+            `/api/v1/slots/?date=${dateStr}&service=${service.id}`,
             { method: "GET", credentials: "include" }
           );
           if (!r.ok) return null;
@@ -429,7 +447,7 @@ export default function AccountPage({
     } catch (e) {
       console.error("Error updating slots:", e);
     }
-  };
+  }, [selectedDay, services]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -437,10 +455,10 @@ export default function AccountPage({
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [services, selectedDay]);
+  }, [updateSlotsAfterBooking]);
 
   const filteredBookings = useMemo(() => {
-    let result = [...bookings];
+    const result = [...bookings];
 
     // Сортировка по дате (ближайшие сверху)
     result.sort(
@@ -489,6 +507,7 @@ export default function AccountPage({
         window.URL.revokeObjectURL(url);
       }, 100);
     } catch (error) {
+      console.error("Track download failed:", error);
       alert("Не удалось скачать трек");
     }
   }

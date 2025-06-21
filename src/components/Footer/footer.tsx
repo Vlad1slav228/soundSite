@@ -208,63 +208,67 @@ export default function Footer() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const allTouched: TouchedFields = {
-    name: true,
-    surname: true,
-    phone: true,
-    email: true,
-  };
-  setTouched(allTouched);
+    const allTouched: TouchedFields = {
+      name: true,
+      surname: true,
+      phone: true,
+      email: true,
+    };
+    setTouched(allTouched);
 
-  (Object.keys(formData) as Array<keyof FormData>).forEach((key) => {
-    validateField(key, formData[key]);
-  });
-
-  const hasErrors = Object.values(errors).some((error) => error);
-  if (hasErrors) return;
-
-  const body = {
-    first_name: formData.name,
-    last_name: formData.surname,
-    phone: formData.phone,
-    email: formData.email,
-    agree_policy: formData.agreed,
-  };
-
-  try {
-    const response = await fetch(`${API_BASE_URL}/api/v1/feedback/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
+    (Object.keys(formData) as Array<keyof FormData>).forEach((key) => {
+      validateField(key, formData[key]);
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(errorText || "Ошибка отправки формы");
+    const hasErrors = Object.values(errors).some((error) => error);
+    if (hasErrors) return;
+
+    const body = {
+      first_name: formData.name,
+      last_name: formData.surname,
+      phone: formData.phone,
+      email: formData.email,
+      agree_policy: formData.agreed,
+    };
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/v1/feedback/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Ошибка отправки формы");
+      }
+
+      alert("Спасибо! Ваше сообщение отправлено.");
+      setFormData({
+        name: "",
+        surname: "",
+        phone: "",
+        email: "",
+        agreed: false,
+      });
+      setTouched({
+        name: false,
+        surname: false,
+        phone: false,
+        email: false,
+      });
+    } catch (error: unknown) {
+      let message = "Ошибка отправки";
+      if (typeof error === "object" && error && "message" in error) {
+        message = (error as { message?: string }).message || message;
+      }
+      alert(message);
     }
-
-    alert("Спасибо! Ваше сообщение отправлено.");
-    setFormData({
-      name: "",
-      surname: "",
-      phone: "",
-      email: "",
-      agreed: false,
-    });
-    setTouched({
-      name: false,
-      surname: false,
-      phone: false,
-      email: false,
-    });
-  } catch (error: any) {
-    alert(error.message || "Ошибка отправки");
-  }
-};
+  };
 
   return (
     <footer className={s.footer}>
@@ -277,16 +281,16 @@ export default function Footer() {
                   <Link href="/#about">{ABOUT_TITLE}</Link>
                 </li>
                 <li>
-                  <a href="/#services">{SERVICES_TITLE}</a>
+                  <Link href="/#services">{SERVICES_TITLE}</Link>
                 </li>
                 <li>
-                  <a href="/#examples">{EXAMPLES_TITLE}</a>
+                  <Link href="/#examples">{EXAMPLES_TITLE}</Link>
                 </li>
                 <li>
-                  <a href="/#reviews">{REVIEWS_TITLE}</a>
+                  <Link href="/#reviews">{REVIEWS_TITLE}</Link>
                 </li>
                 <li>
-                  <a href="/#contacts">{CONTACTS_TITLE}</a>
+                  <Link href="/#contacts">{CONTACTS_TITLE}</Link>
                 </li>
               </ul>
             </nav>

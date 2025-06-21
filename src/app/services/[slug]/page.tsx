@@ -18,11 +18,12 @@ interface Service {
 export default async function ServicePage({
   params,
 }: {
-  readonly params: { readonly slug: string };
+  params: Promise<{ slug: string }>;
 }) 
 {
+    const { slug } = await params; 
   try {
-    const res = await fetchWithAuth(`/api/v1/services/${params.slug}/`, {
+    const res = await fetchWithAuth(`/api/v1/services/${slug}/`, {
       method: "GET",
       credentials: "include",
       headers: {
@@ -49,7 +50,7 @@ export default async function ServicePage({
 
     const serviceData = {
        id: service.id, 
-      slug: params.slug,
+      slug,
       title: service.title,
       list: getFeaturesList(service.features),
       price: `${service.price} ₽`,

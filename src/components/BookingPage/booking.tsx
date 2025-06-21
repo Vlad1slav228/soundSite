@@ -74,7 +74,7 @@ export default function BookingForm() {
 
     try {
       const res = await fetch(
-        `${API_BASE_URL}/api/v1/slots/?date=${formattedDate}&service=${serviceId}`,
+        `${API_BASE_URL}/api/v1/slots/?date=${formattedDate}&service=${serviceId}`
       );
       if (!res.ok) throw new Error("Ошибка при загрузке временных интервалов");
       const data = await res.json();
@@ -84,6 +84,7 @@ export default function BookingForm() {
         setTimeSlots([]);
       }
     } catch (e) {
+      console.error("Ошибка загрузки слотов:", e);
       setSlotsError("Ошибка загрузки слотов");
       setTimeSlots([]);
     } finally {
@@ -332,7 +333,9 @@ export default function BookingForm() {
     if (!hasErrors && serviceId) {
       try {
         const [day, month, year] = formData.date.split(".");
-        const dateTime = `${year}-${month}-${day}T${formData.time.split(" - ")[0]}:00`;
+        const dateTime = `${year}-${month}-${day}T${
+          formData.time.split(" - ")[0]
+        }:00`;
 
         const response = await fetch(
           `${API_BASE_URL}/api/v1/bookings/public/`,
@@ -351,15 +354,19 @@ export default function BookingForm() {
         );
 
         if (!response.ok) {
-          let errorText = await response.text();
+          const errorText = await response.text();
           setServerError(errorText);
           return;
         }
-        setBookingEmail(formData.email); 
+        setBookingEmail(formData.email);
         setStep("otp");
         setServerError("");
-      } catch (error: any) {
-        setServerError(error.message || "Ошибка отправки");
+      } catch (error: unknown) {
+        let message = "Ошибка отправки";
+        if (typeof error === "object" && error && "message" in error) {
+          message = (error as { message?: string }).message || message;
+        }
+        setServerError(message);
       }
     }
   };
@@ -385,22 +392,25 @@ export default function BookingForm() {
         return;
       }
       setStep("success");
-    } catch (err: any) {
-      setServerError(err.message || "Ошибка проверки кода");
+    } catch (err: unknown) {
+      let message = "Ошибка проверки кода";
+      if (typeof err === "object" && err && "message" in err) {
+        message = (err as { message?: string }).message || message;
+      }
+      setServerError(message);
     }
   };
 
   const router = useRouter();
 
-useEffect(() => {
-  if (step === "success") {
-    const timer = setTimeout(() => {
-      router.push("/personal-account");
-    }, 1500);
-    return () => clearTimeout(timer);
-  }
-}, [step, router]);
-
+  useEffect(() => {
+    if (step === "success") {
+      const timer = setTimeout(() => {
+        router.push("/personal-account");
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [step, router]);
 
   return (
     <section className={s.bookingBlock}>
@@ -425,9 +435,15 @@ useEffect(() => {
                         required
                       />
                     </div>
-                    <div className={`${s.inputUnderline} ${touched.name && errors.name ? s.errorUnderline : ""}`}></div>
+                    <div
+                      className={`${s.inputUnderline} ${
+                        touched.name && errors.name ? s.errorUnderline : ""
+                      }`}
+                    ></div>
                   </div>
-                  {touched.name && errors.name && <p className={s.errorText}>Введите корректное имя</p>}
+                  {touched.name && errors.name && (
+                    <p className={s.errorText}>Введите корректное имя</p>
+                  )}
                 </div>
                 <div className={s.formField}>
                   <div className={s.inputGroup}>
@@ -443,9 +459,17 @@ useEffect(() => {
                         required
                       />
                     </div>
-                    <div className={`${s.inputUnderline} ${touched.surname && errors.surname ? s.errorUnderline : ""}`}></div>
+                    <div
+                      className={`${s.inputUnderline} ${
+                        touched.surname && errors.surname
+                          ? s.errorUnderline
+                          : ""
+                      }`}
+                    ></div>
                   </div>
-                  {touched.surname && errors.surname && <p className={s.errorText}>Введите корректную фамилию</p>}
+                  {touched.surname && errors.surname && (
+                    <p className={s.errorText}>Введите корректную фамилию</p>
+                  )}
                 </div>
                 <div className={s.formField}>
                   <div className={s.inputGroup}>
@@ -463,9 +487,17 @@ useEffect(() => {
                         required
                       />
                     </div>
-                    <div className={`${s.inputUnderline} ${touched.phone && errors.phone ? s.errorUnderline : ""}`}></div>
+                    <div
+                      className={`${s.inputUnderline} ${
+                        touched.phone && errors.phone ? s.errorUnderline : ""
+                      }`}
+                    ></div>
                   </div>
-                  {touched.phone && errors.phone && <p className={s.errorText}>Введите корректный номер телефона</p>}
+                  {touched.phone && errors.phone && (
+                    <p className={s.errorText}>
+                      Введите корректный номер телефона
+                    </p>
+                  )}
                 </div>
                 <div className={s.formField}>
                   <div className={s.inputGroup}>
@@ -481,13 +513,25 @@ useEffect(() => {
                         required
                       />
                     </div>
-                    <div className={`${s.inputUnderline} ${touched.email && errors.email ? s.errorUnderline : ""}`}></div>
+                    <div
+                      className={`${s.inputUnderline} ${
+                        touched.email && errors.email ? s.errorUnderline : ""
+                      }`}
+                    ></div>
                   </div>
-                  {touched.email && errors.email && <p className={s.errorText}>Введите корректный email (пример: example@mail.com)</p>}
+                  {touched.email && errors.email && (
+                    <p className={s.errorText}>
+                      Введите корректный email (пример: example@mail.com)
+                    </p>
+                  )}
                 </div>
                 <div className={s.formField}>
                   <div className={s.inputGroup}>
-                    <div className={`${s.inputWrapper} ${s.dataInput}`} onClick={toggleCalendar} id="dateInput">
+                    <div
+                      className={`${s.inputWrapper} ${s.dataInput}`}
+                      onClick={toggleCalendar}
+                      id="dateInput"
+                    >
                       <span className={s.requiredMark}>{REQUIRED_MARK}</span>
                       <input
                         ref={dateInputRef}
@@ -500,18 +544,31 @@ useEffect(() => {
                         required
                       />
                     </div>
-                    <div className={`${s.inputUnderline} ${touched.date && errors.date ? s.errorUnderline : ""}`}></div>
+                    <div
+                      className={`${s.inputUnderline} ${
+                        touched.date && errors.date ? s.errorUnderline : ""
+                      }`}
+                    ></div>
                     {showCalendar && (
                       <div ref={calendarRef} className={s.calendarPopup}>
-                        <Calendar onDateSelect={handleDateSelect} selectedDate={calendarDate} />
+                        <Calendar
+                          onDateSelect={handleDateSelect}
+                          selectedDate={calendarDate}
+                        />
                       </div>
                     )}
                   </div>
-                  {touched.date && errors.date && <p className={s.errorText}>Выберите дату</p>}
+                  {touched.date && errors.date && (
+                    <p className={s.errorText}>Выберите дату</p>
+                  )}
                 </div>
                 <div className={s.formField}>
                   <div className={s.inputGroup}>
-                    <div className={`${s.inputWrapper} ${s.timeInput}`} onClick={toggleTimeDropdown} id="timeInput">
+                    <div
+                      className={`${s.inputWrapper} ${s.timeInput}`}
+                      onClick={toggleTimeDropdown}
+                      id="timeInput"
+                    >
                       <span className={s.requiredMark}>{REQUIRED_MARK}</span>
                       <input
                         type="text"
@@ -522,29 +579,50 @@ useEffect(() => {
                         required
                       />
                     </div>
-                    <div className={`${s.inputUnderline} ${touched.time && errors.time ? s.errorUnderline : ""}`}></div>
+                    <div
+                      className={`${s.inputUnderline} ${
+                        touched.time && errors.time ? s.errorUnderline : ""
+                      }`}
+                    ></div>
                     {showTimeDropdown && (
                       <div ref={timeDropdownRef} className={s.timeDropdown}>
                         {slotsLoading && <div>Загрузка...</div>}
                         {slotsError && <div>{slotsError}</div>}
-                        {!slotsLoading && timeSlots.length === 0 && <div>Нет доступных интервалов</div>}
-                        {!slotsLoading && timeSlots.map((time, index) => (
-                          <div
-                            key={index}
-                            className={s.timeOption}
-                            onClick={() => handleTimeSelect(time)}
-                            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#F0F8D3")}
-                            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
-                            onMouseDown={(e) => (e.currentTarget.style.backgroundColor = "#CEE86B")}
-                            onMouseUp={(e) => (e.currentTarget.style.backgroundColor = "#F0F8D3")}
-                          >
-                            {time}
-                          </div>
-                        ))}
+                        {!slotsLoading && timeSlots.length === 0 && (
+                          <div>Нет доступных интервалов</div>
+                        )}
+                        {!slotsLoading &&
+                          timeSlots.map((time, index) => (
+                            <div
+                              key={index}
+                              className={s.timeOption}
+                              onClick={() => handleTimeSelect(time)}
+                              onMouseEnter={(e) =>
+                                (e.currentTarget.style.backgroundColor =
+                                  "#F0F8D3")
+                              }
+                              onMouseLeave={(e) =>
+                                (e.currentTarget.style.backgroundColor =
+                                  "transparent")
+                              }
+                              onMouseDown={(e) =>
+                                (e.currentTarget.style.backgroundColor =
+                                  "#CEE86B")
+                              }
+                              onMouseUp={(e) =>
+                                (e.currentTarget.style.backgroundColor =
+                                  "#F0F8D3")
+                              }
+                            >
+                              {time}
+                            </div>
+                          ))}
                       </div>
                     )}
                   </div>
-                  {touched.time && errors.time && <p className={s.errorText}>Выберите время</p>}
+                  {touched.time && errors.time && (
+                    <p className={s.errorText}>Выберите время</p>
+                  )}
                 </div>
               </div>
               <div className={s.checkboxWrapper}>
@@ -563,7 +641,9 @@ useEffect(() => {
                     </a>
                   </span>
                 </label>
-                {errors.agreed && <p className={s.errorText}>Необходимо ваше согласие</p>}
+                {errors.agreed && (
+                  <p className={s.errorText}>Необходимо ваше согласие</p>
+                )}
               </div>
             </div>
             <button type="submit" className={`greenButton ${s.submitButton}`}>

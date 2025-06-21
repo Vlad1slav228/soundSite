@@ -24,15 +24,18 @@ export default function PersonalAccount() {
         if (!res.ok) throw new Error("Вы не авторизованы");
         const data: Profile = await res.json();
         setProfile(data);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+        if (typeof err === "object" && err && "message" in err) {
+          setError((err as { message: string }).message);
+        } else {
+          setError("Произошла неизвестная ошибка");
+        }
       } finally {
         setLoading(false);
       }
     }
     fetchProfile();
   }, []);
-
 
   const handleLogout = async () => {
     try {

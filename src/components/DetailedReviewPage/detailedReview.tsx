@@ -49,8 +49,12 @@ export default function DetailedReview() {
         if (!res.ok) throw new Error("Ошибка загрузки отзыва");
         const data = await res.json();
         setReview(data.results?.[0] ?? null);
-      } catch (err: any) {
-        setError(err.message ?? "Неизвестная ошибка");
+      } catch (err: unknown) {
+        let message = "Неизвестная ошибка";
+        if (typeof err === "object" && err && "message" in err) {
+          message = (err as { message?: string }).message ?? message;
+        }
+        setError(message);
         setReview(null);
       }
       setLoading(false);
@@ -66,35 +70,37 @@ export default function DetailedReview() {
   return (
     <section className={s.reviewDetailPage}>
       <div className={`container ${s.reviewDetailGroup}`}>
-       <div className={s.reviewCard}>
-      <div className={s.reviewCardInner}>
-        <div className={s.reviewRow}>
-          <p className={s.label}>Услуга:</p>
-          <p className={s.value}>{review.booking_info.service}</p>
+        <div className={s.reviewCard}>
+          <div className={s.reviewCardInner}>
+            <div className={s.reviewRow}>
+              <p className={s.label}>Услуга:</p>
+              <p className={s.value}>{review.booking_info.service}</p>
+            </div>
+            <div className={s.reviewRow}>
+              <p className={s.label}>Дата написания:</p>
+              <p className={s.value}>
+                {new Date(review.created).toLocaleDateString("ru-RU")}
+              </p>
+            </div>
+            <div className={s.reviewReview}>
+              <p className={s.label}>Отзыв:</p>
+              <p className={s.reviewText}>{review.text}</p>
+            </div>
+          </div>
+          {review.reply ? (
+            <div className={s.replyBlock}>
+              <p className={s.replyLabel}>Ответ администратора:</p>
+              <p className={s.replyText}>{review.reply}</p>
+            </div>
+          ) : (
+            <div className={s.replyBlock}>
+              <p className={s.replyPending}>
+                Администратор ещё не оставил ответ на ваш отзыв.
+              </p>
+            </div>
+          )}
         </div>
-        <div className={s.reviewRow}>
-          <p className={s.label}>Дата написания:</p>
-          <p className={s.value}>
-            {new Date(review.created).toLocaleDateString("ru-RU")}
-          </p>
-        </div>
-        <div className={s.reviewReview}>
-          <p className={s.label}>Отзыв:</p>
-          <p className={s.reviewText}>{review.text}</p>
-        </div>
-      </div>
-      {review.reply ? (
-        <div className={s.replyBlock}>
-          <p className={s.replyLabel}>Ответ администратора:</p>
-          <p className={s.replyText}>{review.reply}</p>
-        </div>
-      ) : (
-        <div className={s.replyBlock}>
-          <p className={s.replyPending}>Администратор ещё не оставил ответ на ваш отзыв.</p>
-        </div>
-      )}
-    </div>
-      <Image src={MICROPHONE_IMG} alt="Микрофон" className="microImg"/>
+        <Image src={MICROPHONE_IMG} alt="Микрофон" className="microImg" />
       </div>
     </section>
   );

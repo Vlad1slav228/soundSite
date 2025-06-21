@@ -16,8 +16,8 @@ import { fetchWithAuth } from "@/lib/fetchWithAuth";
 export default function AddReviewForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const bookingId = searchParams.get('bookingId');
-  
+  const bookingId = searchParams.get("bookingId");
+
   const [review, setReview] = useState("");
   const [error, setError] = useState(false);
   const [touched, setTouched] = useState(false);
@@ -49,7 +49,9 @@ export default function AddReviewForm() {
     setError(!isValid);
 
     if (!isValid || !bookingId) {
-      setSubmitError("Пожалуйста, введите корректный отзыв (минимум 6 символов)");
+      setSubmitError(
+        "Пожалуйста, введите корректный отзыв (минимум 6 символов)"
+      );
       return;
     }
 
@@ -70,18 +72,24 @@ export default function AddReviewForm() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        
+
         if (response.status === 400) {
-          throw new Error(errorData.detail || "Невозможно оставить отзыв для этого бронирования");
+          throw new Error(
+            errorData.detail ||
+              "Невозможно оставить отзыв для этого бронирования"
+          );
         }
         throw new Error("Произошла ошибка на сервере. Попробуйте позже.");
       }
 
       setIsSubmitted(true);
-    } catch (error: any) {
-      setSubmitError(
-        error.message || "Произошла непредвиденная ошибка. Пожалуйста, попробуйте позже."
-      );
+    } catch (error: unknown) {
+      let message =
+        "Произошла непредвиденная ошибка. Пожалуйста, попробуйте позже.";
+      if (typeof error === "object" && error && "message" in error) {
+        message = (error as { message?: string }).message || message;
+      }
+      setSubmitError(message);
     } finally {
       setIsLoading(false);
     }
@@ -136,13 +144,13 @@ export default function AddReviewForm() {
             ></div>
           </div>
           {touched && error && (
-            <p className={s.errorText}>Отзыв должен содержать минимум 6 символов</p>
+            <p className={s.errorText}>
+              Отзыв должен содержать минимум 6 символов
+            </p>
           )}
-          {submitError && (
-            <p className={s.errorText}>{submitError}</p>
-          )}
-          <button 
-            type="submit" 
+          {submitError && <p className={s.errorText}>{submitError}</p>}
+          <button
+            type="submit"
             className={`greenButton ${s.sendButton}`}
             disabled={isLoading || (touched && error)}
           >

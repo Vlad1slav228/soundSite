@@ -129,8 +129,12 @@ export default function AuthorizationForm() {
       if (!res.ok) throw new Error("Ошибка при отправке кода");
 
       setStep("otp");
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      let message = "Произошла ошибка при отправке кода";
+      if (typeof err === "object" && err && "message" in err) {
+        message = (err as { message?: string }).message || message;
+      }
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -169,8 +173,12 @@ export default function AuthorizationForm() {
       if (!res.ok) throw new Error("Неверный код");
 
       setStep("success");
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      let message = "Произошла ошибка при проверке кода";
+      if (typeof err === "object" && err && "message" in err) {
+        message = (err as { message?: string }).message || message;
+      }
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -277,11 +285,7 @@ export default function AuthorizationForm() {
               </div>
 
               <div className={s.checkboxWrapper}>
-                <input
-                  type="checkbox"
-                  name="agreed"
-                  required
-                />
+                <input type="checkbox" name="agreed" required />
                 <label>
                   <span>
                     {PRIVACY_POLICY_TITLE}
