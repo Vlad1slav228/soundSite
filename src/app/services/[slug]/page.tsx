@@ -15,13 +15,19 @@ interface Service {
   is_active: boolean;
 }
 
+export async function generateMetadata() {
+  return {
+    title: "Услуга — Sound",
+    description: "Описание услуги студии звукозаписи.",
+  };
+}
+
 export default async function ServicePage({
   params,
 }: {
   params: Promise<{ slug: string }>;
-}) 
-{
-    const { slug } = await params; 
+}) {
+  const { slug } = await params;
   try {
     const res = await fetchWithAuth(`/api/v1/services/${slug}/`, {
       method: "GET",
@@ -49,7 +55,7 @@ export default async function ServicePage({
     };
 
     const serviceData = {
-       id: service.id, 
+      id: service.id,
       slug,
       title: service.title,
       list: getFeaturesList(service.features),

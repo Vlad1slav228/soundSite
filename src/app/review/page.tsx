@@ -6,6 +6,13 @@ import DetailedReview from "@/components/DetailedReviewPage/detailedReview";
 import { Suspense } from "react";
 import LoadingPage from "@/components/LoadingPage/loading";
 
+export async function generateMetadata() {
+  return {
+    title: "Просмотр отзыва — Sound",
+    description: "Детальный просмотр отзыва о студии звукозаписи Sound.",
+  };
+}
+
 export default function Review() {
   return (
     <>
@@ -14,7 +21,6 @@ export default function Review() {
         <Suspense fallback={<LoadingPage />}>
           <DetailedReview />
         </Suspense>
-        
       </main>
     </>
   );

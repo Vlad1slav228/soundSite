@@ -9,6 +9,14 @@ import Footer from "@/components/Footer/footer";
 import Loading from "@/components/LoadingPage/loading";
 import type { Profile } from "@/components/AccountPage/account";
 
+export async function generateMetadata() {
+  return {
+    title: "Личный кабинет — Sound",
+    description:
+      "Управляйте своими записями, профилем и оставляйте отзывы в личном кабинете студии звукозаписи Sound.",
+  };
+}
+
 export default function PersonalAccount() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
